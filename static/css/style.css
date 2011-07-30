@@ -325,13 +325,14 @@ aside .block{
 .progress.memory{
     background-color: #1696ff;
     background: url(/static/img/blue.png) repeat-x;
-    width: 99%;
+    width: 80%;
     display: block;
     border: 0;
 }
 
 .progress.cpu{
     background-color: #0f0;
+    background: url(/static/img/green.png) repeat-x;
     width: 55%;
     display: block;
     border: 0;
