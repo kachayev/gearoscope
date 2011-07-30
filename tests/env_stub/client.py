@@ -60,21 +60,21 @@ def random_sequence(delimiter, elements, randomizer=random.randrange, randomizer
 client = gearman.GearmanClient(settings.STUB_GEARMAN_NODES)
 
 while True:
-    if random.random() > settings.STUB_TASKS_PROBABILITY.get('reverse', 0.5):
+    if random.random() < settings.STUB_TASKS_PROBABILITY.get('reverse', 0.5):
         # Add task for random word reversing
         word = random_word(*settings.STUB_TASKS_ARGS.get('reverse', []))
         client.submit_job('reverse', word, background=True)
         # TODO: logging!
         print 'Add reverse task for <%s>' % word
 
-    if random.random() > settings.STUB_TASKS_PROBABILITY.get('sum', 0.5):
+    if random.random() < settings.STUB_TASKS_PROBABILITY.get('sum', 0.5):
         # Add task for calculating sum of 4 digits
         sum = random_sum(*settings.STUB_TASKS_ARGS.get('sum', []))
         client.submit_job('sum', sum, background=True)
         # TODO: logging!
         print 'Add sum calculation task for <%s>' % sum
 
-    if random.random() > settings.STUB_TASKS_PROBABILITY.get('multiple', 0.5):
+    if random.random() < settings.STUB_TASKS_PROBABILITY.get('multiple', 0.5):
         # Add task for calculating multiple of 2 digits
         multiple = random_multiple(*settings.STUB_TASKS_ARGS.get('multiple', []))
         client.submit_job('multiple', multiple, background=True)
