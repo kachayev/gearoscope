@@ -251,6 +251,7 @@ aside .block{
     float: right;
     margin: 0 10px;
 }
+.queue_headline .collapse_queue,
 .queue_headline .expand_queue{
     float: right;
     color: #969696;
@@ -461,7 +462,15 @@ aside .block{
 }
 
 
+#queues_list .queue_item.collapsed .queue_details,
+#queues_list .queue_item.collapsed .workers_list,
+#queues_list .queue_item.collapsed .show_workers{
+    display: none;
+}
 
+#queues_list .queue_item .hide_workers{
+    display: none;
+}
 
 
 
