@@ -24,10 +24,10 @@ except ImportError:
     pass
 
 kwargs = {}
-version = '0.0.1'
+version = '0.0.7'
 
 with open(os.path.join(os.path.dirname(__file__), 'requirements.txt')) as f:
-    requirements = [line.strip() for line in f.readlines()]
+    requirements = [line.strip() for line in f.readlines() if line.strip() != '' and line.strip()[:2] != '-e']
 
 distutils.core.setup(
     name='gearoscope',

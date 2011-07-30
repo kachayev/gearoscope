@@ -1,2 +1,6 @@
 *.pyc
 .idea
+src/*
+build/*
+dist/*
+*.egg-info
