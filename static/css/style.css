@@ -311,7 +311,29 @@ aside .block{
     margin-right: 4px;
 }
 
+.queue_stats .progress,
+.worker_details .progress{
+    border-radius: 8px;
+    border-bottom: 2px solid #2b2b2b;
+    border-top: 2px solid #010101;
+    background-color: #222;
+    height: 11px;
+    margin-bottom: 6px;
+}
 
+.progress.memory{
+    background-color: #1696ff;
+    width: 80%;
+    display: block;
+    border: 0;
+}
+
+.progress.cpu{
+    background-color: #0f0;
+    width: 55%;
+    display: block;
+    border: 0;
+}
 
 
 
