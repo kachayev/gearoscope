@@ -122,28 +122,31 @@ footer {
 #main_menu{
     float: right;
     border-right: 1px solid #010101;
-border-left: 1px solid #2b2b2b;
-margin: 0;
-    }
+    border-left: 1px solid #2b2b2b;
+    margin: 0;
+}
 
 #main_menu li{
-width: 108px;
-border-left: 1px solid #010101;
-border-right: 1px solid #2b2b2b;
-font-weight: bold;
-line-height: 6.3;
-font-size: 12px;
-list-style: none;
-text-align: center;
-float: left;
-color: #f1f1f1;
-font-family: Ubuntu, Monaco, Calibri, Tahoma, Arial, sans-serif;
-vertical-align: middle;
-    }
+    width: 108px;
+    border-left: 1px solid #010101;
+    border-right: 1px solid #2b2b2b;
+    font-weight: bold;
+    line-height: 6.3;
+    font-size: 12px;
+    list-style: none;
+    text-align: center;
+    float: left;
+    color: #f1f1f1;
+    font-family: Ubuntu, Monaco, Calibri, Tahoma, Arial, sans-serif;
+    vertical-align: middle;
+}
+#main_menu li a{
+    text-decoration: none;
+}
 
 #main_menu li.selected{
-background-color: rgba(0,0,0, 0.25);
-    }
+    background-color: rgba(0,0,0, 0.25);
+}
 
 aside{
     width: 48%;
@@ -153,9 +156,13 @@ aside{
 /* BLOCK STYLE*/
 
 .block{
-padding-top: 10px;
-width: 48%;
-    }
+    padding-top: 10px;
+    width: 48%;
+}
+
+.block a{
+    text-decoration: none;
+}
 
 .block h2{
 font-size: 24px;
@@ -192,8 +199,117 @@ aside .block{
     background-color: rgba(0,0,0,0.15);
 }
 
+/* QUEUE list*/
+
+#queues {
+    float: left;
+}
+
+#queues .expand_all{
+    float: right;
+    border-radius: 12px;
+    line-height: 2.4;
+    font-size: 10px;
+    background-color: rgba(0,0,0, 0.25);
+    padding: 0 14px;
+    cursor: pointer;
+}
+
+#queues_list{
+    margin: 0;
+}
 
 
+/* SINGLE QUEUE ITEM*/
+
+#queues_list a{
+    text-decoration: none;
+}
+
+#queues_list .queue_item{
+    list-style: none inside none;
+    margin-bottom: 24px;
+}
+
+#queues_list .queue_item.collapsed{
+    margin-bottom: 6px;
+}
+
+.queue_headline{
+    font-size: 12px;
+    color: #b8b8b8;
+    line-height: 2;
+    border-bottom: 1px solid #010101;
+    padding-left: 12px;
+    background-color: rgba(0,0,0, 0.25);
+}
+.queue_headline h3{
+    font-size: 16px;
+}
+
+.queue_headline .short_info{
+    float: right;
+    margin: 0 10px;
+}
+.queue_headline .expand_queue{
+    float: right;
+    color: #969696;
+    font-weight: bolder;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.queue_headline .workers_value{
+    color: #ffe825;
+}
+
+.queue_headline .mem_value{
+    color: #1696ff;
+}
+
+.queue_headline .cpu_value{
+    color: #0f0;
+}
+
+.queue_details{
+    border-top: 1px solid #2b2b2b;
+    background: rgba(0,0,0,0.15);
+}
+
+.queue_details .graph_holder{
+    float: left;
+    height: 134px;
+    margin-left: 10px;
+    max-width: 300px;
+    background-color: #FF5E99;
+}
+
+.queue_details .queue_stats{
+    padding-top: 6px;
+}
+
+
+.queue_details .queue_stats,
+.worker_details .worker_stats{
+    float: right;
+    height: 134px;
+    width: 190px;
+    padding-right: 12px;
+    color: #b8b8b8;
+}
+
+.queue_stats p,
+.worker_stats p{
+    margin-bottom: 1px;
+}
+
+.queue_stats .cpu_value,
+.queue_stats .mem_value,
+.worker_details .mem_value,
+.worker_details .cpu_value{
+    float: right;
+    margin-right: 4px;
+}
 
 
 
