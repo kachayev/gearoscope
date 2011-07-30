@@ -319,11 +319,13 @@ aside .block{
     background-color: #222;
     height: 11px;
     margin-bottom: 6px;
+    padding: 0 1px;
 }
 
 .progress.memory{
     background-color: #1696ff;
-    width: 80%;
+    background: url(/static/img/blue.png) repeat-x;
+    width: 99%;
     display: block;
     border: 0;
 }
