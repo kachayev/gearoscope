@@ -10,7 +10,7 @@ var initStubs = function(){
 
     $('.stop_worker, .restart_worker, .delete_worker').live('click', function(e) {
         e.preventDefault();
-        alert("Add worker not ready yet.");
+        worker.setItem(this).setData().update();
     });
     
 };
@@ -53,6 +53,30 @@ var worker = {
         }else{
             this.item = $(el).parents('.worker_details');
         }
+        return this;
+    },
+    
+    update: function(){
+        var wdata = $(this.item).data('worker-data');
+        $(this.item).find('.worker_stats .cpu_value').html('' + wdata.cpu_value + '%').end()
+            .find('.worker_stats .mem_value').html('' + wdata.memory_value + '%').end()
+            .find('.worker_stats .task_value').html(wdata.task_value).end();
+
+        $(this.item).find('.worker_stats .cpu.progress').width(Math.min(Math.max(wdata.cpu_value, 1), 99)+'%');
+        $(this.item).find('.worker_stats .memory.progress').width(Math.min(Math.max(wdata.memory_value, 1), 99)+'%');
+        return this;
+    },
+    
+    setData: function(){
+        //this is stub
+        var d = {
+            cpu_value: Math.round(Math.random() * 100),
+            memory_value: Math.round(Math.random() * 100),
+            task_value: Math.round(Math.random() * 10 + 20)
+        };
+
+        $(this.item).data('worker-data', d);
+
         return this;
     }
 };
