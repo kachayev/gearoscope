@@ -248,8 +248,6 @@ var servers = {
 
             if(server.length > 0){
                 var content =  $.tmpl(this.template_item, server);
-                console.log(content);
-                console.log(li.find('.logHistory'))
                 $(li).find('.logHistory').html(content);
                 $(li).find('.logHistory li:gt(0)').hide();
             }
@@ -260,7 +258,7 @@ var servers = {
     init: function(){
         $.template(this.template_item , '<li>${time} - ${server} - ${host} - ${ping}ms</li>');
         $.template(this.template_log , '<li><a class="exp" href="#">+</a><ul class="logHistory"><li>This ${name} do not have info</li></ul></li>');
-        $('#servers_list .ext').live('click', function(e){
+        $('#servers_list .exp').live('click', function(e){
             e.preventDefault();
             console.log($(this).parent('li').find('.logHistory li:gt(0)'));
             $(this).parents('li').find('.logHistory li:gt(0)').toggle();

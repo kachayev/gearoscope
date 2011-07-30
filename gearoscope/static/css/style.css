@@ -484,7 +484,11 @@ aside .block{
 }
 
 
-
+#servers_list .exp{
+    display: inline-block;
+    float: left;
+    max-width: 16px;
+}
 
 
 
