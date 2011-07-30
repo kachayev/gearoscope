@@ -43,8 +43,8 @@ def sonar_factory():
                 block, name = section.split(':')
                 block = block.lower()
 
-                # Add server objects to server pool
                 if block == 'server':
+                    # Add server objects to server pool
                     params = {'name': name, 'password': None, 'user': 'root'}
                     params.update(dict(options.config.items(section)))
 
@@ -71,12 +71,8 @@ def sonar_factory():
 
                     s.add_pool(name, AgentPool(**params))
                 elif block == 'supervisor':
-                    pass
-                elif block == 'agent.runner':
-                    pass
-
-        s.add_agent(SupervisorAgent(Supervisor(server=ServerPool.get('local'), port=9001),
-                                    names=['multiple', 'reverse', 'sum']))
+                    s.add_agent(SupervisorAgent(Supervisor(server=ServerPool.get('local'), port=9001),
+                                                names=['multiple', 'reverse', 'sum']))
 
         return s
     return make
