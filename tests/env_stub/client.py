@@ -19,6 +19,7 @@ Gearman node for test runner and frequency of tasks generation
 can be set via general settings.py
 """
 import gearman, time, string, random
+import tests.settings as settings
 
 def random_word(len):
     '''Generate sequence of random symbols of given length'''
@@ -56,36 +57,29 @@ def random_sequence(delimiter, elements, randomizer=random.randrange, randomizer
 
 # Create object of gearman client for pushing to server node tasks
 # Gearman node connection params is taken from general settings module
-# TODO: settings!
-client = gearman.GearmanClient(['localhost:4730'])
+client = gearman.GearmanClient(settings.STUB_GEARMAN_NODES)
 
 while True:
-    # TODO: settings!
-    if random.random() > 0.5:
+    if random.random() > settings.STUB_TASKS_PROBABILITY.get('reverse', 0.5):
         # Add task for random word reversing
-        # TODO: settings!
-        word = random_word(30)
+        word = random_word(*settings.STUB_TASKS_ARGS.get('reverse', []))
         client.submit_job('reverse', word, background=True)
         # TODO: logging!
         print 'Add reverse task for <%s>' % word
 
-    # TODO: settings!
-    if random.random() > 0.3:
+    if random.random() > settings.STUB_TASKS_PROBABILITY.get('sum', 0.5):
         # Add task for calculating sum of 4 digits
-        sum = random_sum(4)
+        sum = random_sum(*settings.STUB_TASKS_ARGS.get('sum', []))
         client.submit_job('sum', sum, background=True)
         # TODO: logging!
         print 'Add sum calculation task for <%s>' % sum
 
-    # TODO: settings!
-    if random.random() > 0.3:
+    if random.random() > settings.STUB_TASKS_PROBABILITY.get('multiple', 0.5):
         # Add task for calculating multiple of 2 digits
-        # TODO: settings!
-        multiple = random_multiple(2)
+        multiple = random_multiple(*settings.STUB_TASKS_ARGS.get('multiple', []))
         client.submit_job('multiple', multiple, background=True)
         # TODO: logging!
         print 'Add multiple calculation task for <%s>' % multiple
 
-    # TODO: settings!
-    time.sleep(1.0)
+    time.sleep(settings.STUB_TASKS_FREQUENCY)
 
