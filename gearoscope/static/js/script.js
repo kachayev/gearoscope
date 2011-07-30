@@ -237,12 +237,14 @@ var servers = {
     },
     
     update: function(){
-        var serverList = $('#servers').find('.servers_list li').remove();
+        var serverList = $('#servers').find('#servers_list');
+        serverList.find('li').remove();
 
         for(i in this.data){
             var rec = this.data[i];
-            var li = $("<li>"+rec.time +" - "+ rec.server+ " - "+rec.host+ " " +rec.ping+" </li>");
-            break;
+            var li = $("<li>"+rec.time +" - "+ rec.server+ " - "+rec.host+ " " +rec.ping+"ms </li>");
+            serverList.append(li);
+
         }
         return this;
     }
@@ -261,8 +263,8 @@ var requestor = {
     },
 
     pushResponse: function(data, textStatus, jqXHR){
-        
-        if(typeof(data) != 'object'){
+
+        if(typeof(data) != 'object' || textStatus != 'success'){
             alert('request broken');
             return ;
         }
