@@ -5,7 +5,7 @@ var initStubs = function(){
 
     $('.add_worker').live('click', function(e) {
         e.preventDefault();
-        alert("Add worker not ready yet.");
+        queue.setQueue(this).setData().update();
     });
 
     $('.stop_worker, .restart_worker, .delete_worker').live('click', function(e) {
@@ -98,7 +98,34 @@ var queue = {
         return $(this.item).hasClass('collapsed');
     },
 
+    update: function(){
+        var qdata = $(this.item).data('queue-data');
+        $(this.item).find('.queue_stats .cpu_value, .queue_headline .cpu_value').html('' + qdata.cpu_value + '%').end()
+            .find('.queue_stats .mem_value, .queue_headline .mem_value').html('' + qdata.memory_value + '%').end()
+            .find('.queue_stats .workers_value, .queue_headline .workers_value').html(qdata.workers_value).end();
 
+        $(this.item).find('.queue_stats .cpu.progress').width(Math.min(Math.max(qdata.cpu_value, 1), 99)+'%');
+        $(this.item).find('.queue_stats .memory.progress').width(Math.min(Math.max(qdata.memory_value, 1), 99)+'%');
+        return this;
+    },
+
+    initGraph: function(){
+        
+    },
+
+    setData: function(){
+        //this is stub
+        var d = {
+            cpu_value: Math.round(Math.random() * 100),
+            memory_value: Math.round(Math.random() * 100),
+            workers_value: Math.round(Math.random() * 10)
+        };
+        
+        $(this.item).data('queue-data', d);
+        
+        return this;
+        
+    },
 
     init: function(){
         $('#queues_list .queue_item').each(function(){
@@ -119,6 +146,13 @@ var queue = {
             e.preventDefault();
             queue.setQueue(this).collapse();
         });
+
+        $('.expand_all').click(function(e){
+            e.preventDefault();
+            $('#queues_list .queue_item').each(function(){
+                queue.setQueue(this).expand();
+            });
+        });
     }
     
 };
@@ -132,6 +166,8 @@ $(document).ready(function(){
     initStubs();
 
     queue.init();
+
+    
 
 });
 
