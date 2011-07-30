@@ -230,6 +230,8 @@ var queue = {
 var servers = {
 
     data: null,
+    template_log: 'serverLog',
+    template_item: 'serverLogItem',
 
     setData: function(data){
         this.data = data;
@@ -241,13 +243,30 @@ var servers = {
         serverList.find('li').remove();
 
         for(i in this.data){
-            var rec = this.data[i];
-            var li = $("<li>"+rec.time +" - "+ rec.server+ " - "+rec.host+ " " +rec.ping+"ms </li>");
-            serverList.append(li);
+            var server = this.data[i];
+            var li = $.tmpl(this.template_log, {name:i});
 
+            if(server.length > 0){
+                var content =  $.tmpl(this.template_item, server);
+                console.log(content);
+                console.log(li.find('.logHistory'))
+                $(li).find('.logHistory').html(content);
+                $(li).find('.logHistory li:gt(0)').hide();
+            }
+            serverList.append(li);
         }
         return this;
+    },
+    init: function(){
+        $.template(this.template_item , '<li>${time} - ${server} - ${host} - ${ping}ms</li>');
+        $.template(this.template_log , '<li><a class="exp" href="#">+</a><ul class="logHistory"><li>This ${name} do not have info</li></ul></li>');
+        $('#servers_list .ext').live('click', function(e){
+            e.preventDefault();
+            console.log($(this).parent('li').find('.logHistory li:gt(0)'));
+            $(this).parents('li').find('.logHistory li:gt(0)').toggle();
+        });
     }
+
     
 };
 
@@ -288,5 +307,7 @@ $(document).ready(function(){
 //            worker.setItem(this).setData().update();
 //        });
 //    }, 1000);
+
+    servers.init();
 
 });
