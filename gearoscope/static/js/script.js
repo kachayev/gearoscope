@@ -261,7 +261,8 @@ var requestor = {
     },
 
     pushResponse: function(data, textStatus, jqXHR){
-        if(typeof data != 'Object'){
+        
+        if(typeof(data) != 'object'){
             alert('request broken');
             return ;
         }
