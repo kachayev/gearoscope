@@ -65,7 +65,7 @@ def sonar_factory():
                     # we should use class type from imported related module
                     if params['prototype'].find('.') != -1:
                         parts = params['prototype'].split('.')
-                        params['prototype'] = getattr(import('.'.join(parts[:-1])), parts[-1])
+                        params['prototype'] = getattr(__import__('.'.join(parts[:-1])), parts[-1])
                     else:
                         params['prototype'] = globals()[params['prototype']]
 
