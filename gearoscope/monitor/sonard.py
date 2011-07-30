@@ -78,8 +78,10 @@ def sonar_factory():
                     # given count of object, builded on as instance of prototype class
                     s.add_pool(name, AgentPool(**params))
                 elif block == 'supervisor':
-                    s.add_agent(SupervisorAgent(Supervisor(server=ServerPool.get('local'), port=9001),
-                                                names=['multiple', 'reverse', 'sum']))
+                    server = options.config.get(section, 'server')
+                    port   = options.config.get(section, 'port')
+                    names  = map(lambda name: name.strip(), options.config.get(section, 'names').split(','))
+                    s.add_agent(SupervisorAgent(Supervisor(server=ServerPool.get(server), port=port), names=names))
 
         return s
     return make
