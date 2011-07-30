@@ -81,6 +81,10 @@ def sonar_factory():
                     server = options.config.get(section, 'server')
                     port   = options.config.get(section, 'port')
                     names  = map(lambda name: name.strip(), options.config.get(section, 'names').split(','))
+
+                    # Add supervisor object and related to it supervisor agent,
+                    # which will periodicaly call supervisor XML-RPC in order to get informations
+                    # about running processes according to <names> or <groups> listings
                     s.add_agent(SupervisorAgent(Supervisor(server=ServerPool.get(server), port=port), names=names))
 
         return s
