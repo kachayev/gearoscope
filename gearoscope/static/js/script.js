@@ -272,7 +272,8 @@ var servers = {
 var requestor = {
 
     start: function(){
-        this.doRequest()
+        //TODO: make cyclic requests
+        this.doRequest();
     },
 
     doRequest:function(){
@@ -287,7 +288,7 @@ var requestor = {
         }
 
         servers.setData(data['servers']).update();
-
+        
     }
 
 
@@ -307,5 +308,6 @@ $(document).ready(function(){
 //    }, 1000);
 
     servers.init();
+    requestor.start();
 
 });
