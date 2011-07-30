@@ -227,7 +227,51 @@ var queue = {
 };
 
 
+var servers = {
 
+    data: null,
+
+    setData: function(data){
+        this.data = data;
+        return this;
+    },
+    
+    update: function(){
+        var serverList = $('#servers').find('.servers_list li').remove();
+
+        for(i in this.data){
+            var rec = this.data[i];
+            var li = $("<li>"+rec.time +" - "+ rec.server+ " - "+rec.host+ " " +rec.ping+" </li>");
+            break;
+        }
+        return this;
+    }
+    
+};
+
+
+var requestor = {
+
+    start: function(){
+        this.doRequest()
+    },
+
+    doRequest:function(){
+        $.get('/dashboard', {}, requestor.pushResponse, 'json');
+    },
+
+    pushResponse: function(data, textStatus, jqXHR){
+        if(typeof data != 'Object'){
+            alert('request broken');
+            return ;
+        }
+
+        servers.setData(data['servers']).update();
+
+    }
+
+
+};
 
 
 $(document).ready(function(){
@@ -236,10 +280,10 @@ $(document).ready(function(){
 
     queue.init();
 
-    setInterval(function(){
-        $('#queues_list .worker_stats').each(function(){
-            worker.setItem(this).setData().update();
-        });
-    }, 1000);
+//    setInterval(function(){
+//        $('#queues_list .worker_stats').each(function(){
+//            worker.setItem(this).setData().update();
+//        });
+//    }, 1000);
 
 });
