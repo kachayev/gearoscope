@@ -338,6 +338,45 @@ aside .block{
     border: 0;
 }
 
+.queue_stats .add_worker{
+    float: right;
+    border-radius: 9px;
+    border: 0px;
+    color: #353535;
+    text-shadow: 1px 1px 1px #e1e1e1;
+    font-weight: bold;
+    font-size: 12px;
+    height: 19px;
+    padding: 0 6px;
+    line-height: 1.5;
+    background: #e1e1e1 repeat-x;
+    background: -moz-linear-gradient(100% 100% 90deg, #969696, #e1e1e1);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e1e1e1), to(#969696));
+    background: -webkit-linear-gradient(#e1e1e1, #969696);
+    background: -o-linear-gradient(#e1e1e1, #969696);
+}
+
+.queue_stats .workers_stats{
+    border-radius: 9px;
+    background-color: #222;
+    border-bottom: 2px solid #2b2b2b;
+    border-top: 2px solid #010101;
+    margin-top: 12px;
+    padding: 0 0 0 7px;
+    font-weight: bold;
+    height: 18px;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
