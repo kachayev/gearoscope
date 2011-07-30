@@ -85,6 +85,40 @@ a:hover { color: #036; }
 */
 
 
+body{
+    background-color: #333;
+}
+
+#container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    height: 75px;
+    border-bottom: 1px solid #010101;
+}
+
+#main {
+    border-top: 1px solid #2b2b2b;
+    border-bottom: 1px solid #010101;
+    min-height: 500px;
+    padding-left: 16px;
+}
+
+footer {
+    border-top: 1px solid #2b2b2b;
+    height: 70px;
+    text-align: center;
+    color: #e1e1e1;
+    text-shadow: 1px 1px 1px #000;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 5;
+}
+
+
+
 
 
 
