@@ -10,7 +10,7 @@ def task_listener(gearman_worker, gearman_job):
     '''
     done = reduce(operator.add, [int(x) for x in gearman_job.data.split('+')], 0)
 
-    # Log result of adding digit in order to control worker activity
+    # Log result of adding digits in order to control worker activity
     # Returned result should be a string
     # TODO: logging!
     print '%s = <%d>' % (gearman_job.data, done)
