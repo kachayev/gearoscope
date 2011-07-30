@@ -18,7 +18,6 @@ from sonar.options import options
 from sonar.agent import AgentPool
 from sonar.remote import Server, pool as ServerPool
 
-from sonar.agents.process import ProcessStatAgent
 from sonar.agents.supervisor import SupervisorAgent, Supervisor
 
 def sonar_factory():
@@ -33,14 +32,18 @@ def sonar_factory():
         '''
         import ConfigParser
 
+        # Create sonar object
+        s = loop.Sonar(options)
+
         # Iterate throw all configuration file in order to create
         # pool of servers and configurate all supervisor objects
         for section in options.config.sections():
             if section.find(':') != -1:
                 block, name = section.split(':')
+                block = block.lower()
 
-                # Add server objects to server pool
-                if block.lower() == 'server':
+                if block == 'server':
+                    # Add server objects to server pool
                     params = {'name': name, 'password': None, 'user': 'root'}
                     params.update(dict(options.config.items(section)))
 
@@ -52,12 +55,33 @@ def sonar_factory():
                     except ConfigParser.NoOptionError:
                         is_default = False
 
+                    # Add server to pool, which can be received from it by name
                     ServerPool.add(Server(**params), is_default=is_default)
+                elif block == 'pool':
+                    # Add separated object of agent pool with async queue
+                    params = {'count':1, 'timeout': 0}
+                    params.update(dict(options.config.items(section)))
 
-        s = loop.Sonar(options)
-        s.add_pool('stat', AgentPool(prototype=ProcessStatAgent, count=3, timeout=0))
-        s.add_agent(SupervisorAgent(Supervisor(server=ServerPool.get('local'), port=9001),
-                                    names=['multiple', 'reverse', 'sum']))
+                    # Against string value of full class name for prototype,
+                    # we should use class type from imported related module
+                    if params['prototype'].find('.') != -1:
+                        parts = params['prototype'].split('.')
+                        params['prototype'] = reduce(lambda module,attr: getattr(module,attr),
+                                                      parts[1:], __import__(parts[0]))
+                    else:
+                        params['prototype'] = globals()[params['prototype']]
+
+                    # Count should be integer in any case
+                    params['count'] = int(params['count'])
+
+                    # Create agent pool with given name, which will consist from
+                    # given count of object, builded on as instance of prototype class
+                    s.add_pool(name, AgentPool(**params))
+                elif block == 'supervisor':
+                    server = options.config.get(section, 'server')
+                    port   = options.config.get(section, 'port')
+                    names  = map(lambda name: name.strip(), options.config.get(section, 'names').split(','))
+                    s.add_agent(SupervisorAgent(Supervisor(server=ServerPool.get(server), port=port), names=names))
 
         return s
     return make
