@@ -1,4 +1,4 @@
-from settings import *
+from gearoscope.settings import *
 
 # List of gearman nodes connection host:port pairs,
 # which will be used for stub environment running

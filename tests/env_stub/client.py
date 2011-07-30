@@ -19,7 +19,7 @@ Gearman node for test runner and frequency of tasks generation
 can be set via general settings.py
 """
 import time, string, random
-import tests.settings as settings
+import gearoscope.tests.settings as settings
 
 from gearman import GearmanClient
 
