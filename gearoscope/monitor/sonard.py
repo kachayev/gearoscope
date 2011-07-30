@@ -19,6 +19,7 @@ from sonar.agent import AgentPool
 from sonar.remote import Server, pool as ServerPool
 
 from sonar.agents.supervisor import SupervisorAgent, Supervisor
+from gearoscope.monitor.agents.gearmand import GearmanNodeAgent
 
 def sonar_factory():
     def make(options):
@@ -86,6 +87,13 @@ def sonar_factory():
                     # which will periodicaly call supervisor XML-RPC in order to get informations
                     # about running processes according to <names> or <groups> listings
                     s.add_agent(SupervisorAgent(Supervisor(server=ServerPool.get(server), port=port), names=names))
+                elif block == 'gearman':
+                    server = options.config.get(section, 'server')
+                    port   = options.config.get(section, 'port')
+
+                    # Add gearman node object and related , which will periodicaly call gearman-admin util via socket interface
+                    # in order to get informations about node status and queues
+                    s.add_agent(GearmanNodeAgent(server=ServerPool.get(server), port=port))
 
         return s
     return make
