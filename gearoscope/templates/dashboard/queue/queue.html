@@ -32,12 +32,15 @@
 
 </div>
 
-<div class="workers_list">
+<div class="workers">
 
-    <h4>Workers:</h4>
+    <h4>Workers:
+        <a href="#" class="hide_all_workers small">hide all workers</a>
+        <a href="#" class="show_all_workers small">show all workers</a>
+    </h4>
 
 {#    TODO: create worker stub #}
-    <ul>
+    <ul class="workers_list">
         <li>{% include 'dashboard/queue/worker.html' %}</li>
         <li>{% include 'dashboard/queue/worker.html' %}</li>
     </ul>

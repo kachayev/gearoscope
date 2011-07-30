@@ -382,7 +382,7 @@ aside .block{
     cursor: pointer;
     font-weight: bold;
 }
-.workers_list h4{
+.workers h4{
     border-bottom: 1px solid #010101;
     background-color: rgba(0,0,0,0.15);
     line-height: 1.5;
@@ -390,17 +390,17 @@ aside .block{
     font-weight: bold;
     padding-left: 12px;
 }
-.workers_list ul{
+.workers ul{
     border-top: 1px solid #2b2b2b;
     margin: 0;
     list-style: none inside none;
 }
 
-.workers_list li:nth-child(odd){
+.workers li:nth-child(odd){
     background-color: rgba(0,0,0,0.30);
 }
 
-.workers_list li:nth-child(even){
+.workers li:nth-child(even){
     background-color: rgba(0,0,0,0.15);
 }
 
@@ -463,7 +463,7 @@ aside .block{
 
 
 #queues_list .queue_item.collapsed .queue_details,
-#queues_list .queue_item.collapsed .workers_list,
+#queues_list .queue_item.collapsed .workers,
 #queues_list .queue_item.collapsed .show_workers{
     display: none;
 }
@@ -472,8 +472,17 @@ aside .block{
     display: none;
 }
 
+.workers_list{
+    
+}
 
-
+.workers .hide_all_workers,
+.workers .show_all_workers{
+    font-size: 10px;
+    float: right;
+    margin-top: 8px;
+    margin-right: 14px;
+}
 
 
 
