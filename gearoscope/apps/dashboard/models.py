@@ -1,4 +1,4 @@
-import datetime
+import logging
 from django.db import models
 from datetime import datetime
 import random
@@ -11,11 +11,16 @@ class Server():
         name = 'node%s' % random.randint(1,4)
         ping = random.randint(10, 1000)
 
-        return {'server': name, 'host':'localhost', 'time': datetime.now().strftime('%H:%M') , 'ping': ping}
+        return {'server': name, 'host':'localhost', 'time': datetime.now().strftime('%H:%M:%S') , 'ping': ping}
 
     def getData(self):
 
-        return [self.generateRecord() for x in range(20)]
+        rset = [self.generateRecord() for x in range(20)]
+        logging.error(rset)
+
+        rset.sort(key=lambda x: "__".join([x['server'], x['time']]))
+
+        return rset
 
 
 class Supervisor():
@@ -30,7 +35,7 @@ class Supervisor():
         name = random.choice(self.getNames())
         pid = random.randint(10000, 30000)
 
-        return {'name': name, 'host':'localhost', 'port': random.randint(100,1000), 'time': datetime.now().strftime('%H:%M'), 'status': random.choice(self.getStatuses())}
+        return {'name': name, 'host':'localhost', 'port': random.randint(100,1000), 'time': datetime.now().strftime('%H:%M:%S'), 'status': random.choice(self.getStatuses())}
 
     def getData(self):
 
