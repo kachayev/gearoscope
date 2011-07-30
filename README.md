@@ -1,4 +1,4 @@
-## Introduction
+### Introduction
 
 Gearoscope is a gearman server monitoring and worker management system.
 
