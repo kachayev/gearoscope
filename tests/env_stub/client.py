@@ -24,16 +24,16 @@ def random_word(len):
     '''Generate sequence of random symbols of given length'''
     return ''.join([random.choice(string.letters) for x in range(len)])
 
-def random_sum(elements):
+def random_sum(elements, *args):
     '''
     Generate string representation of add operations. For example, "33+14+22+80".
 
     You can use as many elements in sequence as you want.
     Great number of arithmetic operations will emulate CPU loading from worker side
     '''
-    return '+'.join([str(random.randrange(0, 100)) for x in range(elements)])
+    return random_sequence('+', elements, *args)
 
-def random_multiple(elements):
+def random_multiple(elements, *args):
     '''
     Generate string representation of add operations. For example, "33*14*22*80".
 
@@ -42,7 +42,14 @@ def random_multiple(elements):
     but don't fogget, that result should be lest than maximum int value, to
     prevent problems with long types processing
     '''
-    return '*'.join([str(random.randrange(0, 100)) for x in range(elements)])
+    return random_sequence('*', elements, *args)
+
+def random_sequence(delimiter, elements, *args):
+    '''
+    Generate sequence from random elements by given count of elements and delimiter
+    '''
+    return str(delimiter).join([str(random.randrange(*args)) for x in range(elements)])
+
 
 # Create object of gearman client for pushing to server node tasks
 # Gearman node connection params is taken from general settings module
@@ -62,7 +69,7 @@ while True:
     # TODO: settings!
     if random.random() > 0.3:
         # Add task for calculating sum of 4 digits
-        sum = random_sum(4)
+        sum = random_sum(4, 0, 100)
         client.submit_job('sum', sum, background=True)
         # TODO: logging!
         print 'Add sum calculation task for <%s>' % sum
@@ -71,7 +78,7 @@ while True:
     if random.random() > 0.3:
         # Add task for calculating multiple of 2 digits
         # TODO: settings!
-        multiple = random_multiple(2)
+        multiple = random_multiple(2, 0, 100)
         client.submit_job('multiple', multiple, background=True)
         # TODO: logging!
         print 'Add multiple calculation task for <%s>' % multiple
