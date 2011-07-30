@@ -19,7 +19,7 @@ from sonar.agent import AgentPool
 from sonar.remote import Server, pool as ServerPool
 
 from sonar.agents.supervisor import SupervisorAgent, Supervisor
-from gearoscope.monitor.agents.gearmand import GearmanNodeAgent
+from agents.gearmand import GearmanNodeAgent
 
 def sonar_factory():
     def make(options):

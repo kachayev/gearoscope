@@ -1,6 +1,7 @@
 import operator
 
 from sonar.logger import DictLogRecord, Log
+from sonar.options import options
 from gearman import GearmanAdminClient, errors as GearmanErrors
 
 class StatusLogRecord(DictLogRecord):
