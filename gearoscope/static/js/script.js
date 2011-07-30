@@ -94,7 +94,7 @@ var queue = {
         $(this.item).addClass('collapsed').find('.collapse_queue').hide().end().find('.expand_queue').show();
     },
 
-    isExpanded: function(){
+    isCollapsed: function(){
         return $(this.item).hasClass('collapsed');
     },
 
@@ -103,10 +103,10 @@ var queue = {
     init: function(){
         $('#queues_list .queue_item').each(function(){
             var q = queue.setQueue(this);
-            if(q.isExpanded()){
-                q.expand();
-            }else{
+            if(q.isCollapsed()){
                 q.collapse();
+            }else{
+                q.expand();
             }
         });
 
