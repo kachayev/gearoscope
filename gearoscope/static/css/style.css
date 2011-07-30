@@ -483,11 +483,16 @@ aside .block{
     margin-right: 14px;
 }
 
+#servers_list .logHistory{
+    margin-left: 16px;
+}
 
 #servers_list .exp{
     display: inline-block;
     float: left;
     max-width: 16px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 
