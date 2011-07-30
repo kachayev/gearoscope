@@ -18,7 +18,7 @@ def dashboard(request):
 
     except Exception, e :
         response['result'] = 'error'
-        logging.error(e)
+        logging.error(e.message)
 
     json = simplejson.dumps(response)
     

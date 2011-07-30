@@ -14,13 +14,17 @@ class Server():
         return {'server': name, 'host':'localhost', 'time': datetime.now().strftime('%H:%M:%S') , 'ping': ping}
 
     def getData(self):
+        log = [self.generateRecord() for x in range(20)]
+        servers = {}
+        for rec in log:
+            if rec['server'] not in servers:
+                servers[rec['server']] = []
+            servers[rec['server']].append(rec)
 
-        rset = [self.generateRecord() for x in range(20)]
-        logging.error(rset)
+        for rec in servers.itervalues():
+            rec.sort(key=lambda x: x['time'])
 
-        rset.sort(key=lambda x: "__".join([x['server'], x['time']]))
-
-        return rset
+        return servers
 
 
 class Supervisor():
