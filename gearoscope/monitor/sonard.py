@@ -18,7 +18,6 @@ from sonar.options import options
 from sonar.agent import AgentPool
 from sonar.remote import Server, pool as ServerPool
 
-from sonar.agents.process import ProcessStatAgent
 from sonar.agents.supervisor import SupervisorAgent, Supervisor
 
 def sonar_factory():
