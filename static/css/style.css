@@ -251,6 +251,7 @@ aside .block{
     float: right;
     margin: 0 10px;
 }
+.queue_headline .collapse_queue,
 .queue_headline .expand_queue{
     float: right;
     color: #969696;
