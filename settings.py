@@ -1,6 +1,10 @@
 import os, sys
 
+# Working directory (current file one)
 WORKDIR = os.path.dirname(__file__)
+
+# This will give us oppurtunities to keep applications in separated directory
+# and prevent chaus in main project directory
 sys.path.append(os.path.join(WORKDIR, 'apps'))
 
 DEBUG = True
