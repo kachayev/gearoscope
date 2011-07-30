@@ -24,3 +24,7 @@ STUB_TASKS_ARGS = {
 # Leave current value as 1.0 and tasks will be generating once per each second
 STUB_TASKS_FREQUENCY = 1.0
 
+# Time delay in seconds between gearman worker pool operations
+# (for more information, look for SleepingGearmanWorker object implementation)
+STUB_WORKERS_FREQUENCY = 1.0
+

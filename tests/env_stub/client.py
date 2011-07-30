@@ -18,8 +18,10 @@ generator will add each task randomly.
 Gearman node for test runner and frequency of tasks generation
 can be set via general settings.py
 """
-import gearman, time, string, random
+import time, string, random
 import tests.settings as settings
+
+from gearman import GearmanClient
 
 def random_word(len):
     '''Generate sequence of random symbols of given length'''
@@ -57,7 +59,7 @@ def random_sequence(delimiter, elements, randomizer=random.randrange, randomizer
 
 # Create object of gearman client for pushing to server node tasks
 # Gearman node connection params is taken from general settings module
-client = gearman.GearmanClient(settings.STUB_GEARMAN_NODES)
+client = GearmanClient(settings.STUB_GEARMAN_NODES)
 
 while True:
     if random.random() < settings.STUB_TASKS_PROBABILITY.get('reverse', 0.5):
