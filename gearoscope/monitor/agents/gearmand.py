@@ -1,6 +1,37 @@
 import operator
 
+from sonar.logger import DictLogRecord, Log
 from gearman import GearmanAdminClient, errors as GearmanErrors
+
+class StatusLogRecord(DictLogRecord):
+    '''
+    Formatter for information about general gearman node status,
+    aggregate workers and queues field for this
+    '''
+    scheme = {
+        'queues': '%(queues)s',
+        'workers': '%(workers)s',
+    }
+
+    def __str__(self):
+        queues  = len(self.message)
+        workers = reduce(operator.add, [q['workers'] for q in self.message], 0)
+
+        self.message = {'queues': queues, 'workers': workers}
+        return DictLogRecord.__str__(self)
+
+class QueueLogRecord(DictLogRecord):
+    '''Simple formatter for information about one running queue'''
+    scheme = {
+        'task': '%(task)s',
+        'workers': '%(workers)s',
+        'running': '%(running)s',
+        'queued': '%(queued)s',
+    }
+
+    def __str__(self):
+        return DictLogRecord.__str__(self)
+
 
 class GearmanNodeAgent(object):
     """
@@ -29,7 +60,22 @@ class GearmanNodeAgent(object):
         self.log = Log.buffer('gearman', options.config.get('agent:gearman', 'log_buffer_file'))
 
         try:
+            # Lazy connection if necessary...
             self.client = self.client or GearmanAdminClient(['%s:%s' % (self.server.host, self.port)])
+
+            # Retrieve status information via socket connection
+            status = self.client.get_status()
+
+            # Put into log buffer
+            self.log.info(StatusLogRecord(status))
+            for queue in status:
+                self.log.info(QueueLogRecord(queue))
+
         except GearmanErrors.ServerUnavailable, e:
+            # Such error can be raise in two cases:
+            # 1. gearmand is not running (stopped by user or crashed with error)
+            # 2. socket client doesn't work normaly, for example cause of network problems
+            # In any case, we can't retrieve more information here,
+            # so you have to resolve this issue manually
             self.log.error(e)
 
