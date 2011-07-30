@@ -33,14 +33,18 @@ def sonar_factory():
         '''
         import ConfigParser
 
+        # Create sonar object
+        s = loop.Sonar(options)
+
         # Iterate throw all configuration file in order to create
         # pool of servers and configurate all supervisor objects
         for section in options.config.sections():
             if section.find(':') != -1:
                 block, name = section.split(':')
+                block = block.lower()
 
                 # Add server objects to server pool
-                if block.lower() == 'server':
+                if block == 'server':
                     params = {'name': name, 'password': None, 'user': 'root'}
                     params.update(dict(options.config.items(section)))
 
@@ -53,9 +57,24 @@ def sonar_factory():
                         is_default = False
 
                     ServerPool.add(Server(**params), is_default=is_default)
+                elif block == 'pool':
+                    params = {'count':1, 'timeout': 0}
+                    params.update(dict(options.config.items(section)))
 
-        s = loop.Sonar(options)
-        s.add_pool('stat', AgentPool(prototype=ProcessStatAgent, count=3, timeout=0))
+                    # Against string value of full class name for prototype,
+                    # we should use class type from imported related module
+                    if params['prototype'].find('.') != -1:
+                        parts = params['prototype'].split('.')
+                        params['prototype'] = getattr(import('.'.join(parts[:-1])), parts[-1])
+                    else:
+                        params['prototype'] = globals()[params['prototype']]
+
+                    s.add_pool(name, AgentPool(**params))
+                elif block == 'supervisor':
+                    pass
+                elif block == 'agent.runner':
+                    pass
+
         s.add_agent(SupervisorAgent(Supervisor(server=ServerPool.get('local'), port=9001),
                                     names=['multiple', 'reverse', 'sum']))
 
