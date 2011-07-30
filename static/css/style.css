@@ -461,7 +461,15 @@ aside .block{
 }
 
 
+#queues_list .queue_item.collapsed .queue_details,
+#queues_list .queue_item.collapsed .workers_list,
+#queues_list .queue_item.collapsed .show_workers{
+    display: none;
+}
 
+#queues_list .queue_item .hide_workers{
+    display: none;
+}
 
 
 
