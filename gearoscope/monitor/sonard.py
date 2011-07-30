@@ -55,17 +55,19 @@ def sonar_factory():
                     except ConfigParser.NoOptionError:
                         is_default = False
 
+                    # Add server to pool, which can be received from it by name
                     ServerPool.add(Server(**params), is_default=is_default)
                 elif block == 'pool':
+                    # Add separated object of agent pool with async queue
                     params = {'count':1, 'timeout': 0}
                     params.update(dict(options.config.items(section)))
 
                     # Against string value of full class name for prototype,
                     # we should use class type from imported related module
                     if params['prototype'].find('.') != -1:
-                        parts  = params['prototype'].split('.')
-                        module = __import__(parts[0])
-                        params['prototype'] = reduce(lambda x,y: getattr(x,y), parts[1:], module)
+                        parts = params['prototype'].split('.')
+                        params['prototype'] = reduce(lambda module,attr: getattr(module,attr),
+                                                      parts[1:], __import__(parts[0]))
                     else:
                         params['prototype'] = globals()[params['prototype']]
 
