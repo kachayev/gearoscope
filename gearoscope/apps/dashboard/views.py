@@ -14,7 +14,8 @@ def dashboard(request):
     try:
         response['servers'] = Server().getData()
         response['supervisords'] = Supervisor().getData()
-        
+        response['processes'] = Process().getData()
+
     except Exception, e :
         response['result'] = 'error'
         logging.error(e)
