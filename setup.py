@@ -31,7 +31,7 @@ with open(os.path.join(os.path.dirname(__file__), 'requirements.txt')) as f:
 
 distutils.core.setup(
     name='gearoscope',
-    packages = ['gearoscope', 'gearoscope.tests', 'gearoscope.monitor'],
+    packages = setuptools.find_packages(),
     version = version,
     install_requires=requirements,
     description = 'Gearman server monitoring and gearman worker management system',
