@@ -1,7 +1,16 @@
-import operator
-import tests.settings as settings
+import os, sys
 
-from sleeping import worker
+# Working directory (current file one)
+WORKDIR = os.path.join(os.path.dirname(__file__), '..', '..', '..')
+
+# This will give us oppurtunities to keep applications in separated directory
+# and prevent chaus in main project directory
+sys.path.append(os.path.join(WORKDIR, '..'))
+
+import operator
+import gearoscope.tests.settings as settings
+
+from sleeping import run
 
 def task_listener(gearman_worker, gearman_job):
     '''
@@ -16,11 +25,5 @@ def task_listener(gearman_worker, gearman_job):
     print '%s = <%d>' % (gearman_job.data, done)
     return str(done)
 
-
-# Customize worker and register workload function
-worker.set_client_id(settings.STUB_WORKERS_ID_FORMAT % {'task': 'multiple'})
-worker.register_task('multiple', task_listener)
-
-# Run worker in infinitive loop
-worker.work()
+run('multiple', task_listener)
 

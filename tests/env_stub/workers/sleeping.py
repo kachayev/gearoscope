@@ -1,4 +1,13 @@
-import tests.settings as settings
+import os, sys
+
+# Working directory (current file one)
+WORKDIR = os.path.join(os.path.dirname(__file__), '..', '..', '..')
+
+# This will give us oppurtunities to keep applications in separated directory
+# and prevent chaus in main project directory
+sys.path.append(os.path.join(WORKDIR, '..'))
+
+import gearoscope.tests.settings as settings
 
 from time import sleep
 from gearman import GearmanWorker
@@ -22,4 +31,15 @@ class SleepingGearmanWorker(GearmanWorker):
 
 # This object will be used by all worker scripts
 worker = SleepingGearmanWorker(settings.STUB_GEARMAN_NODES)
+
+def run(task_name, task_listener, worker=worker):
+    '''
+    Customize worker and register workload function
+    and then run worker in infinitive loop
+
+    Can be simply reusing in each worker script
+    '''
+    worker.set_client_id(settings.STUB_WORKERS_ID_FORMAT % {'task': task_name})
+    worker.register_task(task_name, task_listener)
+    worker.work()
 
