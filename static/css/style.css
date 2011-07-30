@@ -122,28 +122,79 @@ footer {
 #main_menu{
     float: right;
     border-right: 1px solid #010101;
-    border-left: 1px solid #2b2b2b;
+border-left: 1px solid #2b2b2b;
+margin: 0;
+    }
+
+#main_menu li{
+width: 108px;
+border-left: 1px solid #010101;
+border-right: 1px solid #2b2b2b;
+font-weight: bold;
+line-height: 6.3;
+font-size: 12px;
+list-style: none;
+text-align: center;
+float: left;
+color: #f1f1f1;
+font-family: Ubuntu, Monaco, Calibri, Tahoma, Arial, sans-serif;
+vertical-align: middle;
+    }
+
+#main_menu li.selected{
+background-color: rgba(0,0,0, 0.25);
+    }
+
+aside{
+    width: 48%;
+    float: right;
+}
+
+/* BLOCK STYLE*/
+
+.block{
+padding-top: 10px;
+width: 48%;
+    }
+
+.block h2{
+font-size: 24px;
+line-height: 1.6;
+    }
+
+aside .block{
+    width: 100%;
+}
+
+/*LOG BLOCK*/
+
+.log_block ul{
+    list-style: none inside none;
     margin: 0;
 }
 
-#main_menu li{
-    width: 108px;
-    border-left: 1px solid #010101;
-    border-right: 1px solid #2b2b2b;
-    font-weight: bold;
-    line-height: 6.3;
-    font-size: 12px;
-    list-style: none;
-    text-align: center;
-    float: left;
-    color: #f1f1f1;
-    font-family: Ubuntu, Monaco, Calibri, Tahoma, Arial, sans-serif;
-    vertical-align: middle;
+.log_block li{
+    padding: 4px 10px;
+    border-bottom: 1px solid #010101;
+    border-top: 1px solid #2b2b2b;
+    color: #81817f;
 }
 
-#main_menu li.selected{
-    background-color: rgba(0,0,0, 0.25);
+.log_block li:first-child{
+    border-top: 0px;
 }
+
+.log_block li:nth-child(odd){
+    background-color: rgba(0,0,0,0.30);
+}
+
+.log_block li:nth-child(even){
+    background-color: rgba(0,0,0,0.15);
+}
+
+
+
+
 
 
 
