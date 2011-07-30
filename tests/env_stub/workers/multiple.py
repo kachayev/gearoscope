@@ -1,7 +1,7 @@
 import operator
 import tests.settings as settings
 
-from sleeping import worker
+from sleeping import run
 
 def task_listener(gearman_worker, gearman_job):
     '''
@@ -17,10 +17,5 @@ def task_listener(gearman_worker, gearman_job):
     return str(done)
 
 
-# Customize worker and register workload function
-worker.set_client_id(settings.STUB_WORKERS_ID_FORMAT % {'task': 'multiple'})
-worker.register_task('multiple', task_listener)
-
-# Run worker in infinitive loop
-worker.work()
+run('multiple', task_listener)
 
