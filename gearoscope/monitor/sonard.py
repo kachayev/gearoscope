@@ -23,6 +23,14 @@ from sonar.agents.supervisor import SupervisorAgent, Supervisor
 
 def sonar_factory():
     def make(options):
+        '''
+        Fabric function
+        Should return Sonar object full ready for processing agents in infinity loop
+        Get as argument special Options object, which handle data from configuration file
+        and console line options and arguments.
+
+        Fabric function will be called in loop each time, when external configuration file is changed
+        '''
         import ConfigParser
 
         # Iterate throw all configuration file in order to create
@@ -49,7 +57,7 @@ def sonar_factory():
         s = loop.Sonar(options)
         s.add_pool('stat', AgentPool(prototype=ProcessStatAgent, count=3, timeout=0))
         s.add_agent(SupervisorAgent(Supervisor(server=ServerPool.get('local'), port=9001),
-                                    names=['gearman', 'multiple', 'reverse', 'sum']))
+                                    names=['multiple', 'reverse', 'sum']))
 
         return s
     return make
