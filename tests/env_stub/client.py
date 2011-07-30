@@ -18,4 +18,64 @@ generator will add each task randomly.
 Gearman node for test runner and frequency of tasks generation
 can be set via general settings.py
 """
+import gearman, time, string, random
+
+def random_word(len):
+    '''Generate sequence of random symbols of given length'''
+    return ''.join([random.choice(string.letters) for x in range(len)])
+
+def random_sum(elements):
+    '''
+    Generate string representation of add operations. For example, "33+14+22+80".
+
+    You can use as many elements in sequence as you want.
+    Great number of arithmetic operations will emulate CPU loading from worker side
+    '''
+    return '+'.join([str(random.randrange(0, 100)) for x in range(elements)])
+
+def random_multiple(elements):
+    '''
+    Generate string representation of add operations. For example, "33*14*22*80".
+
+    You can use as many elements in sequence as you want.
+    Great number of arithmetic operations will emulate CPU loading from worker side,
+    but don't fogget, that result should be lest than maximum int value, to
+    prevent problems with long types processing
+    '''
+    return '*'.join([str(random.randrange(0, 100)) for x in range(elements)])
+
+# Create object of gearman client for pushing to server node tasks
+# Gearman node connection params is taken from general settings module
+# TODO: settings!
+client = gearman.GearmanClient(['localhost:4730'])
+
+while True:
+    # TODO: settings!
+    if random.random() > 0.5:
+        # Add task for random word reversing
+        # TODO: settings!
+        word = random_word(30)
+        client.submit_job('reverse', word, background=True)
+        # TODO: logging!
+        print 'Add reverse task for <%s>' % word
+
+    # TODO: settings!
+    if random.random() > 0.3:
+        # Add task for calculating sum of 4 digits
+        sum = random_sum(4)
+        client.submit_job('sum', sum, background=True)
+        # TODO: logging!
+        print 'Add sum calculation task for <%s>' % sum
+
+    # TODO: settings!
+    if random.random() > 0.3:
+        # Add task for calculating multiple of 2 digits
+        # TODO: settings!
+        multiple = random_multiple(2)
+        client.submit_job('multiple', multiple, background=True)
+        # TODO: logging!
+        print 'Add multiple calculation task for <%s>' % multiple
+
+    # TODO: settings!
+    time.sleep(1.0)
 
