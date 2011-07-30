@@ -16,6 +16,5 @@ def task_listener(gearman_worker, gearman_job):
     print '%s = <%d>' % (gearman_job.data, done)
     return str(done)
 
-
 run('multiple', task_listener)
 
