@@ -10,7 +10,7 @@ var initStubs = function(){
 
     $('.stop_worker, .restart_worker, .delete_worker').live('click', function(e) {
         e.preventDefault();
-        alert("Add worker not ready yet.");
+        worker.setItem(this).setData().update();
     });
     
 };
@@ -30,6 +30,8 @@ var showAllWorkers = function(e){
 
 var worker = {
     item: null,
+    data: null,
+    counter: 0,
     is_null: function(){
         return typeof (this.item) != 'object';
     },
@@ -53,6 +55,73 @@ var worker = {
         }else{
             this.item = $(el).parents('.worker_details');
         }
+        return this;
+    },
+
+    appendPoint: function(points, key, value){
+        if(typeof points == 'undefined'){
+            points = [];
+        }
+        if(typeof(value) == 'undefined'){
+            value = 0;
+        }
+        points.push([key, value]);
+        points = points.slice(-30);
+        return points;
+    },
+    
+    update: function(){
+        var wdata = $(this.item).data('worker-data');
+        wdata = this.data;
+        console.log(wdata);
+        $(this.item).find('.worker_stats .cpu_value').html('' + wdata.cpu_value + '%').end()
+            .find('.worker_stats .mem_value').html('' + wdata.memory_value + '%').end()
+            .find('.worker_stats .task_value').html(wdata.task_value).end();
+
+        $(this.item).find('.worker_stats .cpu.progress').width(Math.min(Math.max(wdata.cpu_value, 1), 99)+'%');
+        $(this.item).find('.worker_stats .memory.progress').width(Math.min(Math.max(wdata.memory_value, 1), 99)+'%');
+
+        var counter = this.counter;
+
+        var cpu_points = this.appendPoint($(this.item).data('cpu-points'), counter, wdata.cpu_value);
+        $(this.item).data('cpu-points', cpu_points);
+        
+        var mem_points = this.appendPoint($(this.item).data('memory-points'), counter, wdata.memory_value);
+        $(this.item).data('memory-points', mem_points);
+
+        var task_points = this.appendPoint($(this.item).data('task-points'), counter, wdata.task_value);
+        $(this.item).data('task-points', task_points);
+
+        this.counter = counter + 1;
+
+        console.log(counter);
+
+        $.plot($(this.item).find('.graph_holder'), [
+            {
+                data: cpu_points,
+                lines: {show:true, fill:true}
+            },{
+                data: mem_points,
+                lines: {show:true, fill:true}
+            },{
+                data: task_points,
+                lines: {show:true, fill:true}
+            }
+        ]);
+
+        return this;
+    },
+    
+    setData: function(){
+        //this is stub
+        var d = {
+            cpu_value: Math.round(Math.random() * 100),
+            memory_value: Math.round(Math.random() * 100),
+            task_value: Math.round(Math.random() * 10 + 20)
+        };
+        this.data = d;
+        $(this.item).data('worker-data', d);
+
         return this;
     }
 };
@@ -167,7 +236,10 @@ $(document).ready(function(){
 
     queue.init();
 
-    
+    setInterval(function(){
+        $('#queues_list .worker_stats').each(function(){
+            worker.setItem(this).setData().update();
+        });
+    }, 1000);
 
 });
-
