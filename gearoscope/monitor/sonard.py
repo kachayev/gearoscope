@@ -69,7 +69,11 @@ def sonar_factory():
                     else:
                         params['prototype'] = globals()[params['prototype']]
 
+                    # Count should be integer in any case
+                    params['count'] = int(params['count'])
 
+                    # Create agent pool with given name, which will consist from
+                    # given count of object, builded on as instance of prototype class
                     s.add_pool(name, AgentPool(**params))
                 elif block == 'supervisor':
                     s.add_agent(SupervisorAgent(Supervisor(server=ServerPool.get('local'), port=9001),
