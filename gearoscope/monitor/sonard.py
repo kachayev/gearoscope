@@ -64,10 +64,12 @@ def sonar_factory():
                     # Against string value of full class name for prototype,
                     # we should use class type from imported related module
                     if params['prototype'].find('.') != -1:
-                        parts = params['prototype'].split('.')
-                        params['prototype'] = getattr(__import__('.'.join(parts[:-1])), parts[-1])
+                        parts  = params['prototype'].split('.')
+                        module = __import__(parts[0])
+                        params['prototype'] = reduce(lambda x,y: getattr(x,y), parts[1:], module)
                     else:
                         params['prototype'] = globals()[params['prototype']]
+
 
                     s.add_pool(name, AgentPool(**params))
                 elif block == 'supervisor':
