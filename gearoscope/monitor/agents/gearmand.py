@@ -72,7 +72,7 @@ class GearmanNodeAgent(object):
                 self.log.info(QueueLogRecord(queue))
 
         except GearmanErrors.ServerUnavailable, e:
-            # Such error can be raise in two cases:
+            # Such error can be raised in two cases:
             # 1. gearmand is not running (stopped by user or crashed with error)
             # 2. socket client doesn't work normaly, for example cause of network problems
             # In any case, we can't retrieve more information here,
