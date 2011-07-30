@@ -14,9 +14,7 @@ def task_listener(gearman_worker, gearman_job):
     print 'Done <%s>' % done
     return done
 
-# Setting client ID can be useful for analyzing information
-# from gearman admin client, which show list of
-# currently connected workers by its CLIENT ID
+# Customize worker and register workload function
 worker.set_client_id(settings.STUB_WORKERS_ID_FORMAT % {'task': 'reverse'})
 worker.register_task('reverse', task_listener)
 

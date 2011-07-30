@@ -28,5 +28,8 @@ STUB_TASKS_FREQUENCY = 1.0
 # (for more information, look for SleepingGearmanWorker object implementation)
 STUB_WORKERS_FREQUENCY = 1.0
 
+# Setting client ID can be useful for analyzing information
+# from gearman admin client, which show list of
+# currently connected workers by its CLIENT ID
 STUB_WORKERS_ID_FORMAT = 'Stub.worker.daemon.%(task)s'
 
