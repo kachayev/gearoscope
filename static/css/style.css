@@ -276,9 +276,40 @@ aside .block{
     background: rgba(0,0,0,0.15);
 }
 
+.queue_details .graph_holder{
+    float: left;
+    height: 134px;
+    margin-left: 10px;
+    max-width: 300px;
+    background-color: #FF5E99;
+}
+
+.queue_details .queue_stats{
+    padding-top: 6px;
+}
 
 
+.queue_details .queue_stats,
+.worker_details .worker_stats{
+    float: right;
+    height: 134px;
+    width: 190px;
+    padding-right: 12px;
+    color: #b8b8b8;
+}
 
+.queue_stats p,
+.worker_stats p{
+    margin-bottom: 1px;
+}
+
+.queue_stats .cpu_value,
+.queue_stats .mem_value,
+.worker_details .mem_value,
+.worker_details .cpu_value{
+    float: right;
+    margin-right: 4px;
+}
 
 
 
