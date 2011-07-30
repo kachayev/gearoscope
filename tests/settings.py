@@ -28,3 +28,5 @@ STUB_TASKS_FREQUENCY = 1.0
 # (for more information, look for SleepingGearmanWorker object implementation)
 STUB_WORKERS_FREQUENCY = 1.0
 
+STUB_WORKERS_ID_FORMAT = 'Stub.worker.daemon.%(task)s'
+
