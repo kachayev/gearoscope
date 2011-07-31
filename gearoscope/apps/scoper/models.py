@@ -1,7 +1,14 @@
-import binascii
 from django.db import models
 from django.contrib import admin
-import logging
+from django.contrib.admin.sites import AlreadyRegistered
+
+def register(model_handler, admin_handler):
+    '''Register handlers to admin site, ignoring already registered exception'''
+    try:
+        admin.site.register(model_handler, admin_handler)
+    except AlreadyRegistered:
+        pass
+
 
 class Server(models.Model):
     '''
@@ -56,8 +63,7 @@ class ServerAdmin(admin.ModelAdmin):
     )
 
 # Register server node manage-place in administration panel
-admin.site.register(Server, ServerAdmin)
-
+register(Server, ServerAdmin)
 
 class Gearman(models.Model):
     '''
@@ -89,8 +95,7 @@ class GearmanAdmin(admin.ModelAdmin):
     pass
 
 # Register gearman node manager in administration panel
-admin.site.register(Gearman, GearmanAdmin)
-
+register(Gearman, GearmanAdmin)
 
 class Supervisor(models.Model):
     '''
@@ -120,8 +125,7 @@ class SupervisorAdmin(admin.ModelAdmin):
     pass
 
 # Register supervisor node manager in administration panel
-admin.site.register(Supervisor, SupervisorAdmin)
-
+register(Supervisor, SupervisorAdmin)
 
 class Worker(models.Model):
     '''
@@ -235,5 +239,28 @@ class WorkerAdmin(admin.ModelAdmin):
     )
 
 # Register workers manager in administration panel
-admin.site.register(Worker, WorkerAdmin)
+register(Worker, WorkerAdmin)
+
+# Import signals for rewrite monitor configuration,
+# after each model [save, delete] actions
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.conf import settings
+
+from monitor.config import Rewriter
+
+@receiver(post_save, sender=Server)
+def rewrite_server_configuration(sender, **kwargs):
+    '''
+    Rewrite monitor daemon configuration in order to keep
+    monitoring logs up-to-date
+
+    If server is new, rewrite will add new SERVER:* block
+    If section alredy exists, all items will be removed,
+    and new section will be writen by one action
+    '''
+    server = kwargs['instance']
+    info   = dict([(item, getattr(server, item)) for item in ('host', 'user', 'password')])
+
+    Rewriter().rebuild('server:%s' % server.name, info).save()
 
