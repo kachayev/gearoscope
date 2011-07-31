@@ -106,7 +106,7 @@ class Supervisor(models.Model):
         return '%s:%s' % (self.server.host, self.port)
 
 class SupervisorAdmin(admin.ModelAdmin):
-    '''Params for gearman nodes managment via administrative panel'''
+    '''Params for supervisor daemons managment via administrative panel'''
     pass
 
 # Register gearman node manager in administration panel
