@@ -7,7 +7,8 @@ class Server(models.Model):
 
     Should be allocated by host and other SSH access params (user, password, port etc). SSH connection
     is necessary for working with PS on remote machine (this will be necessary
-    to get information about each worker status)
+    to get information about each worker status). Host should be valid IP address or named host,
+    which could be resolved by network facilities.
 
     Server model will be used from other models to create relation between process
     and supervisors to concrete physical server node
@@ -23,16 +24,64 @@ class Server(models.Model):
     password = models.CharField(blank=True, null=True, max_length='255',
                                 help_text='Password for SSH access to server')
     ssh_key  = models.TextField(blank=True, null=True,
+                                verbose_name='SSH key',
                                 help_text='Absolute path to SSH private key (in most cases OS will find it automaticaly)')
-    ssh_port = models.PositiveIntegerField(default=22)
+    ssh_port = models.PositiveIntegerField(default=22, verbose_name='SSH port')
 
     def __unicode__(self):
         '''Clean human-understanding string represantation for server node'''
         return '%s (%s)' % (self.name, self.host)
 
 class ServerAdmin(admin.ModelAdmin):
-    '''Params for server nodes managment via administrative panel'''
+    '''
+    Params for server nodes managment via administrative panel
+
+    Override params for fieldsets value in order to create two blocks:
+    # general params (required)
+    # ssh connection params (which should be edited just in case of non-standard OS params)
+
+    In future we can add here inlined models for workers and gearman nodes
+    to give user more flexible way to add per-server items
+    '''
+    fieldsets = (
+        (None, {
+            'fields': ('host', 'name')
+        }),
+        ('SSH connection options', {
+            'description': 'Leave default values if you do not know exactly what you are doing',
+            'fields': ('user', 'password', 'ssh_key', 'ssh_port')
+        }),
+    )
+
+# Register server node manage-place in administration panel
+admin.site.register(Server, ServerAdmin)
+
+class Gearman(models.Model):
+    '''
+    Gearman node instance
+
+    Gearman node will be used in code for providing params to GearmanAdminClient
+    (blocking socket client). To establish connection, we should provide server's host
+    (will be taked from foreign object Server) and port (remote socket). According to
+    protocol specification, default port is 4730, but it can be change via gearman daemon
+    running params.
+
+    More information about protocol specification you can find in oficial Gearman documentation:
+        http://gearman.org/index.php?id=protocol
+    or in documentation to Python client:
+        http://packages.python.org/gearman/
+    '''
+    server = models.ForeignKey(Server)
+    port = models.PositiveIntegerField(default=4730)
+
+    def __unicode__(self):
+        '''Clean human-understanding string represantation for gearman node'''
+        return '%s:%s' % (self.server.host, self.port)
+
+class GearmanAdmin(admin.ModelAdmin):
+    '''Params for gearman nodes managment via administrative panel'''
     pass
 
-admin.site.register(Server, ServerAdmin)
+# Register gearman node manager in administration panel
+admin.site.register(Gearman, GearmanAdmin)
 
