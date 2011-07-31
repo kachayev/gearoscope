@@ -153,3 +153,6 @@ LOGGING = {
     }
 }
 
+# Path to sonar daemon configuration file
+SONAR_CONFIGURATION_FILE = os.path.join(WORKDIR, 'monitor', 'sonar.conf')
+
