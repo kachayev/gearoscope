@@ -39,7 +39,7 @@ class Supervisor():
         name = random.choice(self.getNames())
         pid = random.randint(10000, 30000)
 
-        return {'name': name, 'host':'localhost', 'port': random.randint(100,1000), 'time': datetime.now().strftime('%H:%M:%S'), 'status': random.choice(self.getStatuses())}
+        return {'name': name, 'host':'localhost', 'port': random.randint(100, 1000), 'time': datetime.now().strftime('%H:%M:%S'), 'status': random.choice(self.getStatuses())}
 
     def getData(self):
 
@@ -71,3 +71,21 @@ class Process():
 
 
     pass
+
+
+class Workers():
+
+    def get_workers(self):
+        return [{'name':random.choice(['worker', 'tasker', 'trans']), 'id': i} for i in xrange(1, 4)]
+
+    def get_data(self, id):
+
+        return {'cpu_value': random.randint(0, 100),
+                'memory_value': random.randint(0, 100),
+                'task_value': random.randint(10, 40)
+            }
+        
+        
+        pass
+
+

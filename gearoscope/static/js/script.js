@@ -1,6 +1,5 @@
 
 
-
 var initStubs = function(){
 
     $('.add_worker').live('click', function(e) {
@@ -34,6 +33,9 @@ var worker = {
     counter: 0,
     is_null: function(){
         return typeof (this.item) != 'object';
+    },
+    get_id: function(){
+        return $(this.item).attr('id').split('_').slice(-1);
     },
     collapse: function(){
         if (this.is_null){
@@ -69,11 +71,15 @@ var worker = {
         points = points.slice(-30);
         return points;
     },
-    
+
+    get_all: function(){
+        return $('#queues_list .worker_stats');
+    },
+
+
     update: function(){
         var wdata = $(this.item).data('worker-data');
-        wdata = this.data;
-        console.log(wdata);
+        
         $(this.item).find('.worker_stats .cpu_value').html('' + wdata.cpu_value + '%').end()
             .find('.worker_stats .mem_value').html('' + wdata.memory_value + '%').end()
             .find('.worker_stats .task_value').html(wdata.task_value).end();
@@ -81,7 +87,7 @@ var worker = {
         $(this.item).find('.worker_stats .cpu.progress').width(Math.min(Math.max(wdata.cpu_value, 1), 99)+'%');
         $(this.item).find('.worker_stats .memory.progress').width(Math.min(Math.max(wdata.memory_value, 1), 99)+'%');
 
-        var counter = this.counter;
+        var counter = $(this.item).data('counter') || 0;
 
         var cpu_points = this.appendPoint($(this.item).data('cpu-points'), counter, wdata.cpu_value);
         $(this.item).data('cpu-points', cpu_points);
@@ -92,9 +98,7 @@ var worker = {
         var task_points = this.appendPoint($(this.item).data('task-points'), counter, wdata.task_value);
         $(this.item).data('task-points', task_points);
 
-        this.counter = counter + 1;
-
-        console.log(counter);
+        $(this.item).data('counter', counter + 1);
 
         $.plot($(this.item).find('.graph_holder'), [
             {
@@ -115,14 +119,13 @@ var worker = {
         return this;
     },
     
-    setData: function(){
+    setData: function(d){
         //this is stub
-        var d = {
-            cpu_value: Math.round(Math.random() * 100),
-            memory_value: Math.round(Math.random() * 100),
-            task_value: Math.round(Math.random() * 10 + 20)
-        };
-        this.data = d;
+//        var d = {
+//            cpu_value: Math.round(Math.random() * 100),
+//            memory_value: Math.round(Math.random() * 100),
+//            task_value: Math.round(Math.random() * 10 + 20)
+//        };
         $(this.item).data('worker-data', d);
 
         return this;
@@ -262,7 +265,6 @@ var servers = {
         $.template(this.template_log , '<li><a class="exp" href="#">+</a><ul class="logHistory"><li>This ${name} do not have info</li></ul></li>');
         $('#servers_list .exp').live('click', function(e){
             e.preventDefault();
-            console.log($(this).parent('li').find('.logHistory li:gt(0)'));
             $(this).parents('li').find('.logHistory li:gt(0)').toggle();
         });
     }
@@ -273,7 +275,7 @@ var requestor = {
 
     start: function(){
         //TODO: make cyclic requests
-        this.doRequest();
+        requestor.doRequest();
     },
 
     doRequest:function(){
@@ -288,7 +290,15 @@ var requestor = {
         }
 
         servers.setData(data['servers']).update();
+        var workers = worker.get_all().toArray();
+        for (i in workers){
+            var wobj = worker.setItem(workers[i]);
+            wobj.setData(data['workers'][wobj.get_id()]).update();
+        }
+    },
 
+    init: function(){
+        setInterval(requestor.start, 1000);
     }
 
 
@@ -301,13 +311,7 @@ $(document).ready(function(){
 
     queue.init();
 
-//    setInterval(function(){
-//        $('#queues_list .worker_stats').each(function(){
-//            worker.setItem(this).setData().update();
-//        });
-//    }, 1000);
-
     servers.init();
-    requestor.start();
+    requestor.init();
 
 });

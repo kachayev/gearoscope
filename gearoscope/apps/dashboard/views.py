@@ -6,19 +6,26 @@ import logging
 
 def index(request):
 
-    return render_to_response('dashboard/index.html')
+    workers = Workers().get_workers()
+    return render_to_response('dashboard/index.html', locals())
 
 def dashboard(request):
     response = {'result': 'ok'}
 
-    try:
-        response['servers'] = Server().getData()
-        response['supervisords'] = Supervisor().getData()
-        response['processes'] = Process().getData()
+#    try:
+    response['servers'] = Server().getData()
+    response['supervisords'] = Supervisor().getData()
+    response['processes'] = Process().getData()
+    response['workers'] = {}
 
-    except Exception, e :
-        response['result'] = 'error'
-        logging.error(e.message)
+    logging.error(Workers().get_workers())
+    for worker in Workers().get_workers():
+        logging.error(worker)
+        response['workers'][worker['id']] = Workers().get_data(worker['id'])
+            
+#    except Exception, e :
+#        response['result'] = 'error'
+#        logging.error(e.message)
 
     json = simplejson.dumps(response)
     
