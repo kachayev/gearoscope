@@ -516,6 +516,21 @@ aside .block{
 }
 
 
+.err_info,
+.state_running{
+    color: green;
+}
+.err_debug{
+    color: blue;
+}
+.err_error,
+.state_fatal{
+    color: yellow;
+}
+.err_critical{
+    color: red;
+}
+
 
 /*
     // ========================================== \\
