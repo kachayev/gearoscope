@@ -260,5 +260,7 @@ def rewrite_server_configuration(sender, **kwargs):
     and new section will be writen by one action
     '''
     server = kwargs['instance']
-    Rewriter().rebuild('server:%s' % server.name, {'host': server.host}).save()
+    info   = dict([(item, getattr(server, item)) for item in ('host', 'user', 'password')])
+
+    Rewriter().rebuild('server:%s' % server.name, info).save()
 

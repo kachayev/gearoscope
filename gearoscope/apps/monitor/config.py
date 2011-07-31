@@ -19,3 +19,7 @@ class Rewriter(object):
 
         return self
 
+    def save(self):
+        with open(self.path, 'w') as path:
+            self.config.write(path)
+
