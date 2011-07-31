@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     # 3rd party apps
+    'gunicorn',
 
     # project relative apps
     'dashboard',
