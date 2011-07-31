@@ -130,7 +130,7 @@ class SupervisorAdmin(admin.ModelAdmin):
     '''Params for supervisor daemons managment via administrative panel'''
     pass
 
-# Register gearman node manager in administration panel
+# Register supervisor node manager in administration panel
 admin.site.register(Supervisor, SupervisorAdmin)
 
 class SupervisorLogReader(object):
@@ -165,4 +165,118 @@ class SupervisorLogReader(object):
         records.sort(key=lambda x: x['time'])
 
         return records
+
+class Worker(models.Model):
+    '''
+    Worker process instance
+
+    Stop signal params will be used by supervisor during start/restart calls. What signal to use
+    in order to stop execution of you process in best way dependce on process implementation. Full
+    list of signal and more information about it, you can find here:
+    http://www.cs.pitt.edu/~alanjawi/cs449/code/shell/UnixSignals.htm
+    '''
+    SIGHUP  = 1
+    SIGINT  = 2
+    SIGQUIT = 3
+    SIGKILL = 9
+    SIGTERM = 15
+    SIGUSR1 = 16
+    SIGUSR2 = 17
+
+    SIGNAL_CHOICES = (
+        (SIGHUP,  u'HUP'),
+        (SIGINT,  u'INT'),
+        (SIGQUIT, u'QUIT'),
+        (SIGKILL, u'KILL'),
+        (SIGTERM, u'TERM'),
+        (SIGUSR1, u'USR1'),
+        (SIGUSR2, u'USR2'),
+    )
+
+    # Identity required params
+    supervisor = models.ForeignKey(Supervisor)
+    name = models.CharField(max_length=70)
+
+    # General required params
+    command      = models.CharField(max_length=255)
+    process_name = models.CharField(max_length=70)
+    numprocs     = models.PositiveSmallIntegerField(default=1)
+    priority     = models.PositiveIntegerField(default=999, blank=True, null=True)
+
+    # Field which describe process running params and env variables
+    directory   = models.CharField(max_length=255, default='/', blank=True, null=True)
+    umask       = models.CharField(max_length=4, default='022', blank=True, null=True)
+    user        = models.CharField(max_length=255, blank=True, null=True)
+    environment = models.CharField(max_length=255, default='', blank=True)
+
+    # Param for starting and restarting process
+    autostart    = models.BooleanField(default=True)
+    autorestart  = models.BooleanField(default=True)
+    startsecs    = models.PositiveSmallIntegerField(default=10)
+    startretries = models.PositiveSmallIntegerField(default=3)
+    stopwaitsecs = models.PositiveIntegerField(default=10)
+
+    # Exit params (should tell supervisor how to stop and restart process)
+    # and what stop suggest as normal one (non-error)
+    exitcodes  = models.CommaSeparatedIntegerField(default='0,2', max_length=24)
+    stopsignal = models.IntegerField(default=SIGTERM, choices=SIGNAL_CHOICES)
+
+    # Params for logging of proces STDOUT and STDERR
+    # Useful in order if we want to get log tails via XML-RPC protocol
+    redirect_stderr         = models.BooleanField(default=False)
+    stdout_logfile          = models.CharField(max_length=255, blank=True, null=True)
+    stdout_logfile_maxbytes = models.PositiveIntegerField(default=1,  blank=True, null=True)
+    stdout_logfile_backups  = models.PositiveIntegerField(default=10, blank=True, null=True)
+    stdout_capture_maxbytes = models.PositiveIntegerField(default=1,  blank=True, null=True)
+    stderr_logfile          = models.CharField(max_length=50, blank=True)
+    stderr_logfile_maxbytes = models.PositiveIntegerField(default=1,  blank=True, null=True)
+    stderr_logfile_backups  = models.PositiveIntegerField(default=10, blank=True, null=True)
+    stderr_capture_maxbytes = models.PositiveIntegerField(default=1,  blank=True, null=True)
+
+    def __unicode__(self):
+        '''
+        Clean human-understanding string represantation for worker process
+        Contains process name and full string representation for supervisor model
+        object (see below for more details)
+        '''
+        return '%s @ %s' % (self.name, str(self.supervisor))
+
+class WorkerAdmin(admin.ModelAdmin):
+    '''
+    Params for workers managment via administrative panel
+
+    Override params for fieldsets value in order to create two blocks:
+    # identity params (required)
+    # general process params (required)
+    # environment params
+    # start/stop/restart params
+    # logging params (hidden by default)
+
+    Most part of this field is non-required and should be edited on in "advanced admin mode"
+    '''
+    fieldsets = (
+        (None, {
+            'fields': ('supervisor', 'name')
+        }),
+        ('Supervisor params', {
+            'fields': ('command', 'process_name', 'numprocs', 'priority')
+        }),
+        ('Process environment configuration', {
+            'fields': ('directory', 'umask', 'user', 'environment')
+        }),
+        ('Start/restart/stop mechanism', {
+            'fields': ('autostart', 'autorestart', 'startsecs', 'startretries', 'stopwaitsecs',
+                       'exitcodes', 'stopsignal')
+        }),
+        ('Process logs and pipes', {
+            'classes': ('hide', ),
+            'description': 'Leave default values if you do not know exactly what you are doing',
+            'fields': ('redirect_stderr',
+                       'stdout_logfile', 'stdout_logfile_maxbytes', 'stdout_logfile_backups', 'stdout_capture_maxbytes',
+                       'stderr_logfile', 'stderr_logfile_maxbytes', 'stderr_logfile_backups', 'stderr_capture_maxbytes')
+        }),
+    )
+
+# Register workers manager in administration panel
+admin.site.register(Worker, WorkerAdmin)
 
