@@ -5,4 +5,4 @@ build/*
 dist/*
 *.egg-info
 *.db
-data/*.log*
+*.log
