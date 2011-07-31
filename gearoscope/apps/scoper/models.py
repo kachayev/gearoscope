@@ -32,7 +32,16 @@ class Server(models.Model):
         return '%s (%s)' % (self.name, self.host)
 
 class ServerAdmin(admin.ModelAdmin):
-    '''Params for server nodes managment via administrative panel'''
+    '''
+    Params for server nodes managment via administrative panel
+
+    Override params for fieldsets value in order to create two blocks:
+    # general params (required)
+    # ssh connection params (which should be edited just in case of non-standard OS params)
+
+    In future we can add here inlined models for workers and gearman nodes
+    to give user more flexible way to add per-server items
+    '''
     fieldsets = (
         (None, {
             'fields': ('host', 'name')
@@ -43,5 +52,6 @@ class ServerAdmin(admin.ModelAdmin):
         }),
     )
 
+# Register server node manage-place in administration panel
 admin.site.register(Server, ServerAdmin)
 
