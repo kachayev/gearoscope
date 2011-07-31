@@ -264,3 +264,17 @@ def rewrite_server_configuration(sender, **kwargs):
 
     Rewriter().rebuild('server:%s' % server.name, info).save()
 
+@receiver(post_save, sender=Gearman)
+def rewrite_server_configuration(sender, **kwargs):
+    '''
+    Rewrite monitor daemon configuration in order to keep
+    monitoring logs up-to-date
+
+    To handle global identification for running gearman node daemon,
+    we should save to monitoring configuration only server host and port
+    '''
+    gearman = kwargs['instance']
+    server  = gearman.server.name
+
+    Rewriter().rebuild('gearman:%s' % server, {'server': server, 'port': port}).save()
+
