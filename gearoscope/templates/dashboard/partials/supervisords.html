@@ -1,0 +1,15 @@
+<div id="supervis" class="block log_block clearfix">
+
+    <h2>Supervisords</h2>
+    
+    <ul id="supervis_list">
+        {% for supervisord in supervisords %}
+        <li id="server_{{ supervisord.crc_it }}">
+            <a class="exp" href="#">+</a>
+            <ul class="logHistory collapsed">
+                <li>{{ server.__unicode__ }} - No messages found</li>
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
