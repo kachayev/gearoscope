@@ -1,5 +1,7 @@
+import binascii
 from django.db import models
 from django.contrib import admin
+import logging
 
 class Server(models.Model):
     '''
@@ -29,12 +31,12 @@ class Server(models.Model):
     ssh_port = models.PositiveIntegerField(default=22, verbose_name='SSH port')
 
     def __unicode__(self):
-        '''Clean human-understanding string represantation for server node'''
+        '''Clean human-understanding string representation for server node'''
         return '%s (%s)' % (self.name, self.host)
 
 class ServerAdmin(admin.ModelAdmin):
     '''
-    Params for server nodes managment via administrative panel
+    Params for server nodes management via administrative panel
 
     Override params for fieldsets value in order to create two blocks:
     # general params (required)
@@ -56,6 +58,22 @@ class ServerAdmin(admin.ModelAdmin):
 # Register server node manage-place in administration panel
 admin.site.register(Server, ServerAdmin)
 
+class ServerLogReader(object):
+    log = []
+    
+    def __init__(self, reader):
+        ServerLogReader.log = reader.tail(100)
+
+    def get_records_for(self, server):
+
+        for entry in ServerLogReader.log:
+            logging.error(entry)
+            pass
+
+        pass
+
+
+
 class Gearman(models.Model):
     '''
     Gearman node instance
@@ -66,7 +84,7 @@ class Gearman(models.Model):
     protocol specification, default port is 4730, but it can be change via gearman daemon
     running params.
 
-    More information about protocol specification you can find in oficial Gearman documentation:
+    More information about protocol specification you can find in official Gearman documentation:
         http://gearman.org/index.php?id=protocol
     or in documentation to Python client:
         http://packages.python.org/gearman/
@@ -75,11 +93,11 @@ class Gearman(models.Model):
     port = models.PositiveIntegerField(default=4730)
 
     def __unicode__(self):
-        '''Clean human-understanding string represantation for gearman node'''
+        '''Clean human-understanding string representation for gearman node'''
         return '%s:%s' % (self.server.host, self.port)
 
 class GearmanAdmin(admin.ModelAdmin):
-    '''Params for gearman nodes managment via administrative panel'''
+    '''Params for gearman nodes management via administrative panel'''
     pass
 
 # Register gearman node manager in administration panel
@@ -89,7 +107,7 @@ class Supervisor(models.Model):
     '''
     Supervisor daemon instance
 
-    Supervisor model objects will be used in monitorin agents, which will
+    Supervisor model objects will be used in monitoring agents, which will
     use XML-RPC connection for retrieving information about running processes.
     To avoid problems with "Connection refuse" error, please check that:
     - XML-RPC is switched on
@@ -102,22 +120,52 @@ class Supervisor(models.Model):
     port = models.PositiveIntegerField(default=9001)
 
     def __unicode__(self):
-        '''Clean human-understanding string represantation for supervisor daemon'''
+        '''Clean human-understanding string representation for supervisor daemon'''
         return '%s:%s' % (self.server.host, self.port)
 
+    def crc_it(self):
+        return binascii.crc32(self.__unicode__())
+
 class SupervisorAdmin(admin.ModelAdmin):
-    '''Params for supervisor daemons managment via administrative panel'''
+    '''Params for supervisor daemons management via administrative panel'''
     pass
 
 # Register supervisor node manager in administration panel
 admin.site.register(Supervisor, SupervisorAdmin)
+
+class SupervisorLogReader(object):
+    log = []
+
+    sender = 'supervisor'
+
+    def __init__(self, reader):
+        SupervisorLogReader.log = reader.tail(100)
+
+    def get_records_for(self, supervisor):
+
+        supervisor_signature = 'host=%s,port=%s' % (supervisor.server.host, supervisor.port)
+
+        records = []
+
+        for entry in SupervisorLogReader.log:
+            if entry.sender != SupervisorLogReader.sender:
+                continue
+                
+            params = dict(zip(map(lambda i: i.strip(':'), entry.message.split()[::2]), entry.message.split()[1::2]))
+
+            if params['from'].rstrip(']').lstrip('[') == supervisor_signature:
+                records.append({'time': entry.time, 'level': entry.level, 'message': entry.message, 'params': params})
+
+        records.sort(key=lambda x: x['time'])
+
+        return records
 
 class Worker(models.Model):
     '''
     Worker process instance
 
     Stop signal params will be used by supervisor during start/restart calls. What signal to use
-    in order to stop execution of you process in best way dependce on process implementation. Full
+    in order to stop execution of you process in best way depends on process implementation. Full
     list of signal and more information about it, you can find here:
     http://www.cs.pitt.edu/~alanjawi/cs449/code/shell/UnixSignals.htm
     '''
@@ -181,7 +229,7 @@ class Worker(models.Model):
 
     def __unicode__(self):
         '''
-        Clean human-understanding string represantation for worker process
+        Clean human-understanding string representation for worker process
         Contains process name and full string representation for supervisor model
         object (see below for more details)
         '''
@@ -189,7 +237,7 @@ class Worker(models.Model):
 
 class WorkerAdmin(admin.ModelAdmin):
     '''
-    Params for workers managment via administrative panel
+    Params for workers management via administrative panel
 
     Override params for fieldsets value in order to create two blocks:
     # identity params (required)

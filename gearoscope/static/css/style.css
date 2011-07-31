@@ -494,19 +494,19 @@ aside .block{
     margin-right: 14px;
 }
 
-#servers_list .logHistory{
+.block_collapse .logHistory{
     margin-left: 16px;
 }
 
-#servers_list .logHistory.collapsed li{
+.block_collapse .logHistory.collapsed li{
     display: none;
 }
 
-#servers_list .logHistory.collapsed li:first-child{
+.block_collapse .logHistory.collapsed li:first-child{
     display: block;
 }
 
-#servers_list .exp{
+.block_collapse .exp{
     display: inline-block;
     float: left;
     max-width: 16px;

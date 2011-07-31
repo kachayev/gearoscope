@@ -3,6 +3,8 @@ import logging, random
 from django.db import models
 from datetime import datetime
 
+import random
+
 class Server(object):
 
     def get_servers(self):
