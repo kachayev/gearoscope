@@ -1,3 +1,4 @@
+
 <div class="queue_headline">
 
     <a href="#" class="expand_queue" title="Show queue details">&dArr;</a>
@@ -41,8 +42,9 @@
 
 {#    TODO: create worker stub #}
     <ul class="workers_list">
-        <li>{% include 'dashboard/queue/worker.html' %}</li>
-        <li>{% include 'dashboard/queue/worker.html' %}</li>
+        {% for worker in workers %}
+            <li>{% include 'dashboard/queue/worker.html' %}</li>
+        {% endfor %}
     </ul>
     
 </div>

@@ -3,6 +3,13 @@
     <h2>Servers</h2>
     
     <ul id="servers_list">
-        <li>Loading ...</li>
+        {% for server in servers %}
+        <li id="server_{{ server.id }}">
+            <a class="exp" href="#">+</a>
+            <ul class="logHistory collapsed">
+                <li>{{ server.name }} - Loading ...</li>
+            </ul>
+        </li>
+        {% endfor %}
     </ul>
 </div>

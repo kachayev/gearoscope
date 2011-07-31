@@ -1,9 +1,9 @@
-<div class="worker_details clearfix">
+<div class="worker_details clearfix" id="worker_{{ worker.id }}">
 
-    <h5>[Name of Worker put here]</h5>
+    <h5>{{ worker.name }} (ID {{ worker.id }})</h5>
 
     <div class="worker_stats">
-{#      MAX walue can be only 99% #}
+
         <p>CPU <span class="cpu_value">25%</span></p>
         <p class="progress"><span class="cpu progress">&nbsp;</span></p>
 

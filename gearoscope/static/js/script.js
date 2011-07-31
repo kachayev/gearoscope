@@ -1,6 +1,5 @@
 
 
-
 var initStubs = function(){
 
     $('.add_worker').live('click', function(e) {
@@ -34,6 +33,9 @@ var worker = {
     counter: 0,
     is_null: function(){
         return typeof (this.item) != 'object';
+    },
+    get_id: function(){
+        return $(this.item).attr('id').split('_').slice(-1);
     },
     collapse: function(){
         if (this.is_null){
@@ -69,11 +71,15 @@ var worker = {
         points = points.slice(-30);
         return points;
     },
-    
+
+    get_all: function(){
+        return $('#queues_list .worker_stats');
+    },
+
+
     update: function(){
         var wdata = $(this.item).data('worker-data');
-        wdata = this.data;
-        console.log(wdata);
+        
         $(this.item).find('.worker_stats .cpu_value').html('' + wdata.cpu_value + '%').end()
             .find('.worker_stats .mem_value').html('' + wdata.memory_value + '%').end()
             .find('.worker_stats .task_value').html(wdata.task_value).end();
@@ -81,7 +87,7 @@ var worker = {
         $(this.item).find('.worker_stats .cpu.progress').width(Math.min(Math.max(wdata.cpu_value, 1), 99)+'%');
         $(this.item).find('.worker_stats .memory.progress').width(Math.min(Math.max(wdata.memory_value, 1), 99)+'%');
 
-        var counter = this.counter;
+        var counter = $(this.item).data('counter') || 0;
 
         var cpu_points = this.appendPoint($(this.item).data('cpu-points'), counter, wdata.cpu_value);
         $(this.item).data('cpu-points', cpu_points);
@@ -92,9 +98,7 @@ var worker = {
         var task_points = this.appendPoint($(this.item).data('task-points'), counter, wdata.task_value);
         $(this.item).data('task-points', task_points);
 
-        this.counter = counter + 1;
-
-        console.log(counter);
+        $(this.item).data('counter', counter + 1);
 
         $.plot($(this.item).find('.graph_holder'), [
             {
@@ -115,14 +119,7 @@ var worker = {
         return this;
     },
     
-    setData: function(){
-        //this is stub
-        var d = {
-            cpu_value: Math.round(Math.random() * 100),
-            memory_value: Math.round(Math.random() * 100),
-            task_value: Math.round(Math.random() * 10 + 20)
-        };
-        this.data = d;
+    setData: function(d){
         $(this.item).data('worker-data', d);
 
         return this;
@@ -232,7 +229,6 @@ var queue = {
 var servers = {
 
     data: null,
-    template_log: 'serverLog',
     template_item: 'serverLogItem',
 
     setData: function(data){
@@ -242,28 +238,29 @@ var servers = {
     
     update: function(){
         var serverList = $('#servers').find('#servers_list');
-        serverList.find('li').remove();
 
         for(i in this.data){
             var server = this.data[i];
-            var li = $.tmpl(this.template_log, {name:i});
 
-            if(server.length > 0){
-                var content =  $.tmpl(this.template_item, server);
-                $(li).find('.logHistory').html(content);
-                $(li).find('.logHistory li:gt(0)').hide();
+            if(server.records.length > 0){
+                var content =  $.tmpl(this.template_item, server.records);
+                serverList.find('#server_' + server.id + ' .logHistory').prepend(content);
+                serverList.find('#server_' + server.id + ' .logHistory li:gt(10)').remove();
             }
-            serverList.append(li);
         }
         return this;
     },
     init: function(){
         $.template(this.template_item , '<li>${time} - ${server} - ${host} - ${ping}ms</li>');
-        $.template(this.template_log , '<li><a class="exp" href="#">+</a><ul class="logHistory"><li>This ${name} do not have info</li></ul></li>');
         $('#servers_list .exp').live('click', function(e){
             e.preventDefault();
-            console.log($(this).parent('li').find('.logHistory li:gt(0)'));
-            $(this).parents('li').find('.logHistory li:gt(0)').toggle();
+            var history = $(this).parents('li').find('.logHistory');
+            if ($(history).hasClass('collapsed')){
+                $(history).removeClass('collapsed');
+            }else{
+                $(history).addClass('collapsed');
+            }
+
         });
     }
 };
@@ -273,7 +270,7 @@ var requestor = {
 
     start: function(){
         //TODO: make cyclic requests
-        this.doRequest();
+        requestor.doRequest();
     },
 
     doRequest:function(){
@@ -288,7 +285,16 @@ var requestor = {
         }
 
         servers.setData(data['servers']).update();
+        var workers = worker.get_all().toArray();
+        for (i in workers){
+            var wobj = worker.setItem(workers[i]);
+            wobj.setData(data['workers'][wobj.get_id()]).update();
+        }
+    },
 
+    init: function(){
+        requestor.start();
+        setInterval(requestor.start, 2000);
     }
 
 
@@ -301,13 +307,7 @@ $(document).ready(function(){
 
     queue.init();
 
-//    setInterval(function(){
-//        $('#queues_list .worker_stats').each(function(){
-//            worker.setItem(this).setData().update();
-//        });
-//    }, 1000);
-
     servers.init();
-    requestor.start();
+    requestor.init();
 
 });
