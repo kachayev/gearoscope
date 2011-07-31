@@ -112,3 +112,50 @@ class SupervisorAdmin(admin.ModelAdmin):
 # Register supervisor node manager in administration panel
 admin.site.register(Supervisor, SupervisorAdmin)
 
+class Worker(models.Model):
+    '''Worker process instance'''
+    supervisor = models.ForeignKey(Supervisor)
+    name = models.CharField(max_length=70)
+
+    command = models.CharField(max_length=255)
+    process_name = models.CharField(max_length=70)
+    numprocs = models.PositiveSmallIntegerField(default=1)
+
+    directory = models.CharField(max_length=255, default='/')
+    umask = models.CharField(max_length=4, default='022')
+    user = models.CharField(max_length=255)
+    priority = models.PositiveIntegerField(default=999)
+    environment = models.CharField(max_length=255, default='', blank=True)
+
+    autostart = models.BooleanField(default=True)
+    autorestart = models.BooleanField(default=True)
+    startsecs = models.PositiveSmallIntegerField(default=10)
+    startretries = models.PositiveSmallIntegerField(default=3)
+    stopwaitsecs = models.PositivIntegerField(default=10)
+
+    exitcodes = models.CommaSeparatedIntegerField(default='0,2')
+    # Change to choise field
+    # Use QUIT, TERM and several other signals
+    stopsignal = models.CharField(max_length=50, default='TERM')
+
+    redirect_stderr = models.BooleanField(default=False)
+    stdout_logfile = models.CharField(max_length=255)
+    stdout_logfile_maxbytes = models.PositiveIntegerField(default=1)
+    stdout_logfile_backups = models.PositiveSmallIntegerField(default=10)
+    stdout_capture_maxbytes = models.PositiveIntegerField(default=1)
+    stderr_logfile = models.CharField(max_length=50, blank=True)
+    stderr_logfile_maxbytes = models.PositiveIntegerField(default=1)
+    stderr_logfile_backups = models.PositiveSmallIntegerField(default=10)
+    stderr_capture_maxbytes = models.PositiveIntegerField(default=1)
+
+    def __unicode__(self):
+        '''Clean human-understanding string represantation for worker process'''
+        return '%s @ %s' % (self.name, str(self.supervisor))
+
+class WorkerAdmin(admin.ModelAdmin):
+    '''Params for workers managment via administrative panel'''
+    pass
+
+# Register workers manager in administration panel
+admin.site.register(Worker, WorkerAdmin)
+
