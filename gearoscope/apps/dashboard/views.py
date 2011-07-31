@@ -25,6 +25,10 @@ def index(request):
         for queue in item['stats']:
             logging.error(queue)
 
+    proceses = get_processes(reader)
+
+    workers = get_workers(supervisords, proceses)
+
     return render_to_response('dashboard/index.html', locals())
 
 def dashboard(request):
@@ -41,15 +45,11 @@ def dashboard(request):
 #        server['records'] = server_log.get_records_for(server)
 #        response['servers'].append(server)
 
-    response['supervisords'] = {}
+    response['supervisords'] = get_supervisords(reader)
 
-    super_log = SupervisorLogReader(reader)
+    response['processes'] = get_processes(reader)
 
-    for supervisor in Supervisor.objects.all():
-        response['supervisords'][supervisor.crc] = super_log.get_records_for(supervisor)
-
-
-#    response['processes'] = Process().getData()
+    response['workers'] = get_workers(response['supervisords'], response['processes'])
 
     gearman_log = GearmanLogReader(reader)
 
@@ -57,17 +57,37 @@ def dashboard(request):
     for gearman in Gearman.objects.all():
         response['gearmans'][gearman.crc] = gearman_log.get_records_for(gearman)
 
-
-    response['workers'] = {}
-
-    for worker in Workers().get_workers():
-        response['workers'][worker['id']] = Workers().get_data(worker['id'])
-
-#    except Exception, e :
-#        response['result'] = 'error'
-#        logging.error(e.message)
-
     json = simplejson.dumps(response)
 
     return HttpResponse(json, mimetype='application/json', content_type='json')
 
+def get_supervisords(reader):
+    supervisords = {}
+
+    super_log = SupervisorLogReader(reader)
+
+    for supervisor in Supervisor.objects.all():
+        supervisords[supervisor.crc] = super_log.get_records_for(supervisor)
+
+    return supervisords
+
+
+def get_processes(reader):
+
+    log = ProcessLogReader(reader)
+    return log.get_records()
+
+def get_workers(supervisords, processes):
+    workers = {}
+
+    for proc_id, proc in processes.iteritems():
+        for sup in supervisords.itervalues():
+            for sup_proc in sup:
+
+                if sup_proc['params']['pid'] == proc['pid']:
+                    key = sup_proc['params']['name']
+                    if key not in response['workers']:
+                        workers[key] = {}
+                    workers[key][proc_id] = proc
+
+    return workers

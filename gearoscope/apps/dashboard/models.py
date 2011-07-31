@@ -1,4 +1,5 @@
 import logging, random
+import re
 
 from django.db import models
 from datetime import datetime
@@ -143,6 +144,64 @@ class SupervisorLogReader(object):
                 records.append({'time': entry.time, 'level': entry.level, 'message': entry.message, 'params': params})
 
         records.sort(key=lambda x: x['time'])
+
+        return records
+
+class ProcessLogReader(object):
+    log = []
+
+    sender = 'process'
+
+    def __init__(self, reader):
+        ProcessLogReader.log = reader.tail(1000)
+
+    def get_records(self):
+
+#       USERNAME: root
+#       MEM: [info=meminfo(rss=7188480, vms=38723584),percent=0.227480706266]
+#       PID: 3678
+#       CMDLINE: pythonenv_stub/workers/reverse.py
+#       RUNNING: True
+#       UIDS: user(real=0, effective=0, saved=0)
+#       FROM: root@127.0.0.1
+#       NAME: python
+#       CREATED: 1312027920.21
+#       PPID: 902
+#       CPU: [percent=0.0,times=cputimes(user=0.19, system=0.02)]
+
+        records = {}
+
+        for entry in ProcessLogReader.log:
+            if entry.sender != ProcessLogReader.sender:
+                continue
+
+#            params = dict(zip(map(lambda i: i.strip(':'), entry.message.split()[::2]), entry.message.split()[1::2]))
+
+            params = {}
+
+            reg = re.compile(r' pid\: ([\d]+) ')
+            params['pid'] = reg.findall(' ' + entry.message + ' ').pop()
+            
+            reg = re.compile(r' from\: ([^:]+) ')
+            params['from'] = reg.findall(' ' + entry.message + ' ').pop()
+
+            reg = re.compile(r' mem\: \[([^:]+)\] ')
+            res = reg.findall(' ' + entry.message + ' ').pop()
+            reg = re.compile(r'percent=([\.\d]+)')
+            params['mem'] = reg.findall(res).pop()
+
+            reg = re.compile(r' cpu\: \[([^:]+)\] ')
+            res = reg.findall(' ' + entry.message + ' ').pop()
+            reg = re.compile(r'percent=([\.\d]+)')
+            params['cpu'] = reg.findall(res).pop()
+
+#            print params
+
+            key = params['from'] + '_' + params['pid']
+            if key not in records:
+                records[key] = {'pid': params['pid'],
+                                'time': entry.time, 'level': entry.level, 'message': entry.message,
+                                'cpu':round( float(params['cpu']) * 100), 'mem': round( float(params['mem']) * 100)}
 
         return records
 
