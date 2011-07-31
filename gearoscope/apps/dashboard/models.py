@@ -143,7 +143,7 @@ class SupervisorLogReader(object):
             if params['from'].rstrip(']').lstrip('[') == supervisor_signature:
                 records.append({'time': entry.time, 'level': entry.level, 'message': entry.message, 'params': params})
 
-        records.sort(key=lambda x: x['time'])
+        records.sort(key=lambda x: x['time'], reverse=True)
 
         return records
 
