@@ -191,7 +191,6 @@ var queue = {
 
     update: function(){
         var qdata = $(this.item).data('queue-data');
-
         var counter = $(this.item).data('counter') || 0;
 
         $(this.item)
@@ -202,10 +201,10 @@ var queue = {
 //        $(this.item).find('.queue_stats .cpu.progress').width(Math.min(Math.max(qdata.cpu_value, 1), 99)+'%');
 //        $(this.item).find('.queue_stats .memory.progress').width(Math.min(Math.max(qdata.memory_value, 1), 99)+'%');
         
-        var run_points = this.appendPoint($(this.item).data('run_points'), counter, qdata.params.running);
+        var run_points = this.appendPoint($(this.item).data('run_points'), counter, (""+qdata.params.running).replace("\"",''));
         $(this.item).data('run_points', run_points);
 
-        var queued_points = this.appendPoint($(this.item).data('queued_points'), counter, qdata.params.queued);
+        var queued_points = this.appendPoint($(this.item).data('queued_points'), counter, (""+qdata.params.queued).replace("\"",''));
         $(this.item).data('queued_points', queued_points);
 
         $(this.item).data('counter', counter + 1);
@@ -391,7 +390,7 @@ var requestor = {
 
     init: function(){
         requestor.start();
-        setInterval(requestor.start, 5000);
+        setInterval(requestor.start, 3000);
     }
 
 

@@ -165,3 +165,6 @@ SONAR_LOG_FILE = os.path.join(WORKDIR, 'data', 'sonar.log')
 # should have permissions to read/write this file
 SONAR_CONFIGURATION_FILE = os.path.join(WORKDIR, 'data', 'sonar.conf')
 
+# Maximum records to read from sonar log file
+DASHBOARD_LOG_LIMIT = 10000
+
