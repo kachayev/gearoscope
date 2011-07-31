@@ -16,7 +16,7 @@ class Reader(object):
             limit = MonitorEntry.LEVELS.index(verbosity.lower())
             lines = [entry for entry in lines if entry.code >= limit]
 
-        return lines[:max(size,len(lines))]
+        return lines[:min(size,len(lines))]
 
 class MonitorEntry(object):
     '''One line from log representation'''
