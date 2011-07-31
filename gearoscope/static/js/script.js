@@ -294,7 +294,7 @@ var requestor = {
 
     init: function(){
         requestor.start();
-        setInterval(requestor.start, 4000);
+        setInterval(requestor.start, 2000);
     }
 
 
