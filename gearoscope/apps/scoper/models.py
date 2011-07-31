@@ -167,6 +167,8 @@ class Worker(models.Model):
     exitcodes = models.CommaSeparatedIntegerField(default='0,2')
     stopsignal = models.IntegerField(default=SIGTERM, choices=SIGNAL_CHOICES)
 
+    # Params for logging of proces STDOUT and STDERR
+    # Useful in order if we want to get log tails via XML-RPC protocol
     redirect_stderr = models.BooleanField(default=False)
     stdout_logfile = models.CharField(max_length=255)
     stdout_logfile_maxbytes = models.PositiveIntegerField(default=1)
@@ -178,7 +180,11 @@ class Worker(models.Model):
     stderr_capture_maxbytes = models.PositiveIntegerField(default=1)
 
     def __unicode__(self):
-        '''Clean human-understanding string represantation for worker process'''
+        '''
+        Clean human-understanding string represantation for worker process
+        Contains process name and full string representation for supervisor model
+        object (see below for more details)
+        '''
         return '%s @ %s' % (self.name, str(self.supervisor))
 
 class WorkerAdmin(admin.ModelAdmin):
