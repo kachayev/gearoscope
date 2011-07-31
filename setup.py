@@ -40,7 +40,7 @@ distutils.core.setup(
         'Environment :: Console',
         'Environment :: Web Development',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache License',
+        'License :: OSI Approved :: GPL v3',
         'Operating System :: POSIX',
         'Programming Language :: Python',
     ],
