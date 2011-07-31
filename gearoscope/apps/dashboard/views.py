@@ -7,6 +7,8 @@ import logging
 def index(request):
 
     workers = Workers().get_workers()
+    servers = Server().get_servers()
+    logging.error(servers)
     return render_to_response('dashboard/index.html', locals())
 
 def dashboard(request):

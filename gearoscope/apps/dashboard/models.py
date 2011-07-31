@@ -8,8 +8,7 @@ import random
 class Server():
 
     def get_servers(self):
-        
-        return [{'name':random.choice(['localhost', 'remote', 'linode', 'rabbit', 'db', 'load_balancer']), 'id': i} for i in xrange(1, 3)]
+        return [{'name':['localhost', 'remote', 'linode', 'rabbit', 'db', 'load_balancer'][i], 'id': i} for i in xrange(1, 3)]
 
     def generate_record(self):
         serv = random.choice(self.get_servers())
@@ -21,7 +20,7 @@ class Server():
         return serv
 
     def get_data(self):
-        log = [self.generate_record() for x in range(20)]
+        log = [self.generate_record() for x in range(10)]
         servers = self.get_servers()
         for server in servers:
             server['records'] = []
@@ -72,7 +71,7 @@ class Process():
 
     def getData(self):
 
-        return [self.generateRecord() for i in xrange(20)]
+        return [self.generateRecord() for i in xrange(10)]
 
         pass
 
@@ -91,7 +90,6 @@ class Workers():
                 'memory_value': random.randint(0, 100),
                 'task_value': random.randint(10, 40)
             }
-        
         
         pass
 

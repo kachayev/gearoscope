@@ -249,12 +249,11 @@ var servers = {
 
         for(i in this.data){
             var server = this.data[i];
-            var li = $.tmpl(this.template_log, {name:i});
+//            var li = $.tmpl(this.template_log, {name:i});
 
-            if(server.length > 0){
-                var content =  $.tmpl(this.template_item, server);
-                $(li).find('.logHistory').html(content);
-                serverList.prepend(li);
+            if(server.records.length > 0){
+                var content =  $.tmpl(this.template_item, server.records);
+                serverList.find('#server_' + server.id + ' .logHistory').prepend(content);
             }
         }
         return this;
@@ -266,7 +265,6 @@ var servers = {
             e.preventDefault();
             $(this).parents('li').find('.logHistory li:gt(0)').toggle();
         });
-        $('#servers_list').find('li').remove();
     }
 };
 
@@ -298,7 +296,8 @@ var requestor = {
     },
 
     init: function(){
-        setInterval(requestor.start, 1000);
+        requestor.start();
+        setInterval(requestor.start, 4000);
     }
 
 
