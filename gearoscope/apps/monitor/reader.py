@@ -9,7 +9,7 @@ class Reader(object):
             limit = MonitorEntry.LEVELS.index(verbosity.lower())
             lines = [entry for entry in lines if entry.code >= limit]
 
-        return lines[:size]
+        return lines[:max(size,len(lines))]
 
 class MonitorEntry(object):
     __slots__=('time', 'sender', 'level', 'code', 'message')

@@ -1,5 +1,6 @@
 import logging, random
 import re
+from django.conf import settings
 
 from django.db import models
 from datetime import datetime
@@ -59,7 +60,7 @@ class ServerLogReader(object):
     log = []
 
     def __init__(self, reader):
-        ServerLogReader.log = reader.tail(10000)
+        ServerLogReader.log = reader.tail(settings.DASHBOARD_LOG_LIMIT)
 
     def get_records_for(self, server):
 #        TODO: implement server reader
@@ -76,7 +77,7 @@ class GearmanLogReader(object):
     sender = 'gearman'
 
     def __init__(self, reader):
-        GearmanLogReader.log = reader.tail(10000)
+        GearmanLogReader.log = reader.tail(settings.DASHBOARD_LOG_LIMIT)
 
     def get_summary(self, records):
         for record in records:
@@ -124,7 +125,7 @@ class SupervisorLogReader(object):
     sender = 'supervisor'
 
     def __init__(self, reader):
-        SupervisorLogReader.log = reader.tail(10000)
+        SupervisorLogReader.log = reader.tail(settings.DASHBOARD_LOG_LIMIT)
 #        print [ i.message for i in SupervisorLogReader.log]
 
     def get_records_for(self, supervisor):
@@ -150,7 +151,7 @@ class ProcessLogReader(object):
     sender = 'process'
 
     def __init__(self, reader):
-        ProcessLogReader.log = reader.tail(10000)
+        ProcessLogReader.log = reader.tail(settings.DASHBOARD_LOG_LIMIT)
 
     def get_records(self):
 
@@ -210,17 +211,5 @@ class ProcessLogReader(object):
                                 'cpu':round( float(params['cpu'])), 'mem': round( float(params['mem']))}
 
         return records
-
-
-
-
-
-
-
-
-
-
-
-
 
 
