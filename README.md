@@ -13,9 +13,19 @@ Gearoscope is designed with ideas of scalability in our minds.
 
 ### Install
 
-1. Download tar file
-2. Run `pip install -e ./`
-3. Add `include` directives to supervisor configuration and run supervisor daemon (or restart). This will launch two process: sonard.py monitoring system and django http server for dashboard viewing and servers configuration management.
+1. Prepate all necessary environments:
+
+- install and run gearman nodes on necessary servers
+
+- install supervisor daemons for workers handling
+
+2. Install and run monitor daemon and visual interface for managing it:
+
+    wget -O gearoscope.tar.gz https://github.com/kachayev/gearoscope/tarball/master	
+    tar xvzf gearoscope.tar.gz
+    cd gearoscope
+    pip install -e ./
+
 
 ### TODOs
 
