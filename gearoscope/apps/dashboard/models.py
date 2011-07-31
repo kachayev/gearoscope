@@ -205,13 +205,12 @@ class ProcessLogReader(object):
             except Exception, e:
                 params['cpu'] = 0
 
-#            print params
 
             key = params['from'] + '_' + params['pid']
             if key not in records:
                 records[key] = {'pid': params['pid'],
                                 'time': entry.time, 'level': entry.level, 'message': entry.message,
-                                'cpu':round( float(params['cpu']) * 100), 'mem': round( float(params['mem']) * 100)}
+                                'cpu':round( float(params['cpu'])), 'mem': round( float(params['mem']))}
 
         return records
 
