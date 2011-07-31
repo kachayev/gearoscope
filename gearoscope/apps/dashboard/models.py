@@ -143,7 +143,7 @@ class SupervisorLogReader(object):
             if params['from'].rstrip(']').lstrip('[') == supervisor_signature:
                 records.append({'time': entry.time, 'level': entry.level, 'message': entry.message, 'params': params})
 
-        records.sort(key=lambda x: x['time'])
+        records.sort(key=lambda x: x['time'], reverse=True)
 
         return records
 
@@ -179,29 +179,38 @@ class ProcessLogReader(object):
 
             params = {}
 
-            reg = re.compile(r' pid\: ([\d]+) ')
-            params['pid'] = reg.findall(' ' + entry.message + ' ').pop()
-            
-            reg = re.compile(r' from\: ([^:]+) ')
-            params['from'] = reg.findall(' ' + entry.message + ' ').pop()
+            m = '- %s -' % entry.message
+            try:
+                reg = re.compile(r' pid\: ([\d]+) ')
+                params['pid'] = reg.findall(m).pop()
 
-            reg = re.compile(r' mem\: \[([^:]+)\] ')
-            res = reg.findall(' ' + entry.message + ' ').pop()
-            reg = re.compile(r'percent=([\.\d]+)')
-            params['mem'] = reg.findall(res).pop()
+                reg = re.compile(r' from\: ([^:]+) ')
+                params['from'] = reg.findall(m).pop()
+            except Exception, e:
+                continue
 
-            reg = re.compile(r' cpu\: \[([^:]+)\] ')
-            res = reg.findall(' ' + entry.message + ' ').pop()
-            reg = re.compile(r'percent=([\.\d]+)')
-            params['cpu'] = reg.findall(res).pop()
+            try:
+                reg = re.compile(r' mem\: \[([^:\]]+)\]')
+                res = reg.findall(m).pop()
+                reg = re.compile(r'percent=([\.\d]+)')
+                params['mem'] = reg.findall(res).pop()
+            except Exception, e:
+                params['mem'] = 0
 
-#            print params
+            try:
+                reg = re.compile(r' cpu\: \[([^:]+)\]')
+                res = reg.findall(m).pop()
+                reg = re.compile(r'percent=([\.\d]+)')
+                params['cpu'] = reg.findall(res).pop()
+            except Exception, e:
+                params['cpu'] = 0
+
 
             key = params['from'] + '_' + params['pid']
             if key not in records:
                 records[key] = {'pid': params['pid'],
                                 'time': entry.time, 'level': entry.level, 'message': entry.message,
-                                'cpu':round( float(params['cpu']) * 100), 'mem': round( float(params['mem']) * 100)}
+                                'cpu':round( float(params['cpu'])), 'mem': round( float(params['mem']))}
 
         return records
 
