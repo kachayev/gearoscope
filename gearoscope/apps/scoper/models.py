@@ -121,8 +121,8 @@ class Worker(models.Model):
     list of signal and more information about it, you can find here:
     http://www.cs.pitt.edu/~alanjawi/cs449/code/shell/UnixSignals.htm
     '''
-    SIGHUP = 1
-    SIGINT = 2
+    SIGHUP  = 1
+    SIGINT  = 2
     SIGQUIT = 3
     SIGKILL = 9
     SIGTERM = 15
@@ -132,11 +132,11 @@ class Worker(models.Model):
     SIGNAL_CHOICES = (
         (SIGHUP,  u'HUP'),
         (SIGINT,  u'INT'),
-        (SIGQUIT, u'QUIT')
-        (SIGKILL, u'KILL')
-        (SIGTERM, u'TERM')
-        (SIGUSR1, u'USR1')
-        (SIGUSR2, u'USR2')
+        (SIGQUIT, u'QUIT'),
+        (SIGKILL, u'KILL'),
+        (SIGTERM, u'TERM'),
+        (SIGUSR1, u'USR1'),
+        (SIGUSR2, u'USR2'),
     )
 
     # Identity required params
@@ -148,18 +148,22 @@ class Worker(models.Model):
     process_name = models.CharField(max_length=70)
     numprocs = models.PositiveSmallIntegerField(default=1, blank=True, null=True)
 
+    # Field which describe process running params and env variables
     directory = models.CharField(max_length=255, default='/', blank=True, null=True)
     umask = models.CharField(max_length=4, default='022', blank=True, null=True)
     user = models.CharField(max_length=255, blank=True, null=True)
     priority = models.PositiveIntegerField(default=999, blank=True, null=True)
     environment = models.CharField(max_length=255, default='', blank=True)
 
+    # Param for starting and restarting process
     autostart = models.BooleanField(default=True)
     autorestart = models.BooleanField(default=True)
     startsecs = models.PositiveSmallIntegerField(default=10)
     startretries = models.PositiveSmallIntegerField(default=3)
     stopwaitsecs = models.PositivIntegerField(default=10)
 
+    # Exit params (should tell supervisor how to stop and restart process)
+    # and what stop suggest as normal one (non-error)
     exitcodes = models.CommaSeparatedIntegerField(default='0,2')
     stopsignal = models.IntegerField(default=SIGTERM, choices=SIGNAL_CHOICES)
 
