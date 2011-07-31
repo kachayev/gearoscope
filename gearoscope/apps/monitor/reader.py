@@ -11,7 +11,7 @@ class Reader(object):
         It also can filter entiries by verbosity level (will return higher)
         '''
         with open(self.path) as log:
-            lines = [MonitorEntry.extract(line) for line in log.readlines()[::-1]]
+            lines = [MonitorEntry.extract(line) for line in log.readlines()[::-1] if line.strip() != '']
 
             limit = MonitorEntry.LEVELS.index(verbosity.lower())
             lines = [entry for entry in lines if entry.code >= limit]
