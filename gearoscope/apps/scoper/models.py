@@ -65,7 +65,7 @@ class ServerLogReader(object):
         ServerLogReader.log = reader.tail(100)
 
     def get_records_for(self, server):
-
+#        TODO: implement server reader
         for entry in ServerLogReader.log:
             logging.error(entry)
             pass
@@ -96,12 +96,64 @@ class Gearman(models.Model):
         '''Clean human-understanding string representation for gearman node'''
         return '%s:%s' % (self.server.host, self.port)
 
+    def crc_it(self):
+        return abs(binascii.crc32(self.__unicode__()))
+
 class GearmanAdmin(admin.ModelAdmin):
     '''Params for gearman nodes management via administrative panel'''
     pass
 
 # Register gearman node manager in administration panel
 admin.site.register(Gearman, GearmanAdmin)
+
+class GearmanLogReader(object):
+    log = []
+
+    sender = 'gearman'
+
+    def __init__(self, reader):
+        GearmanLogReader.log = reader.tail(1000)
+
+    def get_summary(self, records):
+        for record in records:
+            if 'queues' in record['params']:
+                return record
+
+    def get_tasks_stats(self, records):
+        stats = {}
+        for record in records:
+            if 'task' not in record['params']:
+                continue
+                
+            if record['params']['task'] not in stats:
+                stats[record['params']['task']] = record
+
+        return stats
+
+
+    def get_records_for(self, gearman):
+
+        gearman_signature = 'host=%s,port=%s' % (gearman.server.host, gearman.port)
+
+        records = []
+
+        for entry in GearmanLogReader.log:
+            if entry.sender != GearmanLogReader.sender:
+                continue
+
+            params = dict(zip(map(lambda i: i.strip(':'), entry.message.split()[::2]), entry.message.split()[1::2]))
+
+            if params['from'].rstrip(']').lstrip('[') == gearman_signature:
+                records.append({'time': entry.time, 'level': entry.level, 'message': entry.message, 'params': params})
+
+        records.sort(key=lambda x: x['time'])
+
+        summary = self.get_summary(records)
+
+        tasks_stats = self.get_tasks_stats(records)
+
+        return {'summary': summary, 'stats': tasks_stats }
+
 
 class Supervisor(models.Model):
     '''
@@ -124,7 +176,7 @@ class Supervisor(models.Model):
         return '%s:%s' % (self.server.host, self.port)
 
     def crc_it(self):
-        return binascii.crc32(self.__unicode__())
+        return abs(binascii.crc32(self.__unicode__()))
 
 class SupervisorAdmin(admin.ModelAdmin):
     '''Params for supervisor daemons management via administrative panel'''

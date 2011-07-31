@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.utils import simplejson
 from models import Process, Supervisor, Workers
-from scoper.models import Server, ServerLogReader, Supervisor, SupervisorLogReader
+from scoper.models import Server, ServerLogReader, Supervisor, SupervisorLogReader, Gearman, GearmanLogReader
 from monitor.reader import Reader
 from django.conf import settings
 import logging
@@ -12,7 +12,8 @@ def index(request):
     workers = Workers().get_workers()
     servers = Server.objects.all()
     supervisords = Supervisor.objects.all()
-    
+    searmans = Gearman.objects.all()
+
     return render_to_response('dashboard/index.html', locals())
 
 def dashboard(request):
@@ -37,8 +38,15 @@ def dashboard(request):
         response['supervisords'][supervisor.crc_it()] = super_log.get_records_for(supervisor)
 
 
-    response['processes'] = Process().getData()
+#    response['processes'] = Process().getData()
 
+    gearman_log = GearmanLogReader(reader)
+
+    response['gearmans'] = {}
+    for gearman in Gearman.objects.all():
+        response['gearmans'][gearman.crc_it()] = gearman_log.get_records_for(gearman)
+
+    
 
     response['workers'] = {}
 
