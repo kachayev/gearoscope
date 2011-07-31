@@ -28,3 +28,5 @@ Gearoscope is designed with ideas of scalability in our minds.
 - make inline proxy model for adding gearman node to server dinamicly in server editing space
 
 - custom validation for host in server's model
+
+- help text for most fields in Worker Model
