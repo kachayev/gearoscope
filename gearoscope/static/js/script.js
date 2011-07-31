@@ -266,6 +266,46 @@ var servers = {
 };
 
 
+var supervisords = {
+
+    data: null,
+    template_item: 'supervisorLogItem',
+
+    setData: function(data){
+        this.data = data;
+        return this;
+    },
+
+    update: function(){
+        var serverList = $('#supervisords').find('#supervisords_list');
+
+        for(i in this.data){
+            var server = this.data[i];
+
+            if(server.records.length > 0){
+                var content =  $.tmpl(this.template_item, server.records);
+                serverList.find('#supervisord_' + server.id + ' .logHistory').prepend(content);
+                serverList.find('#supervisord_' + server.id + ' .logHistory li:gt(10)').remove();
+            }
+        }
+        return this;
+    },
+    init: function(){
+        $.template(this.template_item , '<li>${time} - ${level} - ${params.state} - ${params.name}:${params.group} <br> ${message}</li>');
+        $('#supervisords_list .exp').live('click', function(e){
+            e.preventDefault();
+            var history = $(this).parents('li').find('.logHistory');
+            if ($(history).hasClass('collapsed')){
+                $(history).removeClass('collapsed');
+            }else{
+                $(history).addClass('collapsed');
+            }
+
+        });
+    }
+};
+
+
 var requestor = {
 
     start: function(){
@@ -294,7 +334,7 @@ var requestor = {
 
     init: function(){
         requestor.start();
-        setInterval(requestor.start, 2000);
+//        setInterval(requestor.start, 2000);
     }
 
 
