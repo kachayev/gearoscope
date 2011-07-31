@@ -154,5 +154,7 @@ LOGGING = {
 }
 
 # Path to sonar daemon configuration file
+# Don't fogget, that running sonar daemon
+# should have permissions to read/write this file
 SONAR_CONFIGURATION_FILE = '/var/log/gearoscope.log'
 
