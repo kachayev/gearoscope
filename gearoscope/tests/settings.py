@@ -22,7 +22,7 @@ STUB_TASKS_ARGS = {
 
 # Time delay in seconds between to generator's tic
 # Leave current value as 1.0 and tasks will be generating once per each second
-STUB_TASKS_FREQUENCY = 1.0
+STUB_TASKS_FREQUENCY = 10.0
 
 # Time delay in seconds between gearman worker pool operations
 # (for more information, look for SleepingGearmanWorker object implementation)
