@@ -31,7 +31,7 @@ class Server(models.Model):
     ssh_port = models.PositiveIntegerField(default=22, verbose_name='SSH port')
 
     def __unicode__(self):
-        '''Clean human-understanding string represantation for server node'''
+        '''Clean human-understanding string representation for server node'''
         return '%s (%s)' % (self.name, self.host)
 
 class ServerAdmin(admin.ModelAdmin):
@@ -97,7 +97,7 @@ class Gearman(models.Model):
         return '%s:%s' % (self.server.host, self.port)
 
 class GearmanAdmin(admin.ModelAdmin):
-    '''Params for gearman nodes managment via administrative panel'''
+    '''Params for gearman nodes management via administrative panel'''
     pass
 
 # Register gearman node manager in administration panel
@@ -120,7 +120,7 @@ class Supervisor(models.Model):
     port = models.PositiveIntegerField(default=9001)
 
     def __unicode__(self):
-        '''Clean human-understanding string represantation for supervisor daemon'''
+        '''Clean human-understanding string representation for supervisor daemon'''
         return '%s:%s' % (self.server.host, self.port)
 
     def crc_it(self):
@@ -229,7 +229,7 @@ class Worker(models.Model):
 
     def __unicode__(self):
         '''
-        Clean human-understanding string represantation for worker process
+        Clean human-understanding string representation for worker process
         Contains process name and full string representation for supervisor model
         object (see below for more details)
         '''
