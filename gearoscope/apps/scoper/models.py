@@ -32,7 +32,14 @@ class Server(models.Model):
 
 class ServerAdmin(admin.ModelAdmin):
     '''Params for server nodes managment via administrative panel'''
-    pass
+    fieldsets = (
+        (None, {
+            'fields': ('host', 'name')
+        }),
+        ('SSH connection options', {
+            'fields': ('user', 'password', 'ssh_key', 'ssh_port')
+        }),
+    )
 
 admin.site.register(Server, ServerAdmin)
 
