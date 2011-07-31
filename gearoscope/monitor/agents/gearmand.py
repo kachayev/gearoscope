@@ -16,7 +16,7 @@ class StatusLogRecord(DictLogRecord):
 
     def __str__(self):
         queues  = len(self.message)
-        workers = reduce(operator.add, [q['workers'] for q in self.message], 0)
+        workers = reduce(operator.add, [int(q['workers']) for q in self.message], 0)
 
         self.message = {'queues': queues, 'workers': workers}
         return DictLogRecord.__str__(self)
