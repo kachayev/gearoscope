@@ -13,19 +13,20 @@ Gearoscope is designed with ideas of scalability in our minds.
 
 ### Install
 
-1. Prepate all necessary environments:
+Prepate all necessary environments:
 
 - install and run gearman nodes on necessary servers
 
 - install supervisor daemons for workers handling
 
-2. Install and run monitor daemon and visual interface for managing it:
+Install and run monitor daemon and visual interface for managing it:
 
     wget -O gearoscope.tar.gz https://github.com/kachayev/gearoscope/tarball/master	
     tar xvzf gearoscope.tar.gz
     cd gearoscope
     pip install -e ./
 
+More information will be available soon.
 
 ### TODOs
 
