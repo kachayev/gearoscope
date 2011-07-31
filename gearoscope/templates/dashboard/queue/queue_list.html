@@ -6,7 +6,7 @@
     <ul id="queues_list">
         {% for node_name, item in params.gearmans.iteritems %}
             {% for queue_name, queue in item.stats.iteritems %}
-                <li class="queue_item qi_{{ node_name }}_{{ queue_name }}">
+                <li class="queue_item" id="qi_{{ node_name }}_{{ queue_name }}">
                     {% include 'dashboard/queue/queue.html' %}
                 </li>
             {% endfor %}
