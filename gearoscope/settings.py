@@ -166,5 +166,5 @@ SONAR_LOG_FILE = os.path.join(WORKDIR, 'data', 'sonar.log')
 SONAR_CONFIGURATION_FILE = os.path.join(WORKDIR, 'data', 'sonar.conf')
 
 # Maximum records to read from sonar log file
-DASHBOARD_LOG_LIMIT = 10000
+DASHBOARD_LOG_LIMIT = 1000
 
