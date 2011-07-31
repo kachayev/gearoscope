@@ -268,7 +268,7 @@ def rewrite_server_configuration(sender, **kwargs):
     Rewriter().rebuild('server:%s' % server.name, info).save()
 
 @receiver(post_save, sender=Gearman)
-def rewrite_server_configuration(sender, **kwargs):
+def rewrite_gearman_configuration(sender, **kwargs):
     '''
     Rewrite monitor daemon configuration in order to keep
     monitoring logs up-to-date
@@ -280,4 +280,25 @@ def rewrite_server_configuration(sender, **kwargs):
     server  = gearman.server.name
 
     Rewriter().rebuild('gearman:%s' % server, {'server': server, 'port': port}).save()
+
+@receiver(post_save, sender=Supervisor)
+def rewrite_supervisor_configuration(sender, **kwargs):
+    '''
+    Rewrite monitor daemon configuration in order to keep
+    monitoring logs up-to-date
+
+    To handle global identification for running remote supervisor daemon,
+    we should save in monitoring configuration server host and port
+    According to goals for retrieving from supervisor information only
+    about necessary workers/subworkers, we should also save list of
+    process names (and groups in future)
+    '''
+    supervisor = kwargs['instance']
+    server = supervisor.server.name
+
+    # To build map of all necessary worker name,
+    # we should iterate per each worker and join names
+    names = ','.join([worker.name for worker in Worker.objects.filter(supervisor=supervisor)])
+
+    Rewriter().rebuild('supervisor:%s' % server, {'server': server, 'port': port, 'names': names}).save()
 
