@@ -279,8 +279,9 @@ def rewrite_gearman_configuration(sender, **kwargs):
     gearman = kwargs['instance']
     server  = gearman.server.name
 
-    Rewriter().rebuild('gearman:%s' % server, {'server': server, 'port': port}).save()
+    Rewriter().rebuild('gearman:%s' % server, {'server': server, 'port': gearman.port}).save()
 
+@receiver(post_save, sender=Worker)
 @receiver(post_save, sender=Supervisor)
 def rewrite_supervisor_configuration(sender, **kwargs):
     '''
@@ -293,12 +294,13 @@ def rewrite_supervisor_configuration(sender, **kwargs):
     about necessary workers/subworkers, we should also save list of
     process names (and groups in future)
     '''
-    supervisor = kwargs['instance']
+    supervisor = kwargs['instance'] if sender == Supervisor else kwargs['instance'].supervisor
     server = supervisor.server.name
 
     # To build map of all necessary worker name,
     # we should iterate per each worker and join names
     names = ','.join([worker.name for worker in Worker.objects.filter(supervisor=supervisor)])
 
-    Rewriter().rebuild('supervisor:%s' % server, {'server': server, 'port': port, 'names': names}).save()
+    Rewriter().rebuild('supervisor:%s' % server,
+                       {'server': server, 'port': supervisor.port, 'names': names}).save()
 
