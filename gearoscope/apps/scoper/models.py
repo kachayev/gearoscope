@@ -7,7 +7,8 @@ class Server(models.Model):
 
     Should be allocated by host and other SSH access params (user, password, port etc). SSH connection
     is necessary for working with PS on remote machine (this will be necessary
-    to get information about each worker status)
+    to get information about each worker status). Host should be valid IP address or named host,
+    which could be resolved by network facilities.
 
     Server model will be used from other models to create relation between process
     and supervisors to concrete physical server node
@@ -56,7 +57,20 @@ class ServerAdmin(admin.ModelAdmin):
 admin.site.register(Server, ServerAdmin)
 
 class Gearman(models.Model):
-    '''Gearman node instance'''
+    '''
+    Gearman node instance
+
+    Gearman node will be used in code for providing params to GearmanAdminClient
+    (blocking socket client). To establish connection, we should provide server's host
+    (will be taked from foreign object Server) and port (remote socket). According to
+    protocol specification, default port is 4730, but it can be change via gearman daemon
+    running params.
+
+    More information about protocol specification you can find in oficial Gearman documentation:
+        http://gearman.org/index.php?id=protocol
+    or in documentation to Python client:
+        http://packages.python.org/gearman/
+    '''
     server = models.ForeignKey(Server)
     port = models.PositiveIntegerField(default=4730)
 
