@@ -9,10 +9,21 @@ import logging
 
 def index(request):
 
-    workers = Workers().get_workers()
+#    workers = Workers().get_workers()
     servers = Server.objects.all()
     supervisords = Supervisor.objects.all()
     gearmans = Gearman.objects.all()
+
+    reader = Reader(settings.SONAR_LOG_FILE)
+    gearman_log = GearmanLogReader(reader)
+    params = {}
+    params['gearmans'] = {}
+    for gearman in Gearman.objects.all():
+        params['gearmans'][gearman.crc_it()] = gearman_log.get_records_for(gearman)
+
+    for item in params['gearmans'].itervalues():
+        for queue in item['stats']:
+            logging.error(queue)
 
     return render_to_response('dashboard/index.html', locals())
 

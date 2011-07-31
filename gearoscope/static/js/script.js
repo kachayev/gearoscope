@@ -141,6 +141,14 @@ var queue = {
         return this;
     },
 
+    get_all: function(){
+        return $('#queues_list .queue_details');
+    },
+
+    get_id: function(){
+        return $(this.item).attr('id').split('_').slice(-2);
+    },
+
     collapseWorkers:function(){
         $(this.item).find('.worker_details').each(function(){
             worker.setItem(this).collapse();
@@ -167,14 +175,51 @@ var queue = {
         return $(this.item).hasClass('collapsed');
     },
 
+    appendPoint: function(points, key, value){
+        if(typeof points == 'undefined'){
+            points = [];
+        }
+        if(typeof(value) == 'undefined'){
+            value = 0;
+        }
+        points.push([key, value]);
+        points = points.slice(-30);
+        return points;
+    },
+
     update: function(){
         var qdata = $(this.item).data('queue-data');
-        $(this.item).find('.queue_stats .cpu_value, .queue_headline .cpu_value').html('' + qdata.cpu_value + '%').end()
-            .find('.queue_stats .mem_value, .queue_headline .mem_value').html('' + qdata.memory_value + '%').end()
-            .find('.queue_stats .workers_value, .queue_headline .workers_value').html(qdata.workers_value).end();
 
-        $(this.item).find('.queue_stats .cpu.progress').width(Math.min(Math.max(qdata.cpu_value, 1), 99)+'%');
-        $(this.item).find('.queue_stats .memory.progress').width(Math.min(Math.max(qdata.memory_value, 1), 99)+'%');
+        var counter = $(this.item).data('counter') || 0;
+
+        $(this.item)
+            //.find('.queue_stats .cpu_value, .queue_headline .cpu_value').html('' + qdata.cpu_value + '%').end()
+            //.find('.queue_stats .mem_value, .queue_headline .mem_value').html('' + qdata.memory_value + '%').end()
+            .find('.queue_stats .workers_value, .queue_headline .workers_value').html(qdata.params.workers).end();
+
+//        $(this.item).find('.queue_stats .cpu.progress').width(Math.min(Math.max(qdata.cpu_value, 1), 99)+'%');
+//        $(this.item).find('.queue_stats .memory.progress').width(Math.min(Math.max(qdata.memory_value, 1), 99)+'%');
+        
+        var run_points = this.appendPoint($(this.item).data('run_points'), counter, qdata.params.running);
+        $(this.item).data('run_points', run_points);
+
+        var queued_points = this.appendPoint($(this.item).data('queued_points'), counter, qdata.params.queued);
+        $(this.item).data('queued_points', queued_points);
+
+        $(this.item).data('counter', counter + 1);
+
+        $.plot($(this.item).find('.graph_holder'), [
+            {
+                data: run_points,
+                lines: {show:true, fill:true},
+                color: "rgb(0,255,0)"
+            },{
+                data: queued_points,
+                lines: {show:true, fill:true},
+                color: "rgb(22,150,255)"
+            }
+        ]);
+        
         return this;
     },
 
@@ -182,13 +227,13 @@ var queue = {
         
     },
 
-    setData: function(){
-        //this is stub
-        var d = {
-            cpu_value: Math.round(Math.random() * 100),
-            memory_value: Math.round(Math.random() * 100),
-            workers_value: Math.round(Math.random() * 10)
-        };
+    setData: function(d){
+//        //this is stub
+//        var d = {
+//            cpu_value: Math.round(Math.random() * 100),
+//            memory_value: Math.round(Math.random() * 100),
+//            workers_value: Math.round(Math.random() * 10)
+//        };
         
         $(this.item).data('queue-data', d);
         
@@ -279,14 +324,11 @@ var supervisords = {
     update: function(){
         var svList = $('#supervisords').find('#supervisords_list');
 
-        console.log(this.data);
         for(i in this.data){
             var sv = this.data[i];
 
             if(sv.length > 0){
-                console.log(sv.length);
                 var content =  $.tmpl(this.template_item, sv);
-                console.log(content);
                 svList.find('#supervisord_' + i + ' .logHistory').prepend(content);
                 svList.find('#supervisord_' + i + ' .logHistory li:gt(10)').remove();
             }
@@ -336,11 +378,19 @@ var requestor = {
             var wobj = worker.setItem(workers[i]);
             wobj.setData(data['workers'][wobj.get_id()]).update();
         }
+
+
+        var qList = queue.get_all().toArray();
+        for(i in qList){
+            var qItem = queue.setQueue(qList[i]);
+            var ids = queue.get_id();
+            qItem.setData(data['gearmans'][ids[0]]['stats'][ids[1]]).update();
+        }
     },
 
     init: function(){
         requestor.start();
-//        setInterval(requestor.start, 2000);
+        setInterval(requestor.start, 2000);
     }
 
 
