@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.admin.sites import AlreadyRegistered
+import binascii
 
 def register(model_handler, admin_handler):
     '''Register handlers to admin site, ignoring already registered exception'''
@@ -87,7 +88,8 @@ class Gearman(models.Model):
         '''Clean human-understanding string representation for gearman node'''
         return '%s:%s' % (self.server.host, self.port)
 
-    def crc_it(self):
+    @property
+    def crc(self):
         return abs(binascii.crc32(self.__unicode__()))
 
 class GearmanAdmin(admin.ModelAdmin):
@@ -117,7 +119,8 @@ class Supervisor(models.Model):
         '''Clean human-understanding string representation for supervisor daemon'''
         return '%s:%s' % (self.server.host, self.port)
 
-    def crc_it(self):
+    @property
+    def crc(self):
         return abs(binascii.crc32(self.__unicode__()))
 
 class SupervisorAdmin(admin.ModelAdmin):
