@@ -179,21 +179,31 @@ class ProcessLogReader(object):
 
             params = {}
 
-            reg = re.compile(r' pid\: ([\d]+) ')
-            params['pid'] = reg.findall(' ' + entry.message + ' ').pop()
-            
-            reg = re.compile(r' from\: ([^:]+) ')
-            params['from'] = reg.findall(' ' + entry.message + ' ').pop()
+            m = '- %s -' % entry.message
+            try:
+                reg = re.compile(r' pid\: ([\d]+) ')
+                params['pid'] = reg.findall(m).pop()
 
-            reg = re.compile(r' mem\: \[([^:]+)\] ')
-            res = reg.findall(' ' + entry.message + ' ').pop()
-            reg = re.compile(r'percent=([\.\d]+)')
-            params['mem'] = reg.findall(res).pop()
+                reg = re.compile(r' from\: ([^:]+) ')
+                params['from'] = reg.findall(m).pop()
+            except Exception, e:
+                continue
 
-            reg = re.compile(r' cpu\: \[([^:]+)\] ')
-            res = reg.findall(' ' + entry.message + ' ').pop()
-            reg = re.compile(r'percent=([\.\d]+)')
-            params['cpu'] = reg.findall(res).pop()
+            try:
+                reg = re.compile(r' mem\: \[([^:\]]+)\]')
+                res = reg.findall(m).pop()
+                reg = re.compile(r'percent=([\.\d]+)')
+                params['mem'] = reg.findall(res).pop()
+            except Exception, e:
+                params['mem'] = 0
+
+            try:
+                reg = re.compile(r' cpu\: \[([^:]+)\]')
+                res = reg.findall(m).pop()
+                reg = re.compile(r'percent=([\.\d]+)')
+                params['cpu'] = reg.findall(res).pop()
+            except Exception, e:
+                params['cpu'] = 0
 
 #            print params
 
