@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.utils import simplejson
-from models import Process, Supervisor, Workers
-from scoper.models import Server, ServerLogReader, Supervisor, SupervisorLogReader, Gearman, GearmanLogReader
+from models import *
+from scoper.models import Server, Supervisor, Gearman
 from monitor.reader import Reader
 from django.conf import settings
 import logging
@@ -46,7 +46,6 @@ def dashboard(request):
     for gearman in Gearman.objects.all():
         response['gearmans'][gearman.crc_it()] = gearman_log.get_records_for(gearman)
 
-    
 
     response['workers'] = {}
 
