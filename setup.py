@@ -24,7 +24,7 @@ except ImportError:
     pass
 
 kwargs = {}
-version = '0.0.8'
+version = '0.0.10'
 
 with open(os.path.join(os.path.dirname(__file__), 'requirements.txt')) as f:
     requirements = [line.strip() for line in f.readlines() if line.strip() != '' and line.strip()[:2] != '-e']
