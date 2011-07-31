@@ -2,10 +2,10 @@
 
 var initStubs = function(){
 
-    $('.add_worker').live('click', function(e) {
-        e.preventDefault();
-        alert("Not Ready Yet");
-    });
+//    $('.add_worker').live('click', function(e) {
+//        e.preventDefault();
+//        alert("Not Ready Yet");
+//    });
 
     $('.stop_worker, .restart_worker, .delete_worker').live('click', function(e) {
         e.preventDefault();
