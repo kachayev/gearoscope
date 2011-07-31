@@ -19,6 +19,8 @@ class Reader(object):
         return lines[:size]
 
 class MonitorEntry(object):
+    '''One line from log representation'''
+
     __slots__=('time', 'sender', 'level', 'code', 'message')
 
     LEVELS = ['debug', 'info', 'error', 'critical']
@@ -32,6 +34,7 @@ class MonitorEntry(object):
 
     @staticmethod
     def extract(line):
+        '''Will cat from left side of line Time, Sender and Level marks'''
         parts = line.strip().split()
         return MonitorEntry(' '.join(parts[:2]), parts[2], parts[3], ' '.join(parts[4:]))
 
