@@ -3,7 +3,8 @@ from django.shortcuts import render_to_response
 from django.utils import simplejson
 from models import Process, Supervisor, Workers
 from scoper.models import Server, ServerLogReader, Supervisor, SupervisorLogReader
-from monitor.reader import reader
+from monitor.reader import Reader
+from django.conf import settings
 import logging
 
 def index(request):
@@ -18,6 +19,8 @@ def dashboard(request):
     response = {'result': 'ok'}
 
 #    try:
+    reader = Reader(settings.SONAR_LOG_FILE)
+    
     response['servers'] = []
     server_log = ServerLogReader(reader)
     servers = Server.objects.all()
