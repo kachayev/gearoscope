@@ -113,18 +113,45 @@ class SupervisorAdmin(admin.ModelAdmin):
 admin.site.register(Supervisor, SupervisorAdmin)
 
 class Worker(models.Model):
-    '''Worker process instance'''
+    '''
+    Worker process instance
+
+    Stop signal params will be used by supervisor during start/restart calls. What signal to use
+    in order to stop execution of you process in best way dependce on process implementation. Full
+    list of signal and more information about it, you can find here:
+    http://www.cs.pitt.edu/~alanjawi/cs449/code/shell/UnixSignals.htm
+    '''
+    SIGHUP = 1
+    SIGINT = 2
+    SIGQUIT = 3
+    SIGKILL = 9
+    SIGTERM = 15
+    SIGUSR1 = 16
+    SIGUSR2 = 17
+
+    SIGNAL_CHOICES = (
+        (SIGHUP,  u'HUP'),
+        (SIGINT,  u'INT'),
+        (SIGQUIT, u'QUIT')
+        (SIGKILL, u'KILL')
+        (SIGTERM, u'TERM')
+        (SIGUSR1, u'USR1')
+        (SIGUSR2, u'USR2')
+    )
+
+    # Identity required params
     supervisor = models.ForeignKey(Supervisor)
     name = models.CharField(max_length=70)
 
+    # General required params
     command = models.CharField(max_length=255)
     process_name = models.CharField(max_length=70)
-    numprocs = models.PositiveSmallIntegerField(default=1)
+    numprocs = models.PositiveSmallIntegerField(default=1, blank=True, null=True)
 
-    directory = models.CharField(max_length=255, default='/')
-    umask = models.CharField(max_length=4, default='022')
-    user = models.CharField(max_length=255)
-    priority = models.PositiveIntegerField(default=999)
+    directory = models.CharField(max_length=255, default='/', blank=True, null=True)
+    umask = models.CharField(max_length=4, default='022', blank=True, null=True)
+    user = models.CharField(max_length=255, blank=True, null=True)
+    priority = models.PositiveIntegerField(default=999, blank=True, null=True)
     environment = models.CharField(max_length=255, default='', blank=True)
 
     autostart = models.BooleanField(default=True)
@@ -134,18 +161,16 @@ class Worker(models.Model):
     stopwaitsecs = models.PositivIntegerField(default=10)
 
     exitcodes = models.CommaSeparatedIntegerField(default='0,2')
-    # Change to choise field
-    # Use QUIT, TERM and several other signals
-    stopsignal = models.CharField(max_length=50, default='TERM')
+    stopsignal = models.IntegerField(default=SIGTERM, choices=SIGNAL_CHOICES)
 
     redirect_stderr = models.BooleanField(default=False)
     stdout_logfile = models.CharField(max_length=255)
     stdout_logfile_maxbytes = models.PositiveIntegerField(default=1)
-    stdout_logfile_backups = models.PositiveSmallIntegerField(default=10)
+    stdout_logfile_backups = models.PositiveIntegerField(default=10)
     stdout_capture_maxbytes = models.PositiveIntegerField(default=1)
     stderr_logfile = models.CharField(max_length=50, blank=True)
     stderr_logfile_maxbytes = models.PositiveIntegerField(default=1)
-    stderr_logfile_backups = models.PositiveSmallIntegerField(default=10)
+    stderr_logfile_backups = models.PositiveIntegerField(default=10)
     stderr_capture_maxbytes = models.PositiveIntegerField(default=1)
 
     def __unicode__(self):
