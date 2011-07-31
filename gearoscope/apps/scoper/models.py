@@ -265,7 +265,7 @@ def rewrite_server_configuration(sender, **kwargs):
     Rewriter().rebuild('server:%s' % server.name, info).save()
 
 @receiver(post_save, sender=Gearman)
-def rewrite_server_configuration(sender, **kwargs):
+def rewrite_gearman_configuration(sender, **kwargs):
     '''
     Rewrite monitor daemon configuration in order to keep
     monitoring logs up-to-date
