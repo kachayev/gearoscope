@@ -9,7 +9,6 @@ import logging
 
 def index(request):
 
-#    workers = Workers().get_workers()
     servers = Server.objects.all()
     supervisords = Supervisor.objects.all()
     gearmans = Gearman.objects.all()
@@ -27,7 +26,7 @@ def index(request):
 
     proceses = get_processes(reader)
 
-    workers = get_workers(supervisords, proceses)
+    workers = get_workers(get_supervisords(reader), proceses)
 
     return render_to_response('dashboard/index.html', locals())
 
@@ -86,7 +85,7 @@ def get_workers(supervisords, processes):
 
                 if sup_proc['params']['pid'] == proc['pid']:
                     key = sup_proc['params']['name']
-                    if key not in response['workers']:
+                    if key not in workers:
                         workers[key] = {}
                     workers[key][proc_id] = proc
 

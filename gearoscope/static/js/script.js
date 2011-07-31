@@ -79,28 +79,30 @@ var worker = {
 
     update: function(){
         var wdata = $(this.item).data('worker-data');
-        
-        $(this.item).find('.worker_stats .cpu_value').html('' + wdata.cpu_value + '%').end()
-            .find('.worker_stats .mem_value').html('' + wdata.memory_value + '%').end()
-            .find('.worker_stats .task_value').html(wdata.task_value).end();
+        console.log(wdata);
+        console.log(wdata.cpu);
 
-        $(this.item).find('.worker_stats .cpu.progress').width(Math.min(Math.max(wdata.cpu_value, 1), 99)+'%');
-        $(this.item).find('.worker_stats .memory.progress').width(Math.min(Math.max(wdata.memory_value, 1), 99)+'%');
+        $(this.item).find('.worker_stats .cpu_value').html('' + wdata.cpu + '%').end()
+            .find('.worker_stats .mem_value').html('' + wdata.mem + '%').end();
+//            .find('.worker_stats .task_value').html(wdata.task_value).end();
+
+        $(this.item).find('.worker_stats .cpu.progress').width(Math.min(Math.max(wdata.cpu, 1), 99)+'%');
+        $(this.item).find('.worker_stats .memory.progress').width(Math.min(Math.max(wdata.mem, 1), 99)+'%');
 
         var counter = $(this.item).data('counter') || 0;
 
-        var cpu_points = this.appendPoint($(this.item).data('cpu-points'), counter, wdata.cpu_value);
+        var cpu_points = this.appendPoint($(this.item).data('cpu-points'), counter, wdata.cpu);
         $(this.item).data('cpu-points', cpu_points);
         
-        var mem_points = this.appendPoint($(this.item).data('memory-points'), counter, wdata.memory_value);
+        var mem_points = this.appendPoint($(this.item).data('memory-points'), counter, wdata.mem);
         $(this.item).data('memory-points', mem_points);
 
-        var task_points = this.appendPoint($(this.item).data('task-points'), counter, wdata.task_value);
-        $(this.item).data('task-points', task_points);
+//        var task_points = this.appendPoint($(this.item).data('task-points'), counter, wdata.task_value);
+//        $(this.item).data('task-points', task_points);
 
         $(this.item).data('counter', counter + 1);
 
-        $.plot($(this.item).find('.graph_holder'), [
+        $.plot($(this.item).find('.graph_holder_worker'), [
             {
                 data: cpu_points,
                 lines: {show:true, fill:true},
@@ -109,10 +111,6 @@ var worker = {
                 data: mem_points,
                 lines: {show:true, fill:true},
                 color: "rgb(22,150,255)"
-            },{
-                data: task_points,
-                lines: {show:true, fill:true},
-                color: "rgb(255,232,37)"
             }
         ]);
 
@@ -120,7 +118,13 @@ var worker = {
     },
     
     setData: function(d){
-        $(this.item).data('worker-data', d);
+
+        for (i in d){
+            if( typeof d[i] == 'object'){
+                $(this.item).data('worker-data', d[i]);
+                break;
+            }
+        }
 
         return this;
     }
@@ -208,7 +212,7 @@ var queue = {
 
         $(this.item).data('counter', counter + 1);
 
-        $.plot($(this.item).find('.graph_holder'), [
+        $.plot($(this.item).find('.graph_holder_queue'), [
             {
                 data: run_points,
                 lines: {show:true, fill:true},
@@ -390,7 +394,7 @@ var requestor = {
 
     init: function(){
         requestor.start();
-        setInterval(requestor.start, 2000);
+        setInterval(requestor.start, 5000);
     }
 
 

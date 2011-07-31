@@ -27,27 +27,27 @@
     </div>
     
 {# TODO: add graphic #}
-    <div class="graph_holder">
+    <div class="graph_holder_queue">
         [HERE WILL BE A GRAPHIC]
     </div>
 
 </div>
-{#<!--#}
-{#<div class="workers">#}
-{##}
-{#    <h4>Workers:#}
-{#        <a href="#" class="hide_all_workers small">hide all workers</a>#}
-{#        <a href="#" class="show_all_workers small">show all workers</a>#}
-{#    </h4>#}
-{##}
-    {#    TODO: create worker stub #}
-{#    <ul class="workers_list">#}
-{#        {% for worker in workers %} #}
-{#            <li>{% include 'dashboard/queue/worker.html' %}</li>#}
-{#        {% endfor %} #}
-{#    </ul>#}
-{#    #}
-{#</div>#}
-{#-->#}
+<div class="workers">
+
+    <h4>Workers:
+        <a href="#" class="hide_all_workers small">hide all workers</a>
+        <a href="#" class="show_all_workers small">show all workers</a>
+    </h4>
+
+
+    <ul class="workers_list">
+        {% for id, worker in workers.iteritems %}
+            {% if id == queue.params.task %}
+                <li>{% include 'dashboard/queue/worker.html' %}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+</div>
 
 

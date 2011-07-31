@@ -288,7 +288,7 @@ aside .block{
     background: rgba(0,0,0,0.15);
 }
 
-.queue_details .graph_holder{
+.queue_details .graph_holder_queue{
     float: left;
     height: 134px;
     margin-left: 10px;
@@ -420,7 +420,7 @@ aside .block{
     font-size: 14px;
 }
 
-.worker_details .graph_holder{
+.worker_details .graph_holder_worker{
     margin-left: 20px;
     width: 314px;
     height: 116px;
