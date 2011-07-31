@@ -147,12 +147,12 @@ class Worker(models.Model):
     command      = models.CharField(max_length=255)
     process_name = models.CharField(max_length=70)
     numprocs     = models.PositiveSmallIntegerField(default=1)
+    priority     = models.PositiveIntegerField(default=999, blank=True, null=True)
 
     # Field which describe process running params and env variables
     directory   = models.CharField(max_length=255, default='/', blank=True, null=True)
     umask       = models.CharField(max_length=4, default='022', blank=True, null=True)
     user        = models.CharField(max_length=255, blank=True, null=True)
-    priority    = models.PositiveIntegerField(default=999, blank=True, null=True)
     environment = models.CharField(max_length=255, default='', blank=True)
 
     # Param for starting and restarting process
@@ -188,8 +188,40 @@ class Worker(models.Model):
         return '%s @ %s' % (self.name, str(self.supervisor))
 
 class WorkerAdmin(admin.ModelAdmin):
-    '''Params for workers managment via administrative panel'''
-    pass
+    '''
+    Params for workers managment via administrative panel
+
+    Override params for fieldsets value in order to create two blocks:
+    # identity params (required)
+    # general process params (required)
+    # environment params
+    # start/stop/restart params
+    # logging params (hidden by default)
+
+    Most part of this field is non-required and should be edited on in "advanced admin mode"
+    '''
+    fieldsets = (
+        (None, {
+            'fields': ('supervisor', 'name')
+        }),
+        ('Supervisor params', {
+            'fields': ('command', 'process_name', 'numprocs', 'priority')
+        }),
+        ('Process environment configuration', {
+            'fields': ('directory', 'umask', 'user', 'environment')
+        }),
+        ('Start/restart/stop mechanism', {
+            'fields': ('autostart', 'autorestart', 'startsecs', 'startretries', 'stopwaitsecs',
+                       'exitcodes', 'stopsignal')
+        }),
+        ('Process logs and pipes', {
+            'classes': ('hide', ),
+            'description': 'Leave default values if you do not know exactly what you are doing',
+            'fields': ('redirect_stderr',
+                       'stdout_logfile', 'stdout_logfile_maxbytes', 'stdout_logfile_backups', 'stdout_capture_maxbytes',
+                       'stderr_logfile', 'stderr_logfile_maxbytes', 'stderr_logfile_backups', 'stderr_capture_maxbytes')
+        }),
+    )
 
 # Register workers manager in administration panel
 admin.site.register(Worker, WorkerAdmin)
