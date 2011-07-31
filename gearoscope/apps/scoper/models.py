@@ -109,6 +109,6 @@ class SupervisorAdmin(admin.ModelAdmin):
     '''Params for supervisor daemons managment via administrative panel'''
     pass
 
-# Register gearman node manager in administration panel
+# Register supervisor node manager in administration panel
 admin.site.register(Supervisor, SupervisorAdmin)
 
