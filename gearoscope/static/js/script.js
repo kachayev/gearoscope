@@ -4,12 +4,12 @@ var initStubs = function(){
 
     $('.add_worker').live('click', function(e) {
         e.preventDefault();
-        queue.setQueue(this).setData().update();
+        alert("Not Ready Yet");
     });
 
     $('.stop_worker, .restart_worker, .delete_worker').live('click', function(e) {
         e.preventDefault();
-        worker.setItem(this).setData().update();
+        alert("Not Ready Yet");
     });
     
 };
