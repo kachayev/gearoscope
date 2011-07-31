@@ -23,8 +23,9 @@ class Server(models.Model):
     password = models.CharField(blank=True, null=True, max_length='255',
                                 help_text='Password for SSH access to server')
     ssh_key  = models.TextField(blank=True, null=True,
+                                verbose_name='SSH key',
                                 help_text='Absolute path to SSH private key (in most cases OS will find it automaticaly)')
-    ssh_port = models.PositiveIntegerField(default=22)
+    ssh_port = models.PositiveIntegerField(default=22, verbose_name='SSH port')
 
     def __unicode__(self):
         '''Clean human-understanding string represantation for server node'''
@@ -37,6 +38,7 @@ class ServerAdmin(admin.ModelAdmin):
             'fields': ('host', 'name')
         }),
         ('SSH connection options', {
+            'description': 'Leave default values if you do not know exactly what you are doing',
             'fields': ('user', 'password', 'ssh_key', 'ssh_port')
         }),
     )
