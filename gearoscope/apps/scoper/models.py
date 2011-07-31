@@ -55,3 +55,19 @@ class ServerAdmin(admin.ModelAdmin):
 # Register server node manage-place in administration panel
 admin.site.register(Server, ServerAdmin)
 
+class Gearman(models.Model):
+    '''Gearman node instance'''
+    server = models.ForeignKey(Server)
+    port = models.PositiveIntegerField(default=4730)
+
+    def __unicode__(self):
+        '''Clean human-understanding string represantation for gearman node'''
+        return '%s:%s' % (self.server.host, self.post)
+
+class GearmanAdmin(admin.ModelAdmin):
+    '''Params for gearman nodes managment via administrative panel'''
+    pass
+
+# Register gearman node manager in administration panel
+admin.site.register(Gearman, GearmanAdmin)
+
