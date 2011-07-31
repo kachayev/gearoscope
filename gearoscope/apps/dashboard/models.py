@@ -2,7 +2,6 @@ import logging
 from django.db import models
 from datetime import datetime
 import random
-# Create your models here.
 
 
 class Server():
