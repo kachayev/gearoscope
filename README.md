@@ -17,3 +17,10 @@ Gearoscope is designed with ideas of scalability in our minds.
 2. Run `pip install -e ./`
 3. Add `include` directives to supervisor configuration and run supervisor daemon (or restart). This will launch two process: sonard.py monitoring system and django http server for dashboard viewing and servers configuration management.
 
+### TODOs
+
+- custom unique field for gearmand model
+
+- install section in documentation
+
+- do not repeat name in server string representation if host and name are the same
