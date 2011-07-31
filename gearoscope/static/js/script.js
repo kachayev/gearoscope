@@ -229,7 +229,6 @@ var queue = {
 var servers = {
 
     data: null,
-    template_log: 'serverLog',
     template_item: 'serverLogItem',
 
     setData: function(data){
@@ -239,25 +238,29 @@ var servers = {
     
     update: function(){
         var serverList = $('#servers').find('#servers_list');
-//        serverList.find('li').remove();
 
         for(i in this.data){
             var server = this.data[i];
-//            var li = $.tmpl(this.template_log, {name:i});
 
             if(server.records.length > 0){
                 var content =  $.tmpl(this.template_item, server.records);
                 serverList.find('#server_' + server.id + ' .logHistory').prepend(content);
+                serverList.find('#server_' + server.id + ' .logHistory li:gt(10)').remove();
             }
         }
         return this;
     },
     init: function(){
         $.template(this.template_item , '<li>${time} - ${server} - ${host} - ${ping}ms</li>');
-        $.template(this.template_log , '<li><a class="exp" href="#">+</a><ul class="logHistory"><li>This ${name} do not have info</li></ul></li>');
         $('#servers_list .exp').live('click', function(e){
             e.preventDefault();
-            $(this).parents('li').find('.logHistory li:gt(0)').toggle();
+            var history = $(this).parents('li').find('.logHistory');
+            if ($(history).hasClass('collapsed')){
+                $(history).removeClass('collapsed');
+            }else{
+                $(history).addClass('collapsed');
+            }
+
         });
     }
 };
