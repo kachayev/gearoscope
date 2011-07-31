@@ -2,10 +2,10 @@ from django.db import models
 from django.contrib import admin
 from django.contrib.admin.sites import AlreadyRegistered
 
-def register(model, admin):
+def register(model_handler, admin_handler):
     '''Register handlers to admin site, ignoring already registered exception'''
     try:
-        admin.site.register(model, admin)
+        admin.site.register(model_handler, admin_handler)
     except AlreadyRegistered:
         pass
 
