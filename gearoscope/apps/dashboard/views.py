@@ -23,12 +23,12 @@ def dashboard(request):
 
     for worker in Workers().get_workers():
         response['workers'][worker['id']] = Workers().get_data(worker['id'])
-            
+
 #    except Exception, e :
 #        response['result'] = 'error'
 #        logging.error(e.message)
 
     json = simplejson.dumps(response)
-    
+
     return HttpResponse(json, mimetype='application/json', content_type='json')
 

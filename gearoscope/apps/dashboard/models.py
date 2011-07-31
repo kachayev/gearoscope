@@ -1,11 +1,11 @@
-import logging
+import logging, random
+
 from django.db import models
 from datetime import datetime
 
 import random
 
-
-class Server():
+class Server(object):
 
     def get_servers(self):
         return [{'name':['localhost', 'remote', 'linode', 'rabbit', 'db', 'load_balancer'][i], 'id': i} for i in xrange(1, 3)]
@@ -33,7 +33,7 @@ class Server():
         return servers
 
 
-class Supervisor():
+class Supervisor(object):
 
     def getNames(self):
         return ['apache', 'nginx', 'sonar', 'mysql', 'redis']
@@ -52,7 +52,7 @@ class Supervisor():
         return [self.generateRecord() for i in xrange(10)]
 
 
-class Process():
+class Process(object):
 
     def generateRecord(self):
 
@@ -66,7 +66,7 @@ class Process():
             'host': '127.0.0.1',
             'name': random.choice(Supervisor().getNames()),
         }
-        
+
         pass
 
     def getData(self):
@@ -79,7 +79,7 @@ class Process():
     pass
 
 
-class Workers():
+class Workers(object):
 
     def get_workers(self):
         return [{'name':random.choice(['worker', 'tasker', 'trans']), 'id': i} for i in xrange(1, 4)]
@@ -90,7 +90,6 @@ class Workers():
                 'memory_value': random.randint(0, 100),
                 'task_value': random.randint(10, 40)
             }
-        
-        pass
 
+        pass
 
