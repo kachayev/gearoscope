@@ -4,11 +4,11 @@
     <a href="#" class="expand_queue" title="Show queue details">&dArr;</a>
     <a href="#" class="collapse_queue" title="Hide queue details">&rArr;</a>
     
-    <a href="#" class="short_info workers_value" title="Number of workers">5</a>
-    <a href="#" class="short_info mem_value" title="Memory">80%</a>
-    <a href="#" class="short_info cpu_value" title="CPU">55%</a>
+    <a href="#" class="short_info workers_value" title="Number of workers">{{ queue.params.workers }}</a>
+    <a href="#" class="hidden short_info mem_value" title="Memory">80%</a>
+    <a href="#" class="hidden short_info cpu_value" title="CPU">55%</a>
 
-    <h3>[Name of Queue]</h3>
+    <h3>{{ queue.params.task }}</h3>
 
 </div>
 
@@ -17,12 +17,12 @@
     <div class="queue_stats">
         
 {#        MAX VALUE FOR progress bar lengt is 99% #}
-        <p>CPU <span class="cpu_value">25%</span></p>
-        <p class="progress"><span class="cpu progress ir">&nbsp;</span></p>
-        <p>Memory <span class="mem_value">55%</span></p>
-        <p class="progress"><span class="memory progress ir">&nbsp;</span></p>
+        <p class="hidden">CPU <span class="cpu_value">25%</span></p>
+        <p class="hidden progress"><span class="cpu progress ir">&nbsp;</span></p>
+        <p class="hidden">Memory <span class="mem_value">55%</span></p>
+        <p class="hidden progress"><span class="memory progress ir">&nbsp;</span></p>
 {#        TODO: this but will not be implemented #}
-        <p class="workers_stats"><span class="workers_value">5</span> workers <button class="add_worker">+ add worker</button></p>
+        <p class="workers_stats"><span class="workers_value">{{ queue.params.workers }}</span> workers <button class="add_worker">+ add worker</button></p>
         
     </div>
     
@@ -32,22 +32,22 @@
     </div>
 
 </div>
-
-<div class="workers">
-
-    <h4>Workers:
-        <a href="#" class="hide_all_workers small">hide all workers</a>
-        <a href="#" class="show_all_workers small">show all workers</a>
-    </h4>
-
-{#    TODO: create worker stub #}
-    <ul class="workers_list">
-        {% for worker in workers %}
-            <li>{% include 'dashboard/queue/worker.html' %}</li>
-        {% endfor %}
-    </ul>
-    
-</div>
-
+{#<!--#}
+{#<div class="workers">#}
+{##}
+{#    <h4>Workers:#}
+{#        <a href="#" class="hide_all_workers small">hide all workers</a>#}
+{#        <a href="#" class="show_all_workers small">show all workers</a>#}
+{#    </h4>#}
+{##}
+    {#    TODO: create worker stub #}
+{#    <ul class="workers_list">#}
+{#        {% for worker in workers %} #}
+{#            <li>{% include 'dashboard/queue/worker.html' %}</li>#}
+{#        {% endfor %} #}
+{#    </ul>#}
+{#    #}
+{#</div>#}
+{#-->#}
 
 
