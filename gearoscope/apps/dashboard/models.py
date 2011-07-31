@@ -33,24 +33,6 @@ class Server(object):
         return servers
 
 
-class Supervisor(object):
-
-    def getNames(self):
-        return ['apache', 'nginx', 'sonar', 'mysql', 'redis']
-
-    def getStatuses(self):
-        return ['running', 'stoped', 'restarting', 'crashed']
-
-    def generateRecord(self):
-        name = random.choice(self.getNames())
-        pid = random.randint(10000, 30000)
-
-        return {'name': name, 'host':'localhost', 'port': random.randint(100, 1000), 'time': datetime.now().strftime('%H:%M:%S'), 'status': random.choice(self.getStatuses())}
-
-    def getData(self):
-
-        return [self.generateRecord() for i in xrange(10)]
-
 
 class Process(object):
 
