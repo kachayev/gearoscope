@@ -328,7 +328,8 @@ var supervisords = {
 
         for(i in this.data){
             var sv = this.data[i];
-
+            console.log('aha');
+            console.log(sv.slice(10).length);
             if(sv.length > 0){
                 var content =  $.tmpl(this.template_item, sv);
                 svList.find('#supervisord_' + i + ' .logHistory').prepend(content);
