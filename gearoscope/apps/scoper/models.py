@@ -1,7 +1,8 @@
+import binascii
+
 from django.db import models
 from django.contrib import admin
 from django.contrib.admin.sites import AlreadyRegistered
-import binascii
 
 def register(model_handler, admin_handler):
     '''Register handlers to admin site, ignoring already registered exception'''
@@ -233,7 +234,7 @@ class WorkerAdmin(admin.ModelAdmin):
                        'exitcodes', 'stopsignal')
         }),
         ('Process logs and pipes', {
-            'classes': ('hide', ),
+            'classes': ('collapse', ),
             'description': 'Leave default values if you do not know exactly what you are doing',
             'fields': ('redirect_stderr',
                        'stdout_logfile', 'stdout_logfile_maxbytes', 'stdout_logfile_backups', 'stdout_capture_maxbytes',

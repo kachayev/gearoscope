@@ -10,6 +10,9 @@ It provides both:
 
 Gearoscope is designed with ideas of scalability in our minds.
 
+### License
+
+See LICENSE.txt for more information
 
 ### Install
 
