@@ -99,13 +99,16 @@ var worker = {
         $.plot($(this.item).find('.graph_holder'), [
             {
                 data: cpu_points,
-                lines: {show:true, fill:true}
+                lines: {show:true, fill:true},
+                color: "rgb(0,255,0)"
             },{
                 data: mem_points,
-                lines: {show:true, fill:true}
+                lines: {show:true, fill:true},
+                color: "rgb(22,150,255)"
             },{
                 data: task_points,
-                lines: {show:true, fill:true}
+                lines: {show:true, fill:true},
+                color: "rgb(255,232,37)"
             }
         ]);
 
@@ -223,7 +226,6 @@ var queue = {
             });
         });
     }
-    
 };
 
 
@@ -264,8 +266,6 @@ var servers = {
             $(this).parents('li').find('.logHistory li:gt(0)').toggle();
         });
     }
-
-    
 };
 
 
@@ -288,7 +288,7 @@ var requestor = {
         }
 
         servers.setData(data['servers']).update();
-        
+
     }
 
 
