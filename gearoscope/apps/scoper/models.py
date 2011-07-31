@@ -148,18 +148,12 @@ class SupervisorLogReader(object):
         records = []
 
         for entry in SupervisorLogReader.log:
-            logging.error(entry.sender)
-            logging.error(SupervisorLogReader.sender)
             if entry.sender != SupervisorLogReader.sender:
                 continue
                 
             params = dict(zip(map(lambda i: i.strip(':'), entry.message.split()[::2]), entry.message.split()[1::2]))
-            logging.error(params)
-            logging.error(supervisor_signature)
-            logging.error(params['from'].rstrip(']').lstrip('['))
 
             if params['from'].rstrip(']').lstrip('[') == supervisor_signature:
-                logging.error('found our wisard')
                 records.append({'time': entry.time, 'level': entry.level, 'message': entry.message, 'params': params})
 
         records.sort(key=lambda x: x['time'])
