@@ -9,16 +9,23 @@ class StatusLogRecord(DictLogRecord):
     Formatter for information about general gearman node status,
     aggregate workers and queues field for this
     '''
+    __slots__ = ('scheme', 'message', 'server')
+
     scheme = {
         'queues': '%(queues)s',
         'workers': '%(workers)s',
+        'from': '%(from)s'
     }
+
+    def __init__(self, message, server=None):
+        self.message = message
+        self.server  = server
 
     def __str__(self):
         queues  = len(self.message)
-        workers = reduce(operator.add, [q['workers'] for q in self.message], 0)
+        workers = reduce(operator.add, [int(q['workers']) for q in self.message if type(q) == dict], 0)
 
-        self.message = {'queues': queues, 'workers': workers}
+        self.message = {'queues': queues, 'workers': workers, 'from': self.format(**self.server)}
         return DictLogRecord.__str__(self)
 
 class QueueLogRecord(DictLogRecord):
@@ -28,9 +35,17 @@ class QueueLogRecord(DictLogRecord):
         'workers': '%(workers)s',
         'running': '%(running)s',
         'queued': '%(queued)s',
+        'from': '%(from)s'
     }
 
+    def __init__(self, message, server=None):
+        self.message = message
+        self.message['from'] = server
+
     def __str__(self):
+        if type(self.message['from']) == dict:
+            self.message['from'] = self.format(**self.message['from'])
+
         return DictLogRecord.__str__(self)
 
 
@@ -68,9 +83,10 @@ class GearmanNodeAgent(object):
             status = self.client.get_status()
 
             # Put into log buffer
-            self.log.info(StatusLogRecord(status))
+            server = {'host': self.server.host, 'port': self.port}
+            self.log.info(StatusLogRecord(status, server=server))
             for queue in status:
-                self.log.info(QueueLogRecord(queue))
+                self.log.info(QueueLogRecord(queue, server=server))
 
         except GearmanErrors.ServerUnavailable, e:
             # Such error can be raised in two cases:
