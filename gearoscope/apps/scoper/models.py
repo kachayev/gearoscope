@@ -60,7 +60,7 @@ admin.site.register(Server, ServerAdmin)
 
 class ServerLogReader(object):
     log = []
-    
+
     def __init__(self, reader):
         ServerLogReader.log = reader.tail(100)
 
@@ -150,7 +150,7 @@ class SupervisorLogReader(object):
         for entry in SupervisorLogReader.log:
             if entry.sender != SupervisorLogReader.sender:
                 continue
-                
+
             params = dict(zip(map(lambda i: i.strip(':'), entry.message.split()[::2]), entry.message.split()[1::2]))
 
             if params['from'].rstrip(']').lstrip('[') == supervisor_signature:
