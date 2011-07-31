@@ -73,7 +73,7 @@ class GearmanNodeAgent(object):
         In future this information will be used  for collecting and grouping informations
         by running queues (with average load) and running worker processes
         """
-        self.log = Log.buffer('gearman', options.config.get('agent:gearman', 'log_buffer_file'))
+        self.log = Log.buffer('gearman')
 
         try:
             # Lazy connection if necessary...
