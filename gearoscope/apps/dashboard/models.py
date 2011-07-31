@@ -59,7 +59,7 @@ class ServerLogReader(object):
     log = []
 
     def __init__(self, reader):
-        ServerLogReader.log = reader.tail(100)
+        ServerLogReader.log = reader.tail(10000)
 
     def get_records_for(self, server):
 #        TODO: implement server reader
@@ -76,7 +76,7 @@ class GearmanLogReader(object):
     sender = 'gearman'
 
     def __init__(self, reader):
-        GearmanLogReader.log = reader.tail(1000)
+        GearmanLogReader.log = reader.tail(10000)
 
     def get_summary(self, records):
         for record in records:
@@ -124,7 +124,7 @@ class SupervisorLogReader(object):
     sender = 'supervisor'
 
     def __init__(self, reader):
-        SupervisorLogReader.log = reader.tail(1000)
+        SupervisorLogReader.log = reader.tail(10000)
 #        print [ i.message for i in SupervisorLogReader.log]
 
     def get_records_for(self, supervisor):
@@ -150,7 +150,7 @@ class ProcessLogReader(object):
     sender = 'process'
 
     def __init__(self, reader):
-        ProcessLogReader.log = reader.tail(1000)
+        ProcessLogReader.log = reader.tail(10000)
 
     def get_records(self):
 
