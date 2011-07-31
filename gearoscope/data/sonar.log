@@ -1,0 +1,101 @@
+2011-07-30 22:42:34,965 PROCESS      DEBUG    Get task <sonar.agents.process.Process object at 0x2730320> from queue
+2011-07-30 22:42:34,965 SONAR        INFO     Main threading started [4 agents up]
+2011-07-30 22:42:34,965 SUPERVISOR   INFO     PID: 3674 STATE: RUNNING GROUP: multiple NAME: multiple FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:42:34,969 SUPERVISOR   DEBUG    Put task <sonar.agents.process.Process object at 0x2730500> to queue
+2011-07-30 22:42:34,969 SUPERVISOR   INFO     PID: 3678 STATE: RUNNING GROUP: reverse NAME: reverse FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:42:34,970 PROCESS      DEBUG    Get task <sonar.agents.process.Process object at 0x2730500> from queue
+2011-07-30 22:42:34,973 SUPERVISOR   INFO     PID: 0 STATE: FATAL GROUP: sum NAME: sum FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:42:35,072 PROCESS      INFO     USERNAME: root MEM: [info=meminfo(rss=7188480, vms=38723584),percent=0.227480706266] PID: 3674 CMDLINE: pythonenv_stub/workers/multiple.py RUNNING: True UIDS: user(real=0, effective=0, saved=0) FROM: root@127.0.0.1 NAME: python CREATED: 1312027919.2 PPID: 902 CPU: [percent=0.0,times=cputimes(user=0.16, system=0.04)]
+2011-07-30 22:42:35,075 PROCESS      INFO     USERNAME: root MEM: [info=meminfo(rss=7188480, vms=38723584),percent=0.227480706266] PID: 3678 CMDLINE: pythonenv_stub/workers/reverse.py RUNNING: True UIDS: user(real=0, effective=0, saved=0) FROM: root@127.0.0.1 NAME: python CREATED: 1312027920.21 PPID: 902 CPU: [percent=0.0,times=cputimes(user=0.19, system=0.02)]
+2011-07-30 22:42:35,967 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:36,968 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:37,969 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:38,971 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:39,972 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:40,973 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:41,974 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:42,975 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:43,977 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:44,978 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:44,985 SUPERVISOR   DEBUG    Put task <sonar.agents.process.Process object at 0x2730500> to queue
+2011-07-30 22:42:44,985 SUPERVISOR   INFO     PID: 3674 STATE: RUNNING GROUP: multiple NAME: multiple FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:42:44,985 PROCESS      DEBUG    Get task <sonar.agents.process.Process object at 0x2730500> from queue
+2011-07-30 22:42:44,988 SUPERVISOR   DEBUG    Put task <sonar.agents.process.Process object at 0x2730730> to queue
+2011-07-30 22:42:44,988 SUPERVISOR   INFO     PID: 3678 STATE: RUNNING GROUP: reverse NAME: reverse FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:42:44,988 PROCESS      DEBUG    Get task <sonar.agents.process.Process object at 0x2730730> from queue
+2011-07-30 22:42:44,990 SUPERVISOR   INFO     PID: 0 STATE: FATAL GROUP: sum NAME: sum FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:42:45,087 PROCESS      INFO     USERNAME: root MEM: [info=meminfo(rss=7188480, vms=38723584),percent=0.227480706266] PID: 3674 CMDLINE: pythonenv_stub/workers/multiple.py RUNNING: True UIDS: user(real=0, effective=0, saved=0) FROM: root@127.0.0.1 NAME: python CREATED: 1312027919.2 PPID: 902 CPU: [percent=0.0,times=cputimes(user=0.16, system=0.04)]
+2011-07-30 22:42:45,091 PROCESS      INFO     USERNAME: root MEM: [info=meminfo(rss=7188480, vms=38723584),percent=0.227480706266] PID: 3678 CMDLINE: pythonenv_stub/workers/reverse.py RUNNING: True UIDS: user(real=0, effective=0, saved=0) FROM: root@127.0.0.1 NAME: python CREATED: 1312027920.21 PPID: 902 CPU: [percent=0.0,times=cputimes(user=0.19, system=0.02)]
+2011-07-30 22:42:45,980 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:46,981 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:47,990 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:48,992 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:49,993 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:50,994 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:51,995 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:52,997 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:53,998 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:54,999 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:55,010 SUPERVISOR   DEBUG    Put task <sonar.agents.process.Process object at 0x27309b0> to queue
+2011-07-30 22:42:55,010 SUPERVISOR   INFO     PID: 3674 STATE: RUNNING GROUP: multiple NAME: multiple FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:42:55,010 PROCESS      DEBUG    Get task <sonar.agents.process.Process object at 0x27309b0> from queue
+2011-07-30 22:42:55,020 SUPERVISOR   DEBUG    Put task <sonar.agents.process.Process object at 0x27308c0> to queue
+2011-07-30 22:42:55,021 SUPERVISOR   INFO     PID: 3678 STATE: RUNNING GROUP: reverse NAME: reverse FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:42:55,021 PROCESS      DEBUG    Get task <sonar.agents.process.Process object at 0x27308c0> from queue
+2011-07-30 22:42:55,026 SUPERVISOR   INFO     PID: 0 STATE: FATAL GROUP: sum NAME: sum FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:42:55,132 PROCESS      INFO     USERNAME: root MEM: [info=meminfo(rss=7188480, vms=38723584),percent=0.227480706266] PID: 3678 CMDLINE: pythonenv_stub/workers/reverse.py RUNNING: True UIDS: user(real=0, effective=0, saved=0) FROM: root@127.0.0.1 NAME: python CREATED: 1312027920.21 PPID: 902 CPU: [percent=0.0,times=cputimes(user=0.19, system=0.02)]
+2011-07-30 22:42:55,133 PROCESS      INFO     USERNAME: root MEM: [info=meminfo(rss=7188480, vms=38723584),percent=0.227480706266] PID: 3674 CMDLINE: pythonenv_stub/workers/multiple.py RUNNING: True UIDS: user(real=0, effective=0, saved=0) FROM: root@127.0.0.1 NAME: python CREATED: 1312027919.2 PPID: 902 CPU: [percent=0.0,times=cputimes(user=0.16, system=0.04)]
+2011-07-30 22:42:56,001 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:57,002 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:58,004 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:42:59,005 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:00,007 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:01,008 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:02,010 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:03,011 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:04,013 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:05,014 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:05,041 SUPERVISOR   DEBUG    Put task <sonar.agents.process.Process object at 0x27309b0> to queue
+2011-07-30 22:43:05,041 SUPERVISOR   INFO     PID: 3674 STATE: RUNNING GROUP: multiple NAME: multiple FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:43:05,041 PROCESS      DEBUG    Get task <sonar.agents.process.Process object at 0x27309b0> from queue
+2011-07-30 22:43:05,044 SUPERVISOR   DEBUG    Put task <sonar.agents.process.Process object at 0x2730780> to queue
+2011-07-30 22:43:05,044 SUPERVISOR   INFO     PID: 3678 STATE: RUNNING GROUP: reverse NAME: reverse FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:43:05,044 PROCESS      DEBUG    Get task <sonar.agents.process.Process object at 0x2730780> from queue
+2011-07-30 22:43:05,048 SUPERVISOR   INFO     PID: 0 STATE: FATAL GROUP: sum NAME: sum FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:43:05,143 PROCESS      INFO     USERNAME: root MEM: [info=meminfo(rss=7188480, vms=38723584),percent=0.227480706266] PID: 3674 CMDLINE: pythonenv_stub/workers/multiple.py RUNNING: True UIDS: user(real=0, effective=0, saved=0) FROM: root@127.0.0.1 NAME: python CREATED: 1312027919.2 PPID: 902 CPU: [percent=0.0,times=cputimes(user=0.16, system=0.04)]
+2011-07-30 22:43:05,146 PROCESS      INFO     USERNAME: root MEM: [info=meminfo(rss=7188480, vms=38723584),percent=0.227480706266] PID: 3678 CMDLINE: pythonenv_stub/workers/reverse.py RUNNING: True UIDS: user(real=0, effective=0, saved=0) FROM: root@127.0.0.1 NAME: python CREATED: 1312027920.21 PPID: 902 CPU: [percent=0.0,times=cputimes(user=0.19, system=0.02)]
+2011-07-30 22:43:06,015 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:07,017 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:08,018 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:09,020 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:10,022 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:11,023 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:12,024 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:13,026 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:14,027 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:15,028 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:15,057 SUPERVISOR   DEBUG    Put task <sonar.agents.process.Process object at 0x2730780> to queue
+2011-07-30 22:43:15,057 SUPERVISOR   INFO     PID: 3674 STATE: RUNNING GROUP: multiple NAME: multiple FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:43:15,058 PROCESS      DEBUG    Get task <sonar.agents.process.Process object at 0x2730780> from queue
+2011-07-30 22:43:15,059 SUPERVISOR   DEBUG    Put task <sonar.agents.process.Process object at 0x2730e10> to queue
+2011-07-30 22:43:15,060 SUPERVISOR   INFO     PID: 3678 STATE: RUNNING GROUP: reverse NAME: reverse FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:43:15,063 SUPERVISOR   INFO     PID: 0 STATE: FATAL GROUP: sum NAME: sum FROM: [host=127.0.0.1,port=9001]
+2011-07-30 22:43:15,064 PROCESS      DEBUG    Get task <sonar.agents.process.Process object at 0x2730e10> from queue
+2011-07-30 22:43:15,164 PROCESS      INFO     USERNAME: root MEM: [info=meminfo(rss=7188480, vms=38723584),percent=0.227480706266] PID: 3674 CMDLINE: pythonenv_stub/workers/multiple.py RUNNING: True UIDS: user(real=0, effective=0, saved=0) FROM: root@127.0.0.1 NAME: python CREATED: 1312027919.2 PPID: 902 CPU: [percent=0.0,times=cputimes(user=0.16, system=0.04)]
+2011-07-30 22:43:15,166 PROCESS      INFO     USERNAME: root MEM: [info=meminfo(rss=7188480, vms=38723584),percent=0.227480706266] PID: 3678 CMDLINE: pythonenv_stub/workers/reverse.py RUNNING: True UIDS: user(real=0, effective=0, saved=0) FROM: root@127.0.0.1 NAME: python CREATED: 1312027920.21 PPID: 902 CPU: [percent=0.0,times=cputimes(user=0.19, system=0.02)]
+2011-07-30 22:43:15,784 SONAR        INFO     Waiting for agents stop
+2011-07-30 22:43:16,784 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:17,785 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:18,787 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:19,787 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:20,789 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:21,790 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:22,792 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:23,793 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:24,794 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:25,794 SONAR        DEBUG    Main loop +1 second
+2011-07-30 22:43:25,795 SONAR        INFO     Agents are stopped, close main loop
+2011-07-31 17:20:31,514 GEARMAN      INFO     QUEUES: 3 FROM: [host=127.0.0.1,port=4730] WORKERS: 2
+2011-07-31 17:20:31,514 GEARMAN      INFO     WORKERS: 0 TASK: sum FROM: [host=127.0.0.1,port=4730] RUNNING: 0 QUEUED: 0
+2011-07-31 17:20:31,515 GEARMAN      INFO     WORKERS: 1 TASK: reverse FROM: [host=127.0.0.1,port=4730] RUNNING: 0 QUEUED: 0
+2011-07-31 17:20:31,515 GEARMAN      INFO     WORKERS: 1 TASK: multiple FROM: [host=127.0.0.1,port=4730] RUNNING: 0 QUEUED: 0

@@ -4,7 +4,7 @@ Gearoscope is a gearman server monitoring and worker management system.
 
 It provides both:
 
-- monitoring daemon for loggging information about server nodes state, gearman server nodes, existen queues and running workers
+- monitoring daemon for logging information about server nodes state, gearman server nodes, existing queues and running workers
 
 - convenient visual interface for managing server nodes, supervisor daemons and worker process across servers cluster
 
@@ -19,13 +19,13 @@ Gearoscope is designed with ideas of scalability in our minds.
 
 ### TODOs
 
-- custom unique field for gearmand model
+- custom unique field for gearman model
 
 - install section in documentation
 
 - do not repeat name in server string representation if host and name are the same
 
-- make inline proxy model for adding gearman node to server dinamicly in server editing space
+- make inline proxy model for adding gearman node to server dynamically in server editing space
 
 - custom validation for host in server's model
 

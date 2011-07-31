@@ -277,21 +277,24 @@ var supervisords = {
     },
 
     update: function(){
-        var serverList = $('#supervisords').find('#supervisords_list');
+        var svList = $('#supervisords').find('#supervisords_list');
 
+        console.log(this.data);
         for(i in this.data){
-            var server = this.data[i];
+            var sv = this.data[i];
 
-            if(server.records.length > 0){
-                var content =  $.tmpl(this.template_item, server.records);
-                serverList.find('#supervisord_' + server.id + ' .logHistory').prepend(content);
-                serverList.find('#supervisord_' + server.id + ' .logHistory li:gt(10)').remove();
+            if(sv.length > 0){
+                console.log(sv.length);
+                var content =  $.tmpl(this.template_item, sv);
+                console.log(content);
+                svList.find('#supervisord_' + i + ' .logHistory').prepend(content);
+                svList.find('#supervisord_' + i + ' .logHistory li:gt(10)').remove();
             }
         }
         return this;
     },
     init: function(){
-        $.template(this.template_item , '<li>${time} - ${level} - ${params.state} - ${params.name}:${params.group} <br> ${message}</li>');
+        $.template(this.template_item , '<li><span class="err_${level}">${level}</span> ${time} - <span class="state_${params.state}">${params.state} PID:${params.pid} </span> - ${params.name}:${params.group} </li>');
         $('#supervisords_list .exp').live('click', function(e){
             e.preventDefault();
             var history = $(this).parents('li').find('.logHistory');
@@ -325,6 +328,9 @@ var requestor = {
         }
 
         servers.setData(data['servers']).update();
+
+        supervisords.setData(data['supervisords']).update();
+
         var workers = worker.get_all().toArray();
         for (i in workers){
             var wobj = worker.setItem(workers[i]);
@@ -349,5 +355,6 @@ $(document).ready(function(){
 
     servers.init();
     requestor.init();
+    supervisords.init();
 
 });
