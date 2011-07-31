@@ -146,7 +146,7 @@ class Worker(models.Model):
     # General required params
     command = models.CharField(max_length=255)
     process_name = models.CharField(max_length=70)
-    numprocs = models.PositiveSmallIntegerField(default=1, blank=True, null=True)
+    numprocs = models.PositiveSmallIntegerField(default=1)
 
     # Field which describe process running params and env variables
     directory = models.CharField(max_length=255, default='/', blank=True, null=True)
@@ -160,24 +160,24 @@ class Worker(models.Model):
     autorestart = models.BooleanField(default=True)
     startsecs = models.PositiveSmallIntegerField(default=10)
     startretries = models.PositiveSmallIntegerField(default=3)
-    stopwaitsecs = models.PositivIntegerField(default=10)
+    stopwaitsecs = models.PositiveIntegerField(default=10)
 
     # Exit params (should tell supervisor how to stop and restart process)
     # and what stop suggest as normal one (non-error)
-    exitcodes = models.CommaSeparatedIntegerField(default='0,2')
+    exitcodes = models.CommaSeparatedIntegerField(default='0,2', max_length=24)
     stopsignal = models.IntegerField(default=SIGTERM, choices=SIGNAL_CHOICES)
 
     # Params for logging of proces STDOUT and STDERR
     # Useful in order if we want to get log tails via XML-RPC protocol
     redirect_stderr = models.BooleanField(default=False)
-    stdout_logfile = models.CharField(max_length=255)
-    stdout_logfile_maxbytes = models.PositiveIntegerField(default=1)
-    stdout_logfile_backups = models.PositiveIntegerField(default=10)
-    stdout_capture_maxbytes = models.PositiveIntegerField(default=1)
+    stdout_logfile = models.CharField(max_length=255, blank=True, null=True)
+    stdout_logfile_maxbytes = models.PositiveIntegerField(default=1, blank=True, null=True)
+    stdout_logfile_backups = models.PositiveIntegerField(default=10, blank=True, null=True)
+    stdout_capture_maxbytes = models.PositiveIntegerField(default=1, blank=True, null=True)
     stderr_logfile = models.CharField(max_length=50, blank=True)
-    stderr_logfile_maxbytes = models.PositiveIntegerField(default=1)
-    stderr_logfile_backups = models.PositiveIntegerField(default=10)
-    stderr_capture_maxbytes = models.PositiveIntegerField(default=1)
+    stderr_logfile_maxbytes = models.PositiveIntegerField(default=1, blank=True, null=True)
+    stderr_logfile_backups = models.PositiveIntegerField(default=10, blank=True, null=True)
+    stderr_capture_maxbytes = models.PositiveIntegerField(default=1, blank=True, null=True)
 
     def __unicode__(self):
         '''
