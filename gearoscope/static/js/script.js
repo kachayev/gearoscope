@@ -79,8 +79,6 @@ var worker = {
 
     update: function(){
         var wdata = $(this.item).data('worker-data');
-        console.log(wdata);
-        console.log(wdata.cpu);
 
         $(this.item).find('.worker_stats .cpu_value').html('' + wdata.cpu + '%').end()
             .find('.worker_stats .mem_value').html('' + wdata.mem + '%').end();
