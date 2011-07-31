@@ -91,6 +91,15 @@ body{
 
 }
 
+#logo{
+    background: url(/static/img/logo.png);
+    height: 62px;
+    width: 233px;
+    float: left;
+    display: block;
+    margin: 14px 0 0 6px;
+}
+
 #container {
     max-width: 1200px;
     margin: 0 auto;
