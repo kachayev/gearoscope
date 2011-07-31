@@ -62,7 +62,7 @@ class Gearman(models.Model):
 
     def __unicode__(self):
         '''Clean human-understanding string represantation for gearman node'''
-        return '%s:%s' % (self.server.host, self.post)
+        return '%s:%s' % (self.server.host, self.port)
 
 class GearmanAdmin(admin.ModelAdmin):
     '''Params for gearman nodes managment via administrative panel'''
