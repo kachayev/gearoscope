@@ -153,3 +153,13 @@ LOGGING = {
     }
 }
 
+# Path to sonar daemon logger file
+# Don't fogget, that running sonar daemon
+# should have permissions to read/write this file
+SONAR_LOG_FILE = os.path.join(WORKDIR, 'data', 'sonar.log')
+
+# Path to sonar daemon configuration file
+# Don't fogget, that running sonar daemon
+# should have permissions to read/write this file
+SONAR_CONFIGURATION_FILE = os.path.join(WORKDIR, 'data', 'sonar.conf')
+

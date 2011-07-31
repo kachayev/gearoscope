@@ -28,5 +28,3 @@ class MonitorEntry(object):
         parts = line.strip().split()
         return MonitorEntry(' '.join(parts[:2]), parts[2], parts[3], ' '.join(parts[4:]))
 
-reader = Reader('/tmp/ps.log')
-
