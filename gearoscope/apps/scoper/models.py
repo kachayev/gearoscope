@@ -250,7 +250,7 @@ from django.conf import settings
 from monitor.config import Rewriter
 
 @receiver(post_save, sender=Server)
-def rewrite_server_configuration(server, **kwargs):
+def rewrite_server_configuration(sender, **kwargs):
     '''
     Rewrite monitor daemon configuration in order to keep
     monitoring logs up-to-date
@@ -259,5 +259,6 @@ def rewrite_server_configuration(server, **kwargs):
     If section alredy exists, all items will be removed,
     and new section will be writen by one action
     '''
+    server = kwargs['instance']
     Rewriter().rebuild('server:%s' % server.name, {'host': server.host}).save()
 
