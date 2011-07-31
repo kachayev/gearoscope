@@ -66,7 +66,7 @@ class Process():
             'host': '127.0.0.1',
             'name': random.choice(Supervisor().getNames()),
         }
-        
+
         pass
 
     def getData(self):
@@ -90,7 +90,6 @@ class Workers():
                 'memory_value': random.randint(0, 100),
                 'task_value': random.randint(10, 40)
             }
-        
-        pass
 
+        pass
 
