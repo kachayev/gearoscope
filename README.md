@@ -24,3 +24,5 @@ Gearoscope is designed with ideas of scalability in our minds.
 - install section in documentation
 
 - do not repeat name in server string representation if host and name are the same
+
+- make inline proxy model for adding gearman node to server dinamicly in server editing space

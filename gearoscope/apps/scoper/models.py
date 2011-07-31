@@ -85,3 +85,30 @@ class GearmanAdmin(admin.ModelAdmin):
 # Register gearman node manager in administration panel
 admin.site.register(Gearman, GearmanAdmin)
 
+class Supervisor(models.Model):
+    '''
+    Supervisor daemon instance
+
+    Supervisor model objects will be used in monitorin agents, which will
+    use XML-RPC connection for retrieving information about running processes.
+    To avoid problems with "Connection refuse" error, please check that:
+    - XML-RPC is switched on
+    - supervisor configuration contains inet_http_server section without direct settings for IP
+
+    More information about supervisor configuration you can find in official documentation:
+    http://supervisord.org/configuration.html
+    '''
+    server = models.ForeignKey(Server)
+    port = models.PositiveIntegerField(default=9001)
+
+    def __unicode__(self):
+        '''Clean human-understanding string represantation for supervisor daemon'''
+        return '%s:%s' % (self.server.host, self.port)
+
+class SupervisorAdmin(admin.ModelAdmin):
+    '''Params for supervisor daemons managment via administrative panel'''
+    pass
+
+# Register gearman node manager in administration panel
+admin.site.register(Supervisor, SupervisorAdmin)
+
