@@ -211,16 +211,3 @@ class ProcessLogReader(object):
 
         return records
 
-
-
-
-
-
-
-
-
-
-
-
-
-
