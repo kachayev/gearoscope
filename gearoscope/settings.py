@@ -128,6 +128,7 @@ INSTALLED_APPS = (
     # project relative apps
     'dashboard',
     'scoper',
+    'monitor'
 )
 
 # A sample logging configuration. The only tangible logging

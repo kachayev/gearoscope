@@ -12,7 +12,7 @@ def index(request):
     workers = Workers().get_workers()
     servers = Server.objects.all()
     supervisords = Supervisor.objects.all()
-    searmans = Gearman.objects.all()
+    gearmans = Gearman.objects.all()
 
     return render_to_response('dashboard/index.html', locals())
 
@@ -29,7 +29,7 @@ def dashboard(request):
 #    for server in servers:
 #        server['records'] = server_log.get_records_for(server)
 #        response['servers'].append(server)
-        
+
     response['supervisords'] = {}
 
     super_log = SupervisorLogReader(reader)
