@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib import admin
 
 class Server(models.Model):
     '''
@@ -12,19 +13,26 @@ class Server(models.Model):
     and supervisors to concrete physical server node
     '''
     # Main params (required)
-    host = models.CharField(max_length='256', default='localhost', primary_key=True)
-    name = models.CharField(max_length='256', default='localhost',
+    host = models.CharField(max_length='255', default='localhost', primary_key=True)
+    name = models.CharField(max_length='255', default='localhost',
                             unique=True, help_text='Any name which will simplify server identity')
 
     # Additional params (non-required)
-    user = models.CharField(default='root', help_text='Username for SSH access to server', empty=True)
-    password = models.CharField(empty=True,
+    user     = models.CharField(default='root', max_length='64',
+                                help_text='Username for SSH access to server')
+    password = models.CharField(blank=True, null=True, max_length='255',
                                 help_text='Password for SSH access to server')
-    ssh_key = models.TextField(empty=True,
-                               help_text='Absolute path to SSH private key (in most cases OS will find it automaticaly)')
-    ssh_port = models.PositiveIntegerField(default=22, empty=True)
+    ssh_key  = models.TextField(blank=True, null=True,
+                                help_text='Absolute path to SSH private key (in most cases OS will find it automaticaly)')
+    ssh_port = models.PositiveIntegerField(default=22)
 
     def __unicode__(self):
         '''Clean human-understanding string represantation for server node'''
         return '%s (%s)' % (self.name, self.host)
+
+class ServerAdmin(admin.ModelAdmin):
+    '''Params for server nodes managment via administrative panel'''
+    pass
+
+admin.site.register(Server, ServerAdmin)
 
