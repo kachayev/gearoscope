@@ -110,8 +110,6 @@ class GearmanLogReader(object):
             if params['from'].rstrip(']').lstrip('[') == gearman_signature:
                 records.append({'time': entry.time, 'level': entry.level, 'message': entry.message, 'params': params})
 
-        records.sort(key=lambda x: x['time'])
-
         summary = self.get_summary(records)
 
         tasks_stats = self.get_tasks_stats(records)
@@ -126,7 +124,8 @@ class SupervisorLogReader(object):
     sender = 'supervisor'
 
     def __init__(self, reader):
-        SupervisorLogReader.log = reader.tail(100)
+        SupervisorLogReader.log = reader.tail(1000)
+#        print [ i.message for i in SupervisorLogReader.log]
 
     def get_records_for(self, supervisor):
 
@@ -142,8 +141,6 @@ class SupervisorLogReader(object):
 
             if params['from'].rstrip(']').lstrip('[') == supervisor_signature:
                 records.append({'time': entry.time, 'level': entry.level, 'message': entry.message, 'params': params})
-
-        records.sort(key=lambda x: x['time'], reverse=True)
 
         return records
 
