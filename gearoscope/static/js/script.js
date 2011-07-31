@@ -120,12 +120,6 @@ var worker = {
     },
     
     setData: function(d){
-        //this is stub
-//        var d = {
-//            cpu_value: Math.round(Math.random() * 100),
-//            memory_value: Math.round(Math.random() * 100),
-//            task_value: Math.round(Math.random() * 10 + 20)
-//        };
         $(this.item).data('worker-data', d);
 
         return this;
