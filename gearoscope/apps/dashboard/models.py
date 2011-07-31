@@ -5,37 +5,10 @@ from datetime import datetime
 
 import random
 
-class Server(object):
-
-    def get_servers(self):
-        return [{'name':['localhost', 'remote', 'linode', 'rabbit', 'db', 'load_balancer'][i], 'id': i} for i in xrange(1, 3)]
-
-    def generate_record(self):
-        serv = random.choice(self.get_servers())
-        log_info = {'host': serv['name'],
-                            'time': datetime.now().strftime('%H:%M:%S') ,
-                            'ping': random.randint(10, 1000)}
-        serv = dict(serv, **log_info)
-
-        return serv
-
-    def get_data(self):
-        log = [self.generate_record() for x in range(10)]
-        servers = self.get_servers()
-        for server in servers:
-            server['records'] = []
-            for rec in log:
-                if rec['id'] != server['id']:
-                    continue
-                server['records'].append(rec)
-            server['records'].sort(key=lambda x: x['time'])
-
-        return servers
-
-
-
 class Process(object):
-
+    """
+        I am just stub
+    """
     def generateRecord(self):
 
         return {
@@ -62,7 +35,9 @@ class Process(object):
 
 
 class Workers(object):
-
+    """
+        I am another one stub
+    """
     def get_workers(self):
         return [{'name':random.choice(['worker', 'tasker', 'trans']), 'id': i} for i in xrange(1, 4)]
 
