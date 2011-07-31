@@ -19,7 +19,7 @@ def index(request):
     params = {}
     params['gearmans'] = {}
     for gearman in Gearman.objects.all():
-        params['gearmans'][gearman.crc_it()] = gearman_log.get_records_for(gearman)
+        params['gearmans'][gearman.crc] = gearman_log.get_records_for(gearman)
 
     for item in params['gearmans'].itervalues():
         for queue in item['stats']:
@@ -46,7 +46,7 @@ def dashboard(request):
     super_log = SupervisorLogReader(reader)
 
     for supervisor in Supervisor.objects.all():
-        response['supervisords'][supervisor.crc_it()] = super_log.get_records_for(supervisor)
+        response['supervisords'][supervisor.crc] = super_log.get_records_for(supervisor)
 
 
 #    response['processes'] = Process().getData()
@@ -55,7 +55,7 @@ def dashboard(request):
 
     response['gearmans'] = {}
     for gearman in Gearman.objects.all():
-        response['gearmans'][gearman.crc_it()] = gearman_log.get_records_for(gearman)
+        response['gearmans'][gearman.crc] = gearman_log.get_records_for(gearman)
 
 
     response['workers'] = {}
