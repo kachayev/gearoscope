@@ -17,9 +17,12 @@ from sonar import loop
 from sonar.options import options
 from sonar.agent import AgentPool
 from sonar.remote import Server, pool as ServerPool
+from sonar.logger import Log
 
 from sonar.agents.supervisor import SupervisorAgent, Supervisor
 from agents.gearmand import GearmanNodeAgent
+
+from gearoscope.settings import settings
 
 def sonar_factory():
     def make(options):
@@ -99,5 +102,6 @@ def sonar_factory():
     return make
 
 if __name__ == '__main__':
+    Log.BUFFER_FILE = settings.SONAR_CONFIGURATION_FILE
     loop.main(factory=sonar_factory())
 
