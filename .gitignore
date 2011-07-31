@@ -7,3 +7,4 @@ dist/*
 *.db
 data/*.log*
 *.log
+gearoscope/data/sonar.conf
