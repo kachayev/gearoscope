@@ -7,22 +7,29 @@ import random
 
 class Server():
 
-    def generateRecord(self):
-        name = 'node%s' % random.randint(1,4)
-        ping = random.randint(10, 1000)
+    def get_servers(self):
+        
+        return [{'name':random.choice(['localhost', 'remote', 'linode', 'rabbit', 'db', 'load_balancer']), 'id': i} for i in xrange(1, 3)]
 
-        return {'server': name, 'host':'localhost', 'time': datetime.now().strftime('%H:%M:%S') , 'ping': ping}
+    def generate_record(self):
+        serv = random.choice(self.get_servers())
+        log_info = {'host': serv['name'],
+                            'time': datetime.now().strftime('%H:%M:%S') ,
+                            'ping': random.randint(10, 1000)}
+        serv = dict(serv, **log_info)
 
-    def getData(self):
-        log = [self.generateRecord() for x in range(20)]
-        servers = {}
-        for rec in log:
-            if rec['server'] not in servers:
-                servers[rec['server']] = []
-            servers[rec['server']].append(rec)
+        return serv
 
-        for rec in servers.itervalues():
-            rec.sort(key=lambda x: x['time'])
+    def get_data(self):
+        log = [self.generate_record() for x in range(20)]
+        servers = self.get_servers()
+        for server in servers:
+            server['records'] = []
+            for rec in log:
+                if rec['id'] != server['id']:
+                    continue
+                server['records'].append(rec)
+            server['records'].sort(key=lambda x: x['time'])
 
         return servers
 

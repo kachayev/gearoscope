@@ -245,7 +245,7 @@ var servers = {
     
     update: function(){
         var serverList = $('#servers').find('#servers_list');
-        serverList.find('li').remove();
+//        serverList.find('li').remove();
 
         for(i in this.data){
             var server = this.data[i];
@@ -254,9 +254,8 @@ var servers = {
             if(server.length > 0){
                 var content =  $.tmpl(this.template_item, server);
                 $(li).find('.logHistory').html(content);
-                $(li).find('.logHistory li:gt(0)').hide();
+                serverList.prepend(li);
             }
-            serverList.append(li);
         }
         return this;
     },
@@ -267,6 +266,7 @@ var servers = {
             e.preventDefault();
             $(this).parents('li').find('.logHistory li:gt(0)').toggle();
         });
+        $('#servers_list').find('li').remove();
     }
 };
 

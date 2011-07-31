@@ -13,14 +13,12 @@ def dashboard(request):
     response = {'result': 'ok'}
 
 #    try:
-    response['servers'] = Server().getData()
+    response['servers'] = Server().get_data()
     response['supervisords'] = Supervisor().getData()
     response['processes'] = Process().getData()
     response['workers'] = {}
 
-    logging.error(Workers().get_workers())
     for worker in Workers().get_workers():
-        logging.error(worker)
         response['workers'][worker['id']] = Workers().get_data(worker['id'])
             
 #    except Exception, e :
