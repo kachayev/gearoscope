@@ -36,7 +36,7 @@ class Server(models.Model):
 
 class ServerAdmin(admin.ModelAdmin):
     '''
-    Params for server nodes managment via administrative panel
+    Params for server nodes management via administrative panel
 
     Override params for fieldsets value in order to create two blocks:
     # general params (required)
@@ -84,7 +84,7 @@ class Gearman(models.Model):
     protocol specification, default port is 4730, but it can be change via gearman daemon
     running params.
 
-    More information about protocol specification you can find in oficial Gearman documentation:
+    More information about protocol specification you can find in official Gearman documentation:
         http://gearman.org/index.php?id=protocol
     or in documentation to Python client:
         http://packages.python.org/gearman/
@@ -93,7 +93,7 @@ class Gearman(models.Model):
     port = models.PositiveIntegerField(default=4730)
 
     def __unicode__(self):
-        '''Clean human-understanding string represantation for gearman node'''
+        '''Clean human-understanding string representation for gearman node'''
         return '%s:%s' % (self.server.host, self.port)
 
 class GearmanAdmin(admin.ModelAdmin):
@@ -107,7 +107,7 @@ class Supervisor(models.Model):
     '''
     Supervisor daemon instance
 
-    Supervisor model objects will be used in monitorin agents, which will
+    Supervisor model objects will be used in monitoring agents, which will
     use XML-RPC connection for retrieving information about running processes.
     To avoid problems with "Connection refuse" error, please check that:
     - XML-RPC is switched on
@@ -127,7 +127,7 @@ class Supervisor(models.Model):
         return binascii.crc32(self.__unicode__())
 
 class SupervisorAdmin(admin.ModelAdmin):
-    '''Params for supervisor daemons managment via administrative panel'''
+    '''Params for supervisor daemons management via administrative panel'''
     pass
 
 # Register supervisor node manager in administration panel
@@ -165,7 +165,7 @@ class Worker(models.Model):
     Worker process instance
 
     Stop signal params will be used by supervisor during start/restart calls. What signal to use
-    in order to stop execution of you process in best way dependce on process implementation. Full
+    in order to stop execution of you process in best way depends on process implementation. Full
     list of signal and more information about it, you can find here:
     http://www.cs.pitt.edu/~alanjawi/cs449/code/shell/UnixSignals.htm
     '''
@@ -237,7 +237,7 @@ class Worker(models.Model):
 
 class WorkerAdmin(admin.ModelAdmin):
     '''
-    Params for workers managment via administrative panel
+    Params for workers management via administrative panel
 
     Override params for fieldsets value in order to create two blocks:
     # identity params (required)
