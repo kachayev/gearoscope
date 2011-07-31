@@ -10,6 +10,17 @@ It provides both:
 
 Gearoscope is designed with ideas of scalability in our minds.
 
+### Demo
+
+View application [demo](http://codemehanika.org/gearoscope/) 
+
+To enter admin panel, you can use this credentials:
+	
+    user: gear
+    pass: scope
+
+Pls, do not change many params, cause monitoring logger would not show interesting information for unknown host, unresolved sockets etc :)
+
 ### License
 
 See LICENSE.txt for more information
