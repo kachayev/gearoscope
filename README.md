@@ -12,10 +12,10 @@ Gearoscope is designed with ideas of scalability in our minds.
 
 ### Demo
 
-View application [demo](http://codemehanika.org/gearoscope/) 
+View application [demo](http://codemehanika.org/gearoscope/)
 
 To enter admin panel, you can use this credentials:
-	
+
     user: gear
     pass: scope
 
@@ -35,7 +35,7 @@ Prepate all necessary environments:
 
 Install and run monitor daemon and visual interface for managing it:
 
-    wget -O gearoscope.tar.gz https://github.com/kachayev/gearoscope/tarball/master	
+    wget -O gearoscope.tar.gz https://github.com/kachayev/gearoscope/tarball/master
     tar xvzf gearoscope.tar.gz
     cd gearoscope
     pip install -e ./
@@ -55,3 +55,4 @@ More information will be available soon.
 - custom validation for host in server's model
 
 - help text for most fields in Worker Model
+
