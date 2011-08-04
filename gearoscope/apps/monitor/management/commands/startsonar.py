@@ -1,5 +1,17 @@
 """
-sonard -- daemon process which use Sonar library for launching several monitoring agents in separated threads
+sonard -- daemon process which use Sonar library for launching
+          several monitoring agents in separated threads
+
+All configuration setting for sonar daemon runner should be
+provided by database models, in order to keep all settings in
+the same place and disallow problems with synchronizing different
+configuration storages.
+
+Before sonar daemon will start threads with agents, we should
+provide all necessary settings for:
+* each agent and agents pool
+* shedule of monitoring actions
+* logger facilities and persistence log storage
 
 Usage: python manage.py startsonar [options]
 
