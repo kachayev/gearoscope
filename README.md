@@ -1,3 +1,22 @@
+### Attention
+
+This software currently is under active development. So, if you have idea to use it for production, please wait until first stable tag. Short roadmap:
+
+- changing policy for more flexible monitoring daemon configuration
+
+- working with servers in cluster (pings, stat information, notifications)
+
+- searching gearman daemons on standard ports and installing it on remote machines
+
+- normal processing of workers management
+
+- facilities to view logs on special dashboard panel
+
+- signal system for monitored queues
+
+- many small enhancements
+
+
 ### Introduction
 
 Gearoscope is a gearman server monitoring and worker management system.
