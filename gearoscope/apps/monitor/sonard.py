@@ -22,6 +22,7 @@ from sonar.logger import Log
 from sonar.agents.supervisor import SupervisorAgent, Supervisor
 from agents.gearmand import GearmanNodeAgent
 
+import scoper
 from django.conf import settings
 
 def sonar_factory():
@@ -34,10 +35,31 @@ def sonar_factory():
 
         Fabric function will be called in loop each time, when external configuration file is changed
         '''
-        import ConfigParser
 
         # Create sonar object
         s = loop.Sonar(options)
+
+        # Create server pool with using information stored in database
+        for server in scoper.models.Server.objects.all():
+            ServerPool.add(Server(**server.__dict__))
+
+        # Create Supervisor agents with using information from database
+        for visor in scoper.models.Supervisor.objects.all():
+            names = ','.join([worker.name for worker in scoper.models.Worker.objects.filter(supervisor=visor)])
+            visor = Supervisor(server=ServerPool.get(visor.server.name), port=visor.port)
+
+            # Add supervisor object and related to it supervisor agent,
+            # which will periodicaly call supervisor XML-RPC in order to get informations
+            # about running processes according to <names> or <groups> listings
+            s.add_agent(SupervisorAgent(visor), names=names)
+
+        # Create Gearman agents with using information from database
+        for node in scoper.models.Gearman.objects.all():
+            # Add gearman node object and related , which will
+            # periodicaly call gearman-admin util via socket interface
+            # in order to get informations about node status and queues
+            s.add_agent(GearmanNodeAgent(server=ServerPool.get(node.server.name), port=node.port))
+
 
         # Iterate throw all configuration file in order to create
         # pool of servers and configurate all supervisor objects
@@ -46,22 +68,7 @@ def sonar_factory():
                 block, name = section.split(':')
                 block = block.lower()
 
-                if block == 'server':
-                    # Add server objects to server pool
-                    params = {'name': name, 'password': None, 'user': 'root'}
-                    params.update(dict(options.config.items(section)))
-
-                    if 'is_default' in params.keys():
-                        del(params['is_default'])
-
-                    try:
-                        is_default = options.config.getboolean(section, 'is_default')
-                    except ConfigParser.NoOptionError:
-                        is_default = False
-
-                    # Add server to pool, which can be received from it by name
-                    ServerPool.add(Server(**params), is_default=is_default)
-                elif block == 'pool':
+                if block == 'pool':
                     # Add separated object of agent pool with async queue
                     params = {'count':1, 'timeout': 0}
                     params.update(dict(options.config.items(section)))
@@ -81,22 +88,6 @@ def sonar_factory():
                     # Create agent pool with given name, which will consist from
                     # given count of object, builded on as instance of prototype class
                     s.add_pool(name, AgentPool(**params))
-                elif block == 'supervisor':
-                    server = options.config.get(section, 'server')
-                    port   = options.config.get(section, 'port')
-                    names  = map(lambda name: name.strip(), options.config.get(section, 'names').split(','))
-
-                    # Add supervisor object and related to it supervisor agent,
-                    # which will periodicaly call supervisor XML-RPC in order to get informations
-                    # about running processes according to <names> or <groups> listings
-                    s.add_agent(SupervisorAgent(Supervisor(server=ServerPool.get(server), port=port), names=names))
-                elif block == 'gearman':
-                    server = options.config.get(section, 'server')
-                    port   = options.config.get(section, 'port')
-
-                    # Add gearman node object and related , which will periodicaly call gearman-admin util via socket interface
-                    # in order to get informations about node status and queues
-                    s.add_agent(GearmanNodeAgent(server=ServerPool.get(server), port=port))
 
         return s
     return make
