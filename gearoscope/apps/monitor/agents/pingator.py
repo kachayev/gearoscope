@@ -8,7 +8,8 @@ multi-threading model, and using system resources for hanling
 many separate threads.
 """
 
-import subprocess
+import re
+from subprocess import Popep, PIPE
 from sonar.logger import DictLogRecord, Log
 
 class PingLogRecord(DictLogRecord):
@@ -34,6 +35,9 @@ class PingAgent(object):
     # with "lazy" idea (when work method will be called only)
     log = None
 
+    STAT_LINE = re.compile(r'(?P<received>\d) received, (?P<lost>[\d]+)% packet loss, time (?P<time>[\d]+)ms')
+    RTT_LINE  = re.compile(r'rtt min/avg/max/mdev = (?P<rtt>\S+) ms')
+
     def __init__(self, server):
         self.server = server
 
@@ -44,6 +48,11 @@ class PingAgent(object):
         self.log.info(PingLogRecord(self.ping(4), server={'host': self.server.host}))
 
     def ping(count=4):
-        cmd = ['ping', self.server.host, '-c', str(count)]
-        return subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[-1]
+        stat = {}
+
+        ping = '\n'.join(Popen(['ping', self.server.host, '-c', str(count)], stdout=PIPE).communicate())
+        stat.update(STAT_LINE.findall(ping))
+        stat.update(RTT_LINE.findall(ping))
+
+        return stat
 
