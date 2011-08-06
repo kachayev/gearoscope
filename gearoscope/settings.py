@@ -156,7 +156,7 @@ LOGGING = {
 }
 
 # Path to sonar daemon logger file
-# Don't fogget, that running sonar daemon
+# Don't fogget, that runningW sonar daemon
 # should have permissions to read/write this file
 SONAR_LOG_FILE = os.path.join(WORKDIR, 'data', 'sonar.log')
 
@@ -165,6 +165,14 @@ SONAR_LOG_FILE = os.path.join(WORKDIR, 'data', 'sonar.log')
 # should have permissions to read/write this file
 SONAR_CONFIGURATION_FILE = os.path.join(WORKDIR, 'data', 'sonar.conf')
 
-# Maximum records to read from sonar log file
+# Count of pings per each action of pingator agents
+# More retries will help you to calculate average response time
+# less rought, but it will take more time and generate more
+# trafic in network channel. 4 retries is a common way to do pings.
+SONAR_PINGATOR_RETRIES = 4
+
+# Maximum records to read from sonar log file per each
+# log analizer action. Do not use too much lines to prevent
+# problems with memory and CPU leaks
 DASHBOARD_LOG_LIMIT = 1000
 
