@@ -44,6 +44,6 @@ class PingAgent(object):
         self.log.info(PingLogRecord(self.ping(4), server={'host': self.server.host}))
 
     def ping(count=4):
-        cmd = ['ping', self.server, '-c', str(count)]
+        cmd = ['ping', self.server.host, '-c', str(count)]
         return subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[-1]
 

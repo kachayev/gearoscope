@@ -21,6 +21,7 @@ from sonar.logger import Log
 
 from sonar.agents.supervisor import SupervisorAgent, Supervisor
 from agents.gearmand import GearmanNodeAgent
+from agents.pingator import PingAgent
 
 import scoper
 from django.conf import settings
@@ -42,6 +43,11 @@ def sonar_factory():
         # Create server pool with using information stored in database
         for server in scoper.models.Server.objects.all():
             ServerPool.add(Server(**server.__dict__))
+
+            # Add special Pingator agent, which will periodicaly ping
+            # server with using subprocess PIPE and log information
+            # both about server availability and average response time
+            s.add_agent(PingAgent(ServerPool.get(server.name), settings.SONAR_PINGATOR_RETRIES))
 
         # Create Supervisor agents with using information from database
         for visor in scoper.models.Supervisor.objects.all():
