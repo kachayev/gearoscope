@@ -1,8 +1,5 @@
 from django.db import models
-
-class LastRevision(models.Manager):
-    def get_query_set(self):
-        return super(LastRevision, self).get_query_set().order_by('-time').values()
+from monitor.managers import LastRevisionManager
 
 class Revision(models.Model):
     '''
