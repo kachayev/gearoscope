@@ -66,6 +66,7 @@ def sonar_factory():
             # in order to get informations about node status and queues
             s.add_agent(GearmanNodeAgent(server=ServerPool.get(node.server.name), port=node.port))
 
+        # Create all pools disribed in setting.py module
         for name, pool in settings.SONAR_AGENT_POOLS.iteritems():
             # Against string value of full class name for prototype,
             # we should use class type from imported related module
