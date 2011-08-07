@@ -1,5 +1,4 @@
 from sonar.loop import Sonar
-from monitor.models import Revision
 
 class RevisionCheckerAgent(object):
     '''

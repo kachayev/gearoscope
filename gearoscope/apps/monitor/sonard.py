@@ -22,8 +22,10 @@ from sonar.logger import Log
 from sonar.agents.supervisor import SupervisorAgent, Supervisor
 from agents.gearmand import GearmanNodeAgent
 from agents.pingator import PingAgent
+from agents.reloader import RevisionCheckerAgent
 
 import scoper
+from models import Revision
 from django.conf import settings
 
 def sonar_factory():
