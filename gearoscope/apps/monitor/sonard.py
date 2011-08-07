@@ -40,6 +40,10 @@ def sonar_factory():
         # Create sonar object
         s = loop.Sonar(options)
 
+        # For the first, we should initialize revision check agent,
+        # which will "remember" current database revision ID
+        s.add_agent(RevisionCheckerAgent(manager=Revision.last))
+
         # Create server pool with using information stored in database
         for server in scoper.models.Server.objects.all():
             ServerPool.add(Server(**server.__dict__))

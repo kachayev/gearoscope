@@ -10,13 +10,19 @@ class RevisionCheckerAgent(object):
     agent will be stoped in soft mode and sonar object will be
     rebuild with using new database configuration
     '''
+    # Initial revision ID
     revision = None
 
-    def __init__(self):
-        self.revision = Revision.last.get()
+    # Manager for working with revision objects
+    manager = None
+
+    def __init__(self, manager=None):
+        '''Initialize manager object and retriew current revision ID'''
+        self.manager  = manager
+        self.revision = manager.get()['id']
 
     def work(self):
         '''Check last revision ID, if not equals reload sonar'''
-        Revision.last.get()['id'] != self.revision['id']:
+        self.manager.get()['id'] != self.revision:
             Sonar.stop()
 
