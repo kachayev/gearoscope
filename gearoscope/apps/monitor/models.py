@@ -1,5 +1,9 @@
 from django.db import models
 
+class LastRevision(models.Manager):
+    def get_query_set(self):
+        return super(LastRevision, self).get_query_set().order_by('-time').values()
+
 class Revision(models.Model):
     '''
     Save in database history of changes in servers and workers configurations
@@ -35,4 +39,10 @@ class Revision(models.Model):
 
     # Modification time, will be set automaticly to the current time of revision creating
     time = models.DateTimeField(auto_now_add=True)
+
+    # For retrieving inforation about last revision in you application,
+    # your should use this sample of code: Revision.last.get()
+    # Using of manager object will prevent any problems with trying to call
+    # last revision from other revision object (in this case AttributeError) will be raised
+    last = LastRevision()
 
