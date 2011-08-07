@@ -66,34 +66,19 @@ def sonar_factory():
             # in order to get informations about node status and queues
             s.add_agent(GearmanNodeAgent(server=ServerPool.get(node.server.name), port=node.port))
 
+        for name, pool in settings.SONAR_AGENT_POOLS.iteritems():
+            # Against string value of full class name for prototype,
+            # we should use class type from imported related module
+            if pool['prototype'].find('.') != -1:
+                parts = pool['prototype'].split('.')
+                pool['prototype'] = reduce(lambda module,attr: getattr(module,attr),
+                                            parts[1:], __import__(parts[0]))
+            else:
+                pool['prototype'] = globals()[pool['prototype']]
 
-        # Iterate throw all configuration file in order to create
-        # pool of servers and configurate all supervisor objects
-        for section in options.config.sections():
-            if section.find(':') != -1:
-                block, name = section.split(':')
-                block = block.lower()
-
-                if block == 'pool':
-                    # Add separated object of agent pool with async queue
-                    params = {'count':1, 'timeout': 0}
-                    params.update(dict(options.config.items(section)))
-
-                    # Against string value of full class name for prototype,
-                    # we should use class type from imported related module
-                    if params['prototype'].find('.') != -1:
-                        parts = params['prototype'].split('.')
-                        params['prototype'] = reduce(lambda module,attr: getattr(module,attr),
-                                                      parts[1:], __import__(parts[0]))
-                    else:
-                        params['prototype'] = globals()[params['prototype']]
-
-                    # Count should be integer in any case
-                    params['count'] = int(params['count'])
-
-                    # Create agent pool with given name, which will consist from
-                    # given count of object, builded on as instance of prototype class
-                    s.add_pool(name, AgentPool(**params))
+            # Create agent pool with given name, which will consist from
+            # given count of object, builded on as instance of prototype class
+            s.add_pool(name, AgentPool(**pool))
 
         return s
     return make

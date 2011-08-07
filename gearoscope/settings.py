@@ -171,6 +171,18 @@ SONAR_CONFIGURATION_FILE = os.path.join(WORKDIR, 'data', 'sonar.conf')
 # trafic in network channel. 4 retries is a common way to do pings.
 SONAR_PINGATOR_RETRIES = 4
 
+# Dict with all information for creating Sonar agent pools.
+# Each of this pool will consist from <count> number of
+# threads with sync Queue object, which can be used for
+# pushing tasks to pool (to be executed by thread agents)
+SONAR_AGENT_POOLS = {
+    'stat': {
+        'timeout': 0,
+        'count': 3,
+        'prototype': 'sonar.agents.process.ProcessStatAgent'
+    }
+}
+
 # Maximum records to read from sonar log file per each
 # log analizer action. Do not use too much lines to prevent
 # problems with memory and CPU leaks
