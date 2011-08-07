@@ -43,3 +43,10 @@ class Revision(models.Model):
     # last revision from other revision object (in this case AttributeError) will be raised
     last = LastRevision()
 
+    # Prevent resaving changed revision object
+    # This means, that once create revision can not be
+    # saved in database second time
+    def save(self, *args, **kwargs):
+        if self.id is None:
+            super(Revision, self).save(*args, **kwargs)
+
