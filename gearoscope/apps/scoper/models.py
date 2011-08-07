@@ -251,57 +251,19 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 
-from monitor.config import Rewriter
+from monitor.models import Revision
 
 @receiver(post_save, sender=Server)
-def rewrite_server_configuration(sender, **kwargs):
-    '''
-    Rewrite monitor daemon configuration in order to keep
-    monitoring logs up-to-date
-
-    If server is new, rewrite will add new SERVER:* block
-    If section alredy exists, all items will be removed,
-    and new section will be writen by one action
-    '''
-    server = kwargs['instance']
-    info   = dict([(item, getattr(server, item)) for item in ('host', 'user', 'password')])
-
-    Rewriter().rebuild('server:%s' % server.name, info).save()
-
-@receiver(post_save, sender=Gearman)
-def rewrite_gearman_configuration(sender, **kwargs):
-    '''
-    Rewrite monitor daemon configuration in order to keep
-    monitoring logs up-to-date
-
-    To handle global identification for running gearman node daemon,
-    we should save to monitoring configuration only server host and port
-    '''
-    gearman = kwargs['instance']
-    server  = gearman.server.name
-
-    Rewriter().rebuild('gearman:%s' % server, {'server': server, 'port': gearman.port}).save()
-
 @receiver(post_save, sender=Worker)
 @receiver(post_save, sender=Supervisor)
-def rewrite_supervisor_configuration(sender, **kwargs):
+@receiver(post_save, sender=Gearman)
+def commit_monitor_revision(sender, **kwargs):
     '''
-    Rewrite monitor daemon configuration in order to keep
-    monitoring logs up-to-date
+    Create new revision instance and save it to database
 
-    To handle global identification for running remote supervisor daemon,
-    we should save in monitoring configuration server host and port
-    According to goals for retrieving from supervisor information only
-    about necessary workers/subworkers, we should also save list of
-    process names (and groups in future)
+    In future this revision will be used for soft reloading of sonar daemon,
+    for each case of configuration changes
     '''
-    supervisor = kwargs['instance'] if sender == Supervisor else kwargs['instance'].supervisor
-    server = supervisor.server.name
-
-    # To build map of all necessary worker name,
-    # we should iterate per each worker and join names
-    names = ','.join([worker.name for worker in Worker.objects.filter(supervisor=supervisor)])
-
-    Rewriter().rebuild('supervisor:%s' % server,
-                       {'server': server, 'port': supervisor.port, 'names': names}).save()
+    modify = getattr(Revision, str(sender).split('.')[-1].upper())
+    Revision(modification=modify).save()
 
